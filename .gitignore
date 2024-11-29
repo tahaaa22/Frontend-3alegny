@@ -3,3 +3,5 @@
 ################################################################################
 
 /.vs
+/3alegnyMinimalAPI/bin/Debug/net8.0
+/3alegnyMinimalAPI/obj/Debug/net8.0
