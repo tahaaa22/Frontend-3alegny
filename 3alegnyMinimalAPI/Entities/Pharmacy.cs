@@ -6,7 +6,7 @@ public class Pharmacy : Business
 {
 	public Pharmacy()
 	{
-		public List<Drugs> Drugs { get; set; }
-
-	}
+        [JsonPropertyDrug("Drugs")]
+        public string Drugs { get; set; }
+    }
 }

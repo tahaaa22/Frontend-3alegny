@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("3alegnyMinimalAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e868e9eab6c938798178bc27143f00c04d8146b6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1873d3b991e7bfa94e6201a5a9b0ae267c626b82")]
 [assembly: System.Reflection.AssemblyProductAttribute("3alegnyMinimalAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("3alegnyMinimalAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
