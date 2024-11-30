@@ -1,12 +1,10 @@
-﻿//using System;
-//using RepoLayer.Business;
-//using RepoLayer.Drugs;
-
-//public class Pharmacy : Business
-//{
-//	public Pharmacy()
-//	{
-//        [JsonPropertyDrug("Drugs")]
-//        public string Drugs { get; set; }
-//    }
-//}
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+namespace _3alegny.RepoLayer
+{
+    public class Pharmacy : Business
+    {
+        [JsonProperty("Drugs")]
+        public List<string>? Drugs { get; set; }
+    }
+}
