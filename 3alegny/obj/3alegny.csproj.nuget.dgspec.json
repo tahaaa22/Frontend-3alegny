@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny.csproj": {}
+    "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny\\3alegny.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny.csproj": {
+    "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny\\3alegny.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny.csproj",
+        "projectUniqueName": "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny\\3alegny.csproj",
         "projectName": "3alegny",
-        "projectPath": "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny.csproj",
+        "projectPath": "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny\\3alegny.csproj",
         "packagesPath": "C:\\Users\\Ahmed Taha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\obj\\",
+        "outputPath": "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Ahmed Taha\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -75,7 +75,7 @@
             },
             "MongoDB.Driver": {
               "target": "Package",
-              "version": "[3.0.0, )"
+              "version": "[3.1.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
