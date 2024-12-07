@@ -7,10 +7,10 @@ var bld = WebApplication.CreateBuilder();
 bld.Services.AddFastEndpoints();
 bld.Services.SwaggerDocument();
 
-//bld.Services.AddDbContextFactory<DBContext>(options =>
-//{
-//    options.UseNpgsql();
-//});
+bld.Services.AddDbContextFactory<DbContext>(options =>
+{
+    //options.UseNpgsql();
+});
 
 
 var app = bld.Build();
