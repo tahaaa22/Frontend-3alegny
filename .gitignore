@@ -2,8 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs
-/3alegnyMinimalAPI/obj
-/3alegny/bin/Debug/net8.0
-/3alegny/.vs
+/.vs/3alegny/v17
 /3alegny/appsettings.json
+/3alegnyMinimalAPI/obj
+/.vs
