@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "OQQ+0d0/eW0+r3bjnAOLvyWZXNgqGKYoGybAXEpOB9A=",
+  "Hash": "yOslXTPlGwTgOmL5poSIUrxmFaoTyb06gVIwceR0Hcc=",
   "Source": "3alegny",
   "BasePath": "_content/3alegny",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

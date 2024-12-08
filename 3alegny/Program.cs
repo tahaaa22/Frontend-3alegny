@@ -1,4 +1,5 @@
 using _3alegny.RepoLayer;
+using _3alegny.Service_layer;
 using _3alegny.Entities;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
@@ -31,10 +32,13 @@ var dbContext = new MongoDbContext(mongoDbSettings.ConnectionString, mongoDbSett
 
 // Dependency Injection
 builder.Services.AddSingleton(dbContext);
+builder.Services.AddScoped<Logic>();
+
 
 var app = builder.Build();
 
 app.MapUserEndpoints();
+app.MapAdminEndpoints();
 
 app.UseSwagger();
 app.UseSwaggerUI();

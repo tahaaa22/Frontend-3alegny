@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("3alegny")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c99a122a0fa357edfa0e796fce99024155220750")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fbd4784bc4fb1992d61e3f7787099dd416ba8bc4")]
 [assembly: System.Reflection.AssemblyProductAttribute("3alegny")]
 [assembly: System.Reflection.AssemblyTitleAttribute("3alegny")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

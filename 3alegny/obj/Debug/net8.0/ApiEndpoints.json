@@ -1,8 +1,52 @@
 [
   {
     "ContainingType": "UserEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapUserEndpoints\u003Eb__0_0",
-    "RelativePath": "users",
+    "Method": "\u003CMapAdminEndpoints\u003Eb__1_1",
+    "RelativePath": "admin/user/{id}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "UserEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAdminEndpoints\u003Eb__1_2",
+    "RelativePath": "admin/user/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "UserEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAdminEndpoints\u003Eb__1_0",
+    "RelativePath": "admin/users",
     "HttpMethod": "GET",
     "IsController": false,
     "Order": 0,
@@ -18,14 +62,36 @@
   {
     "ContainingType": "UserEndpoints\u002B\u003C\u003Ec",
     "Method": "\u003CMapUserEndpoints\u003Eb__0_1",
-    "RelativePath": "users",
+    "RelativePath": "login",
     "HttpMethod": "POST",
     "IsController": false,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "user",
-        "Type": "_3alegny.Entities.User",
+        "Name": "request",
+        "Type": "UserEndpoints\u002BLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "UserEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapUserEndpoints\u003Eb__0_0",
+    "RelativePath": "signup",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "UserEndpoints\u002BSignupRequest",
         "IsRequired": true
       }
     ],

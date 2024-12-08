@@ -1,12 +1,15 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+
 namespace _3alegny.Entities
 {
+
     public class User
     {
-        public ObjectId Id { get; set; } 
+        public ObjectId Id { get; set; }
         public string? Name { get; set; }
-        public string? Role { get; set; } = "admin"; //FIXME: change it to an enum
+        public string? UserName { get; set; }
+        public string? Role { get; set; } = "Patient"; // TODO: Change to an enum
         public string? Password { get; set; }
         public HelperEntities.ContactInfo? contactInfo { get; set; }
         public HelperEntities.Address? Address { get; set; }
@@ -14,6 +17,7 @@ namespace _3alegny.Entities
         public DateTime UpdatedAt { get; set; }
         public DateTime DeletedAt { get; set; }
     }
+
     // Subclass: Admin
     public class Admin : User
     {
@@ -39,9 +43,9 @@ namespace _3alegny.Entities
         public List<HelperEntities.Department> Departments { get; set; } = new List<HelperEntities.Department>();
         public List<EMR> EMRs { get; set; } = new List<EMR>();
         public List<Appointments> Appointments { get; set; } = new List<Appointments>();
-        public Double? Rating { get; set; } = 0.0;
-        public List<HelperEntities.Doctors> Doctors { get; set; } = new List<HelperEntities.Doctors> ();
-        public List<Hospital> InsuranceAccepted { get; set; } = new List<Hospital>();   
+        public double? Rating { get; set; } = 0.0;
+        public List<HelperEntities.Doctors> Doctors { get; set; } = new List<HelperEntities.Doctors>();
+        public List<Hospital> InsuranceAccepted { get; set; } = new List<Hospital>();
     }
 
     // Subclass: Pharmacy
@@ -50,5 +54,4 @@ namespace _3alegny.Entities
         public List<Order> Orders { get; set; } = new List<Order>();
         public List<HelperEntities.Drugs> Drugs { get; set; } = new List<HelperEntities.Drugs>();
     }
-
 }
