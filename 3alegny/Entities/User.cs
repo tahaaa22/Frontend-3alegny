@@ -3,7 +3,8 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace _3alegny.Entities
 {
-
+    [BsonDiscriminator(RootClass = true)]
+    [BsonKnownTypes(typeof(Admin),typeof(Patient), typeof(Hospital), typeof(Pharmacy))]
     public class User
     {
         public ObjectId Id { get; set; }
@@ -34,7 +35,10 @@ namespace _3alegny.Entities
         public List<Appointments> Appointments { get; set; } = new List<Appointments>();
         public DateTime DateOfBirth { get; set; }
         public string? Gender { get; set; }
-        public string? Insurance { get; set; }
+        public List<HelperEntities.Insurance>? Insurance { get; set; }
+        public float Height { get; set; }
+        public float Weight { get; set; }
+
     }
 
     // Subclass: Hospital
@@ -45,7 +49,7 @@ namespace _3alegny.Entities
         public List<Appointments> Appointments { get; set; } = new List<Appointments>();
         public double? Rating { get; set; } = 0.0;
         public List<HelperEntities.Doctors> Doctors { get; set; } = new List<HelperEntities.Doctors>();
-        public List<Hospital> InsuranceAccepted { get; set; } = new List<Hospital>();
+        public List<HelperEntities.Insurance> InsuranceAccepted { get; set; } = new List<HelperEntities.Insurance>();
     }
 
     // Subclass: Pharmacy

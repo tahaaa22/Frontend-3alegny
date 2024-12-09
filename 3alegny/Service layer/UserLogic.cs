@@ -4,18 +4,17 @@ using Microsoft.AspNetCore.Identity;
 using MongoDB.Driver;
 using static UserEndpoints;
 using MongoDB.Bson;
-using Microsoft.AspNetCore.Identity.Data;
 using UserLoginRequest = UserEndpoints.LoginRequest;
 
 
 
 namespace _3alegny.Service_layer
 {
-    public class Logic
+    public class UserLogic
     {
         private readonly MongoDbContext _context;
 
-        public Logic(MongoDbContext context)
+        public UserLogic(MongoDbContext context)
         {
             _context = context;
         }
