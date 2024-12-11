@@ -8,7 +8,7 @@ namespace _3alegny.Entities
     public class User
     {
         public ObjectId Id { get; set; } 
-        public string? FullName { get; set; }
+        public string? Name { get; set; }
         public string? UserName { get; set; }
         public string? Role { get; set; } = "admin"; //FIXME: change it to an enum
         public string? Password { get; set; }

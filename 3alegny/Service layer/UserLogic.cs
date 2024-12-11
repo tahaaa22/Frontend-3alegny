@@ -36,11 +36,11 @@ namespace _3alegny.Service_layer
             {
                 Name = request.Name,
                 Gender = request.Gender,
-                contactInfo = new HelperEntities.ContactInfo
+                contactInfo = new ContactInfo
                 {
                     Phone = request.ContactInfo // Assuming ContactInfo is just a phone number for now
                 },
-                Address = new HelperEntities.Address
+                Address = new  Address
                 {
                     Street = request.Address // Assuming Address is a single line for now
                 },

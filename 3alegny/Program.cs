@@ -1,7 +1,7 @@
 using _3alegny.RepoLayer;
 using _3alegny.Service_layer;
 using DotNetEnv;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
 
 
 var builder = WebApplication.CreateBuilder(args);
