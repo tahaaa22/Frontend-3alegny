@@ -36,6 +36,10 @@ builder.Services.AddSwaggerGen();
 //    });
 //builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
+
+//connect resourse conc to handle frontend requests
+builder.Services.AddCors();
+
 // Configure MongoDB
 var mongoDbSettings = builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>();
 var dbContext = new MongoDbContext(mongoDbSettings.ConnectionString, mongoDbSettings.DatabaseName);
@@ -46,11 +50,17 @@ builder.Services.AddScoped<UserLogic>();
 
 
 var app = builder.Build();
+app.UseCors(builder =>
+    builder.WithOrigins("http://localhost:3000") // FIXME: add your local host lel frontend
+           .AllowAnyMethod()
+           .AllowAnyHeader());
+
 
 // Add the authentication and authorization middleware
 
 //app.UseAuthentication();
 //app.UseAuthorization();
+app.UseCors();
 app.MapUserEndpoints();
 app.MapAdminEndpoints();
 
