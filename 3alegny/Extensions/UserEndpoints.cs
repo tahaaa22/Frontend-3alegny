@@ -1,4 +1,6 @@
-﻿using _3alegny.Entities;
+﻿using _3alegny.Service_layer;
+using Microsoft.AspNetCore.Identity.Data;
+using _3alegny.Entities;
 using _3alegny.RepoLayer;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -7,24 +9,34 @@ public static class UserEndpoints
 {
     public static void MapUserEndpoints(this WebApplication app)
     {
-        // Endpoint to retrieve all users
-        app.MapGet("/users", (MongoDbContext dbContext) =>
-        {
-            var users = dbContext.GetCollection<User>("Users").Find(_ => true).ToList();
-            return Results.Ok(users);
-        });
 
-        // Endpoint to create a new user
-        app.MapPost("/users", (User user, MongoDbContext dbContext) =>
+        app.MapPost("/signup", (Func<SignupRequest, UserLogic, IResult>)((request, logic) =>
         {
-            if (user.Id == ObjectId.Empty)  // If the Id is not set, MongoDB will generate it
-            {
-                user.Id = ObjectId.GenerateNewId();
-            }
+            var result = logic.Signup(request).Result;
+            return result.IsSuccess ? Results.Ok(result.Message) : Results.BadRequest(result.Message);
+        }));
 
-            dbContext.Users.InsertOne(user);
-            return Results.Ok(user);
-        });
+        app.MapPost("/login", (Func<LoginRequest, UserLogic, IResult>)((request, logic) =>
+        {
+            var result = logic.Login(request).Result;
+            return result.IsSuccess ? Results.Ok(result.Message) : Results.BadRequest(result.Message);
+        }));
     }
+
+    public record SignupRequest(
+       string Name,
+       int Age,
+       string Gender,
+       string ContactInfo,
+       string Address,
+       string UserName,
+       string CreatePassword,
+       string ConfirmPassword
+   );
+
+    public record LoginRequest(string UserName, string Password);
 }
+
+
+
 

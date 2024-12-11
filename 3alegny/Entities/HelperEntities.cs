@@ -7,6 +7,23 @@ namespace _3alegny.Entities
             public ObjectId Id { get; set; } 
             public string Name { get; set; }
         }
+
+        public class Insurance
+        {
+            public ObjectId Id { get; set; }
+            public string providerName { get; set; } 
+            public string policyType { get; set; }
+            public Coverage coverage { get; set; }
+        }
+
+        public class Coverage
+        {
+            public ObjectId Id { get; set; }
+            public Boolean inPatient { get; set; }
+            public Boolean outPatient { get; set; }
+            public Boolean emergency { get; set; }
+            public Boolean dental { get; set; }
+        }
         public class Drugs
         {
             public ObjectId Id { get; set; } 

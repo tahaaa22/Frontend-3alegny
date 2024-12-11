@@ -1,7 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+
 namespace _3alegny.Entities
 {
+    [BsonDiscriminator(RootClass = true)]
+    [BsonKnownTypes(typeof(Admin),typeof(Patient), typeof(Hospital), typeof(Pharmacy))]
     public class User
     {
         public ObjectId Id { get; set; } 
@@ -15,6 +18,7 @@ namespace _3alegny.Entities
         public DateTime UpdatedAt { get; set; }
         public DateTime DeletedAt { get; set; }
     }
+
     // Subclass: Admin
     public class Admin : User
     {
@@ -31,9 +35,10 @@ namespace _3alegny.Entities
         public List<Appointments> Appointments { get; set; } = new List<Appointments>();
         public DateTime DateOfBirth { get; set; }
         public string? Gender { get; set; }
-        public string? Insurance { get; set; }
+        public List<Insurance>? Insurance { get; set; }
+        public float Height { get; set; }
+        public float Weight { get; set; }
 
-        // public string allergies 
     }
 
     // Subclass: Hospital
@@ -53,5 +58,4 @@ namespace _3alegny.Entities
         public List<Order> Orders { get; set; } = new List<Order>();
         public List<Drugs> Drugs { get; set; } = new List< Drugs>();
     }
-
 }

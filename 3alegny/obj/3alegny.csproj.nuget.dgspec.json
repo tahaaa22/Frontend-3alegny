@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny\\3alegny.csproj": {}
+    "C:\\Users\\Admin\\Downloads\\3alegnyN\\3alegny\\3alegny.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny\\3alegny.csproj": {
+    "C:\\Users\\Admin\\Downloads\\3alegnyN\\3alegny\\3alegny.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny\\3alegny.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Downloads\\3alegnyN\\3alegny\\3alegny.csproj",
         "projectName": "3alegny",
-        "projectPath": "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny\\3alegny.csproj",
-        "packagesPath": "C:\\Users\\Ahmed Taha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ahmed Taha\\Desktop\\3alegny\\3alegny\\obj\\",
+        "projectPath": "C:\\Users\\Admin\\Downloads\\3alegnyN\\3alegny\\3alegny.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Admin\\Downloads\\3alegnyN\\3alegny\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Ahmed Taha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -38,13 +42,18 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "direct"
-        }
+          "auditMode": "all"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "DotNetEnv": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
             "FastEndpoints": {
               "target": "Package",
               "version": "[5.31.0, )"
@@ -101,7 +110,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
