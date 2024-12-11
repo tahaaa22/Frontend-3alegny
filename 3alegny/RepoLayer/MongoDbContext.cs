@@ -10,7 +10,7 @@ public class MongoDbContext : DbContext
     private readonly IMongoDatabase _database;
 
     // this property used to access the "Users" collection, or create one if needed
-    public IMongoCollection<User> Users => _database.GetCollection<User>("Users");
+    public IMongoCollection<User> Users => _database.GetCollection<User>("Users"); // FIXME: for testing and need to be changed
 
     public MongoDbContext(string connectionString, string databaseName)
     {

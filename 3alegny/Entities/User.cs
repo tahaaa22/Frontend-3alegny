@@ -5,11 +5,12 @@ namespace _3alegny.Entities
     public class User
     {
         public ObjectId Id { get; set; } 
-        public string? Name { get; set; }
+        public string? FullName { get; set; }
+        public string? UserName { get; set; }
         public string? Role { get; set; } = "admin"; //FIXME: change it to an enum
         public string? Password { get; set; }
-        public HelperEntities.ContactInfo contactInfo { get; set; }
-        public HelperEntities.Address? Address { get; set; }
+        public ContactInfo contactInfo { get; set; }
+        public Address? Address { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public DateTime DeletedAt { get; set; }
@@ -31,16 +32,18 @@ namespace _3alegny.Entities
         public DateTime DateOfBirth { get; set; }
         public string? Gender { get; set; }
         public string? Insurance { get; set; }
+
+        // public string allergies 
     }
 
     // Subclass: Hospital
     public class Hospital : User
     {
-        public List<HelperEntities.Department> Departments { get; set; } = new List<HelperEntities.Department>();
+        public List<Department> Departments { get; set; } = new List<Department>();
         public List<EMR> EMRs { get; set; } = new List<EMR>();
         public List<Appointments> Appointments { get; set; } = new List<Appointments>();
         public Double? Rating { get; set; } = 0.0;
-        public List<HelperEntities.Doctors> Doctors { get; set; } = new List<HelperEntities.Doctors> ();
+        public List<Doctors> Doctors { get; set; } = new List<Doctors> ();
         public List<Hospital> InsuranceAccepted { get; set; } = new List<Hospital>();   
     }
 
@@ -48,7 +51,7 @@ namespace _3alegny.Entities
     public class Pharmacy : User
     {
         public List<Order> Orders { get; set; } = new List<Order>();
-        public List<HelperEntities.Drugs> Drugs { get; set; } = new List<HelperEntities.Drugs>();
+        public List<Drugs> Drugs { get; set; } = new List< Drugs>();
     }
 
 }

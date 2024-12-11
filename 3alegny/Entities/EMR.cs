@@ -15,7 +15,7 @@ namespace _3alegny.Entities
         public string HospitalId { get; set; }
         public Hospital Hospital { get; set; }
         public string? Diagnosis { get; set; }
-        public HelperEntities.Doctors Doctor { get; set; }
+        public Doctors Doctor { get; set; }
         public string? Prescription { get; set; }
         public string? Notes { get; set; }
         [JsonProperty("LabResults")]

@@ -2,8 +2,6 @@
 
 namespace _3alegny.Entities
 {
-    public class HelperEntities
-    {
         public class Department
         {
             public ObjectId Id { get; set; } 
@@ -54,5 +52,4 @@ namespace _3alegny.Entities
             public float Rating { get; set; }
             public int AppointmentFee { get; set; }
         }
-    }
 }

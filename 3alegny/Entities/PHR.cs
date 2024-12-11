@@ -15,7 +15,7 @@ namespace _3alegny.Entities
         public string? MedicalCondition { get; set; }
 		public string? Medications { get; set; }
 		public string? Allergies { get; set; }
-		public List<HelperEntities.Drugs> Drugs { get; set; } = new List<HelperEntities.Drugs>();
+		public List<Drugs> Drugs { get; set; } = new List<Drugs>();
 		public string? Surgeries { get; set; }
 		public string? FamilyHistory { get; set; }
 		public string? SocialHistory { get; set; }
