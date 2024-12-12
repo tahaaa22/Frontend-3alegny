@@ -6,6 +6,7 @@ namespace _3alegny.Entities
         {
             public ObjectId Id { get; set; } 
             public string Name { get; set; }
+            public List<Doctors> AvaliableDoctors{ get; set; } = new List<Doctors>();
         }
 
         public class Insurance

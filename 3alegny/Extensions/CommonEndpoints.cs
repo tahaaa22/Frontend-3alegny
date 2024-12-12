@@ -1,6 +1,6 @@
 ﻿namespace _3alegny.Extensions
 {
-    public class HospitalEndpoints
+    public class CommonEndpoints
     {
 
     }

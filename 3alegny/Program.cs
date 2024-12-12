@@ -60,7 +60,10 @@ app.UseCors(builder =>
 
 //app.UseAuthentication();
 //app.UseAuthorization();
+
+
 app.UseCors();
+
 app.MapUserEndpoints();
 app.MapAdminEndpoints();
 

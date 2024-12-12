@@ -10,7 +10,7 @@ namespace _3alegny.Entities
         public ObjectId Id { get; set; } 
         public string? Name { get; set; }
         public string? UserName { get; set; }
-        public string? Role { get; set; } = "admin"; //FIXME: change it to an enum
+        public string? Role { get; set; } = "Patient"; //FIXME: change it to an enum
         public string? Password { get; set; }
         public ContactInfo contactInfo { get; set; }
         public Address? Address { get; set; }
@@ -22,7 +22,7 @@ namespace _3alegny.Entities
     // Subclass: Admin
     public class Admin : User
     {
-        public List<EMR> EMRs { get; set; } = new List<EMR>();
+        public List<EHR> EMRs { get; set; } = new List<EHR>();
         public List<PHR> PHRs { get; set; } = new List<PHR>();
         public List<Hospital> Hospitals { get; set; } = new List<Hospital>();
         public List<Pharmacy> Pharmacies { get; set; } = new List<Pharmacy>();
@@ -45,7 +45,7 @@ namespace _3alegny.Entities
     public class Hospital : User
     {
         public List<Department> Departments { get; set; } = new List<Department>();
-        public List<EMR> EMRs { get; set; } = new List<EMR>();
+        public List<EHR> EMRs { get; set; } = new List<EHR>();
         public List<Appointments> Appointments { get; set; } = new List<Appointments>();
         public Double? Rating { get; set; } = 0.0;
         public List<Doctors> Doctors { get; set; } = new List<Doctors> ();
