@@ -1,0 +1,127 @@
+/* Grid Layout */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Profile on the left, others on the right */
+    gap: 20px;
+    padding: 40px 20px 20px; /* Added extra space above */
+    background-color: #f0f4f8;
+    min-height: calc(100vh - 80px); /* Ensures space for the footer */
+    box-sizing: border-box;
+}
+/* Profile Card */
+.profile-card {
+    grid-column: 1 / 2; /* Left column */
+    grid-row: 1 / 3; /* Spans two rows */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    gap: 20px; /* Space between elements */
+}
+/* Profile Info */
+.profile-info {
+    display: flex;
+    gap: 15px;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover; /* Ensures the image doesn't stretch */
+}
+
+.profile-details {
+    text-align: center; /* Center-align text */
+    color: #183f73;
+}
+
+/* Buttons */
+.profile-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.profile-buttons .btn {
+    width: 100%; /* Buttons stretch across the card */
+    text-align: center;
+}
+
+/* Appointments & Orders Cards */
+.appointments-card,
+.orders-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow: auto; /* Prevents content overflow */
+}
+
+/* Appointments Card */
+.appointments-card {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+}
+
+/* Orders Card */
+.orders-card {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+
+/* Small Cards Inside Appointments & Orders */
+.small-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.small-card p {
+    margin: 5px 0;
+}
+
+/* Button Styles */
+.btn {
+    padding: 8px 15px;
+    background-color: #5c2dd5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #3a1f9f;
+}
+
+/* Add Button */
+.add-btn {
+    background-color: #5c2dd5;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background-color: #3a1f9f;
+}
+
+strong {
+    color: #3a1f9f;
+}
+
+p {
+    color: #183f73;
+}

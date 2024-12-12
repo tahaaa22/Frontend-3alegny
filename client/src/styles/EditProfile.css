@@ -1,0 +1,59 @@
+/* Edit Profile Form */
+.edit-profile-form {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%; /* Full width of the page */
+    max-width: 800px; /* Optional: Set a max-width */
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    gap: 20px; /* Space between form groups */
+    text-align: left;
+  }
+  
+  /* Form Group */
+  .form-group {
+    flex: 1 1 calc(50% - 20px); /* Take up half the width */
+    min-width: 300px; /* Set minimum width for responsiveness */
+    margin-bottom: 20px; /* Space below each form group */
+  }
+  
+  .form-group label {
+    font-size: 1rem;
+    color: #183f73;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .form-group input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    width: 100%; /* Full width of the container */
+    margin-bottom: 10px; /* Space between input fields */
+  }
+  
+  .form-group input:focus {
+    border-color: #5c2dd5;
+  }
+  
+  /* Button */
+  .save-btn {
+    width: 100%; /* Full width */
+    padding: 10px 15px;
+    background-color: #5c2dd5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .save-btn:hover {
+    background-color: #3a1f9f;
+  }
+  
