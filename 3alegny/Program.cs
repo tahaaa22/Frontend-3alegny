@@ -32,18 +32,6 @@ builder.Services.AddSwaggerGen(options =>
     options.DocumentFilter<SwaggerTagDescriptionFilter>();
 });
 
-//// JWT Authentication and Authorization --> Still Needs to be implemented
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(jwtConfig =>
-//    {
-//        jwtConfig.Authority = "https://localhost:7169/swagger/index.html";
-//        jwtConfig.TokenValidationParameters = new()
-//        {
-//            ValidAudience = "MyAudience",
-//            ValidIssuer = "https://localhost:7169/swagger/index.html"
-//        };
-//    });
-//builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 
 //connect resourse conc to handle frontend requests
@@ -57,6 +45,7 @@ var dbContext = new MongoDbContext(mongoDbSettings.ConnectionString, mongoDbSett
 builder.Services.AddSingleton(dbContext);
 builder.Services.AddScoped<UserLogic>();
 builder.Services.AddScoped<AdminLogic>();
+builder.Services.AddScoped<PatientLogic>();
 builder.Services.AddScoped<CommonLogic>();
 
 var app = builder.Build();
@@ -66,16 +55,11 @@ app.UseCors(builder =>
            .AllowAnyHeader());
 
 
-// Add the authentication and authorization middleware
-
-//app.UseAuthentication();
-//app.UseAuthorization();
-
-
 app.UseCors();
 
 app.MapUserEndpoints();
 app.MapAdminEndpoints();
+app.MapPatientEndpoints();
 app.MapCommonEndpoints();
 
 app.UseSwagger();
@@ -93,6 +77,7 @@ public class SwaggerTagDescriptionFilter : Swashbuckle.AspNetCore.SwaggerGen.IDo
         {
             new() { Name = "admin", Description = "Operations related to the admin" },
             new() { Name = "user", Description = "Operations related to the auth" },
+            new() { Name = "patient", Description = "Operations related to the patient" },
         };
     }
 }

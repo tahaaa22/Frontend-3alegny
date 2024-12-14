@@ -15,7 +15,7 @@ public class MongoDbContext : DbContext
     public IMongoCollection<Hospital> Hospitals => _database.GetCollection<Hospital>("Hospitals");
     public IMongoCollection<Pharmacy> Pharmacies => _database.GetCollection<Pharmacy>("Pharmacies");
     public IMongoCollection<Patient> Patients => _database.GetCollection<Patient>("Patients");
-    public IMongoCollection<EHR> EHRs => _database.GetCollection<EHR>("EHRs");
+    public IMongoCollection<EHR> EHRs => _database.GetCollection<EHR>("EHRs"); // 
     public IMongoCollection<PHR> PHRs => _database.GetCollection<PHR>("PHRs");
     public IMongoCollection<Order> Orders => _database.GetCollection<Order>("Orders");
     public IMongoCollection<Appointments> Appointments => _database.GetCollection<Appointments>("Appointments");
