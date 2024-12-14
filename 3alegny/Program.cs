@@ -21,7 +21,16 @@ if (string.IsNullOrEmpty(connectionString))
 });
 }
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "3alegny phase 1",
+        Version = "v1"
+    });
+
+    options.DocumentFilter<SwaggerTagDescriptionFilter>();
+});
 
 //// JWT Authentication and Authorization --> Still Needs to be implemented
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -47,6 +56,7 @@ var dbContext = new MongoDbContext(mongoDbSettings.ConnectionString, mongoDbSett
 // Dependency Injection
 builder.Services.AddSingleton(dbContext);
 builder.Services.AddScoped<UserLogic>();
+builder.Services.AddScoped<AdminLogic>();
 
 
 var app = builder.Build();
@@ -72,3 +82,16 @@ app.UseSwaggerUI();
 app.Run();
 
 record MongoDbSettings(string ConnectionString, string DatabaseName);
+
+// Add a custom filter to define tag descriptions
+public class SwaggerTagDescriptionFilter : Swashbuckle.AspNetCore.SwaggerGen.IDocumentFilter
+{
+    public void Apply(Microsoft.OpenApi.Models.OpenApiDocument swaggerDoc, Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext context)
+    {
+        swaggerDoc.Tags = new List<Microsoft.OpenApi.Models.OpenApiTag>
+        {
+            new() { Name = "admin", Description = "Operations related to the admin" },
+            new() { Name = "user", Description = "Operations related to the auth" },
+        };
+    }
+}

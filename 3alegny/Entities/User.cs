@@ -45,11 +45,11 @@ namespace _3alegny.Entities
     public class Hospital : User
     {
         public List<Department> Departments { get; set; } = new List<Department>();
-        public List<EHR> EMRs { get; set; } = new List<EHR>();
+        public List<EHR> EHRs { get; set; } = new List<EHR>();
         public List<Appointments> Appointments { get; set; } = new List<Appointments>();
         public Double? Rating { get; set; } = 0.0;
         public List<Doctors> Doctors { get; set; } = new List<Doctors> ();
-        public List<Hospital> InsuranceAccepted { get; set; } = new List<Hospital>();   
+        public List<Insurance> InsuranceAccepted { get; set; } = new List<Insurance>();   
     }
 
     // Subclass: Pharmacy
