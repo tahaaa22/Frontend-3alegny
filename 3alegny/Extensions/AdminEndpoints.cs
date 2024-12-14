@@ -8,22 +8,22 @@ public static class AdminEndpoints
 {
     public static void MapAdminEndpoints(this WebApplication app)
     {
-        // FIXME: wrong logic using wrong service layer, please the concept next time
-        app.MapGet("/admin/users", (Func<UserLogic, IResult>)(logic =>
+        // Admin - Get all users 
+        app.MapGet("/admin/users", (Func<AdminLogic, IResult>)(logic =>
         {
             var result = logic.GetAllUsers().Result;
             return result.IsSuccess ? Results.Ok(result.Data) : Results.NotFound(result.Message);
         })).WithTags("admin");
 
         // Admin - Get a user by specific ID
-        app.MapGet("/admin/user/{id}", (Func<string, UserLogic, IResult>)((id, logic) =>
+        app.MapGet("/admin/user/{id}", (Func<string, AdminLogic, IResult>)((id, logic) =>
         {
             var result = logic.GetUserById(id).Result;
             return result.IsSuccess ? Results.Ok(result.Data) : Results.NotFound(result.Message);
         })).WithTags("admin");
 
         // Admin - Delete a user
-        app.MapDelete("/admin/user/{id}", (Func<string, UserLogic, IResult>)((id, logic) =>
+        app.MapDelete("/admin/user/{id}", (Func<string, AdminLogic, IResult>)((id, logic) =>
         {
             var result = logic.DeleteUser(id).Result;
             return result.IsSuccess ? Results.Ok(result.Message) : Results.NotFound(result.Message);

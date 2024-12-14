@@ -1,7 +1,32 @@
 [
   {
-    "ContainingType": "UserEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapAdminEndpoints\u003Eb__1_1",
+    "ContainingType": "AdminEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAdminEndpoints\u003Eb__0_3",
+    "RelativePath": "admin/create/hospital",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AdminEndpoints\u002BHospitalRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "admin"
+    ]
+  },
+  {
+    "ContainingType": "AdminEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAdminEndpoints\u003Eb__0_1",
     "RelativePath": "admin/user/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -19,11 +44,14 @@
         "MediaTypes": [],
         "StatusCode": 200
       }
+    ],
+    "Tags": [
+      "admin"
     ]
   },
   {
-    "ContainingType": "UserEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapAdminEndpoints\u003Eb__1_2",
+    "ContainingType": "AdminEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAdminEndpoints\u003Eb__0_2",
     "RelativePath": "admin/user/{id}",
     "HttpMethod": "DELETE",
     "IsController": false,
@@ -41,11 +69,14 @@
         "MediaTypes": [],
         "StatusCode": 200
       }
+    ],
+    "Tags": [
+      "admin"
     ]
   },
   {
-    "ContainingType": "UserEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapAdminEndpoints\u003Eb__1_0",
+    "ContainingType": "AdminEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAdminEndpoints\u003Eb__0_0",
     "RelativePath": "admin/users",
     "HttpMethod": "GET",
     "IsController": false,
@@ -57,12 +88,15 @@
         "MediaTypes": [],
         "StatusCode": 200
       }
+    ],
+    "Tags": [
+      "admin"
     ]
   },
   {
     "ContainingType": "UserEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapUserEndpoints\u003Eb__0_1",
-    "RelativePath": "login",
+    "Method": "\u003CMapUserEndpoints\u003Eb__0_2",
+    "RelativePath": "users/login",
     "HttpMethod": "POST",
     "IsController": false,
     "Order": 0,
@@ -79,12 +113,15 @@
         "MediaTypes": [],
         "StatusCode": 200
       }
+    ],
+    "Tags": [
+      "user"
     ]
   },
   {
     "ContainingType": "UserEndpoints\u002B\u003C\u003Ec",
     "Method": "\u003CMapUserEndpoints\u003Eb__0_0",
-    "RelativePath": "signup",
+    "RelativePath": "users/signup",
     "HttpMethod": "POST",
     "IsController": false,
     "Order": 0,
@@ -101,6 +138,9 @@
         "MediaTypes": [],
         "StatusCode": 200
       }
+    ],
+    "Tags": [
+      "user"
     ]
   }
 ]

@@ -41,7 +41,7 @@ namespace _3alegny.Service_layer
                 {
                     Phone = request.ContactInfo // Assuming ContactInfo is just a phone number for now
                 },
-                Address = new  Address
+                Address = new Address
                 {
                     Street = request.Address // Assuming Address is a single line for now
                 },
@@ -84,72 +84,11 @@ namespace _3alegny.Service_layer
             var result = hasher.VerifyHashedPassword(null, storedPassword, providedPassword);
             return result == PasswordVerificationResult.Success;
         }
-
-        // Get all Patients
-        public async Task<Result<List<Patient>>> GetAllUsers()
-        {
-            try
-            {
-                var Patients = await _context.Patients.Find(_ => true).ToListAsync(); // Get all Patients
-                if (Patients == null || !Patients.Any())
-                {
-                    return new Result<List<Patient>> { IsSuccess = false, Message = "No Patients found." };
-                }
-                return new Result<List<Patient>> { IsSuccess = true, Data = Patients };
-            }
-            catch (Exception ex)
-            {
-                return new Result<List<Patient>> { IsSuccess = false, Message = $"Error: {ex.Message}" };
-            }
-        }
-
-        // Get a user by ID
-        public async Task<Result<User>> GetUserById(string id)
-        {
-            try
-            {
-                var objectId = new ObjectId(id); // Convert string ID to MongoDB ObjectId
-                var user = await _context.Patients.Find(u => u.Id == objectId).FirstOrDefaultAsync();
-                if (user == null)
-                {
-                    return new Result<User> { IsSuccess = false, Message = "User not found." };
-                }
-                return new Result<User> { IsSuccess = true, Data = user };
-            }
-            catch (Exception ex)
-            {
-                return new Result<User> { IsSuccess = false, Message = $"Error: {ex.Message}" };
-            }
-        }
-
-        // Delete a user by ID
-        public async Task<Result<string>> DeleteUser(string id)
-        {
-            try
-            {
-                var objectId = new ObjectId(id); // Convert string ID to MongoDB ObjectId
-                var deleteResult = await _context.Patients.DeleteOneAsync(u => u.Id == objectId);
-                if (deleteResult.DeletedCount == 0)
-                {
-                    return new Result<string> { IsSuccess = false, Message = "User not found." };
-                }
-                return new Result<string> { IsSuccess = true, Message = "User deleted successfully." };
-            }
-            catch (Exception ex)
-            {
-                return new Result<string> { IsSuccess = false, Message = $"Error: {ex.Message}" };
-            }
-        }
     }
 }
 
-// Result wrapper for returning success/failure and data
-public class Result<T>
-{
-    public bool IsSuccess { get; set; }
-    public T? Data { get; set; }
-    public string? Message { get; set; }
-}
+
+
 
 
 
