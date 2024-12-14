@@ -57,7 +57,7 @@ var dbContext = new MongoDbContext(mongoDbSettings.ConnectionString, mongoDbSett
 builder.Services.AddSingleton(dbContext);
 builder.Services.AddScoped<UserLogic>();
 builder.Services.AddScoped<AdminLogic>();
-
+builder.Services.AddScoped<CommonLogic>();
 
 var app = builder.Build();
 app.UseCors(builder =>
@@ -76,6 +76,7 @@ app.UseCors();
 
 app.MapUserEndpoints();
 app.MapAdminEndpoints();
+app.MapCommonEndpoints();
 
 app.UseSwagger();
 app.UseSwaggerUI();
