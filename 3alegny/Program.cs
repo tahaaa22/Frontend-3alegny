@@ -78,6 +78,8 @@ public class SwaggerTagDescriptionFilter : Swashbuckle.AspNetCore.SwaggerGen.IDo
             new() { Name = "admin", Description = "Operations related to the admin" },
             new() { Name = "user", Description = "Operations related to the auth" },
             new() { Name = "patient", Description = "Operations related to the patient" },
+            new() {Name= "Doctors", Description = "Operations related to the Doctors" },
+            new() {Name= "Hospitals", Description = "Operations related to the hospitals" }
         };
     }
 }
