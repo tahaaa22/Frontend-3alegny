@@ -1,6 +1,7 @@
 ﻿using _3alegny.Entities;
 using _3alegny.RepoLayer;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 using MongoDB.Driver;
 namespace _3alegny.Service_layer
 {
@@ -28,7 +29,33 @@ namespace _3alegny.Service_layer
 
             return topHospitals;
         }
+
+        public async Task<List<TopDoctor>> GetTopRatedDoctors()
+        {
+            // Aggregate query to get all doctors from all hospitals, sort them by rating, and pick the top 4
+            var pipeline = new[]
+            {
+        new BsonDocument { { "$unwind", "$Doctors" } }, // Flatten the Doctors array
+        new BsonDocument { { "$sort", new BsonDocument("Doctors.Rating", -1) } }, // Sort by Doctors' rating in descending order
+        new BsonDocument { { "$limit", 4 } }, // Get the top 4 doctors
+        new BsonDocument
+        {
+            { "$project", new BsonDocument
+                {
+                    { "_id", 0 }, // Exclude the _id field
+                    { "Name", "$Doctors.Name" }, // Include the Doctor's name
+                    { "Rating", "$Doctors.Rating" } // Include the Doctor's rating
+                }
+            }
+        }
+    };
+
+            var topDoctors = await _context.Hospitals.Aggregate<TopDoctor>(pipeline).ToListAsync();
+
+            return topDoctors;
+        }
     }
 
     public record TopHospital(string Name, double Rating);
+    public record TopDoctor(string Name, double Rating);
 }
