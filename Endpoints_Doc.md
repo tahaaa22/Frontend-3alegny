@@ -144,8 +144,3 @@ This document outlines the API endpoints for various user roles in the system.
 - **/delete-offers**  
   Remove specific offers.
 
----
-
-## License
-
-This project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.
