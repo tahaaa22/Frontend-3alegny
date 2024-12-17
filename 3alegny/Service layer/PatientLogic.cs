@@ -15,7 +15,7 @@ namespace _3alegny.Service_layer
             _context = context;
         }
 
-        public async Task<(bool IsSuccess, string Message)> PostPHR(PostPHR phr)
+        public async Task<patientPHR<string>> PostPHR(requestPHR phr)
         {
             try
             {
@@ -34,15 +34,15 @@ namespace _3alegny.Service_layer
                 };
 
                 await _context.PHRs.InsertOneAsync(PHR);
-                return (true, "PHR posted successfully.");
+                return new patientPHR<string> { IsSuccess = true, Message = "PHR uploaded successfully." };
             }
             catch (Exception ex)
             {
-                return (false, $"An error occurred: {ex.Message}");
+                return new patientPHR<string> { IsSuccess = false, Message = $"An error occurred: {ex.Message}" };
             }
         }
 
-        public async Task<(bool IsSuccess, string Message)> UpdatePHR(string id, UpdatePHR updatedPhr)
+        public async Task<patientPHR<string>> UpdatePHR(string id, requestPHR updatedPhr)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace _3alegny.Service_layer
                 var objectId = ObjectId.Parse(id);
 
                 // Define the filter to locate the document by ID
-                var filter = Builders<PHR>.Filter.Eq(p => p.Id, objectId);
+                var filter = Builders<PHR>.Filter.Eq(p => p.PHRId, objectId);
 
                 // Define the update operation
                 var update = Builders<PHR>.Update
@@ -67,13 +67,13 @@ namespace _3alegny.Service_layer
                 var result = await _context.PHRs.UpdateOneAsync(filter, update);
 
                 if (result.MatchedCount == 0)
-                    return (false, "PHR not found.");
+                    return new patientPHR<string> { IsSuccess = false, Message = "PHR not found." };
 
-                return (true, "PHR updated successfully.");
+                return new patientPHR<string> { IsSuccess = true, Message = "PHR updated successfully." };
             }
             catch (Exception ex)
             {
-                return (false, $"An error occurred: {ex.Message}");
+                return new patientPHR<string> { IsSuccess = false, Message = $"An error occurred: {ex.Message}" };
             }
         }
 
@@ -82,7 +82,7 @@ namespace _3alegny.Service_layer
             try
             {
                 var phrId = new ObjectId(id);
-                var phr = await _context.PHRs.Find(u => u.Id == phrId).FirstOrDefaultAsync();
+                var phr = await _context.PHRs.Find(u => u.PHRId == phrId).FirstOrDefaultAsync();
                 if (phr == null)
                 {
                     return new patientPHR<PHR> { IsSuccess = false, Message = "User not found." };

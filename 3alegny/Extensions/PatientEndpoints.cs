@@ -8,7 +8,7 @@ public static class PatientEndpoints
 {
     public static void MapPatientEndpoints(this WebApplication app)
     {
-        app.MapPost("patients/newphr", (Func<PostPHR, PatientLogic, IResult >)((request, logic) =>
+        app.MapPost("patients/newphr", (Func<requestPHR, PatientLogic, IResult >)((request, logic) =>
         {
             var result = logic.PostPHR(request).Result;
             return result.IsSuccess ? Results.Ok(result.Message) : Results.BadRequest(result.Message);
@@ -21,7 +21,7 @@ public static class PatientEndpoints
         }
         );
 
-        app.MapPost("patients/updatephr/{id}", (Func<string, UpdatePHR, PatientLogic, IResult>)((id,request, logic) =>
+        app.MapPost("patients/updatephr/{id}", (Func<string, requestPHR, PatientLogic, IResult>)((id,request, logic) =>
         {
             var result = logic.UpdatePHR(id,request).Result;
             return result.IsSuccess ? Results.Ok(result.Message) : Results.BadRequest(result.Message);
@@ -47,19 +47,7 @@ public static class PatientEndpoints
         }
         );
     }
-    public record PostPHR(
-        string Allergies,
-        string ChronicIllness,
-        string Diagnosis,
-        string Medication,
-        string FamilyHistory,
-        string ImagingResults,
-        string LabResults,
-        string MedicalProcedures,
-        string PrescriptionHistory
-    );
-
-    public record UpdatePHR(
+    public record requestPHR(
         string Allergies,
         string ChronicIllness,
         string Diagnosis,
