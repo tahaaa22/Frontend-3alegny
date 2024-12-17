@@ -13,5 +13,13 @@ public static class CommonEndpoints
             var hospitals = await logic.GetTopRatedHospitals();
             return Results.Ok(hospitals);
         });
+
+
+        // Endpoint to get the top-rated doctors
+        app.MapGet("/top-doctors", async (CommonLogic logic) =>
+        {
+            var doctors = await logic.GetTopRatedDoctors();
+            return Results.Ok(doctors);
+        });
     }
 }

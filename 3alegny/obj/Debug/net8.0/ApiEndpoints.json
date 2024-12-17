@@ -94,6 +94,102 @@
     ]
   },
   {
+    "ContainingType": "PatientEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapPatientEndpoints\u003Eb__0_4",
+    "RelativePath": "patients/getphr/{id}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "patient"
+    ]
+  },
+  {
+    "ContainingType": "PatientEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapPatientEndpoints\u003Eb__0_0",
+    "RelativePath": "patients/newphr",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "PatientEndpoints\u002BPostPHR",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "patient"
+    ]
+  },
+  {
+    "ContainingType": "PatientEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapPatientEndpoints\u003Eb__0_2",
+    "RelativePath": "patients/updatephr/{id}",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "PatientEndpoints\u002BUpdatePHR",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "patient"
+    ]
+  },
+  {
+    "ContainingType": "CommonEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapCommonEndpoints\u003Eb__0_1",
+    "RelativePath": "top-doctors",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "CommonEndpoints\u002B\u003C\u003Ec",
     "Method": "\u003CMapCommonEndpoints\u003Eb__0_0",
     "RelativePath": "top-hospitals",
