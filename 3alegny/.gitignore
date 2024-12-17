@@ -8,7 +8,7 @@
 
 appsettings.json
 
-3alegny\obj
+obj/
 # User-specific files
 *.rsuser
 *.suo
