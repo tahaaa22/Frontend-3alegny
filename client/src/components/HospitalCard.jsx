@@ -1,13 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const HospitalCard = ({ hospitals }) => {
+const HospitalCard = ({ hospitals,onHospitalClick }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-wrap justify-evenly">
       {hospitals && hospitals.length > 0 ? (
         hospitals.map((hospital) => (
           <div
             key={hospital.id}
-            className="m-3 p-4 bg-white text-black rounded-lg shadow-md w-64 h-40 cursor-pointer relative group overflow-hidden transition-transform duration-300 hover:scale-150 hover:h-56"
+            className="m-3 p-4 bg-white text-black rounded-lg shadow-md w-64 h-40 cursor-pointer relative group overflow-hidden transition-transform duration-300 hover:scale-150 hover:h-80"
           >
             {/* Default card content */}
             <div className="absolute inset-0 flex flex-col justify-center items-center text-center transition-opacity duration-300 group-hover:opacity-0">
@@ -27,7 +30,16 @@ const HospitalCard = ({ hospitals }) => {
               </div>
               <div className="text-gray-600 mb-1">
                 <span className="font-semibold">Departments:</span>{" "}
-                {hospital.departments}
+                {hospital.departments.map((department, index) => (
+                  <button
+                    key={index}
+                    className="hover:bg-blue-300 flex px-3 py-1 rounded transition duration-300"
+                    // onClick={() => console.log(`${hospital.name} @ Selected department: ${department.name}`)} // Optional action
+                    onClick={()=> navigate('/appointment', { state: { hospital: hospital, department:department.name } })}
+                  >
+                    {department.name}
+                  </button>
+                ))}
               </div>
               <div className="text-gray-600 mb-1">
                 <span className="font-semibold">Rating:</span>{" "}
