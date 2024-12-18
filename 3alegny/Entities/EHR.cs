@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace _3alegny.Entities
 {
-    public class EMR
+    public class EHR
     {
         public ObjectId EMR_id { get; set; }
         public int PatientId { get; set; }

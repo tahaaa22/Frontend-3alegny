@@ -21,20 +21,17 @@ if (string.IsNullOrEmpty(connectionString))
 });
 }
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "3alegny phase 1",
+        Version = "v1"
+    });
 
-//// JWT Authentication and Authorization --> Still Needs to be implemented
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(jwtConfig =>
-//    {
-//        jwtConfig.Authority = "https://localhost:7169/swagger/index.html";
-//        jwtConfig.TokenValidationParameters = new()
-//        {
-//            ValidAudience = "MyAudience",
-//            ValidIssuer = "https://localhost:7169/swagger/index.html"
-//        };
-//    });
-//builder.Services.AddAuthorization();
+    options.DocumentFilter<SwaggerTagDescriptionFilter>();
+});
+
 builder.Services.AddEndpointsApiExplorer();
 
 //connect resourse conc to handle frontend requests
@@ -47,7 +44,9 @@ var dbContext = new MongoDbContext(mongoDbSettings.ConnectionString, mongoDbSett
 // Dependency Injection
 builder.Services.AddSingleton(dbContext);
 builder.Services.AddScoped<UserLogic>();
-
+builder.Services.AddScoped<AdminLogic>();
+builder.Services.AddScoped<PatientLogic>();
+builder.Services.AddScoped<CommonLogic>();
 
 var app = builder.Build();
 app.UseCors(builder =>
@@ -56,16 +55,31 @@ app.UseCors(builder =>
            .AllowAnyHeader());
 
 
-// Add the authentication and authorization middleware
-
-//app.UseAuthentication();
-//app.UseAuthorization();
 app.UseCors();
+
 app.MapUserEndpoints();
 app.MapAdminEndpoints();
+app.MapPatientEndpoints();
+app.MapCommonEndpoints();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 app.Run();
 
 record MongoDbSettings(string ConnectionString, string DatabaseName);
+
+// Add a custom filter to define tag descriptions
+public class SwaggerTagDescriptionFilter : Swashbuckle.AspNetCore.SwaggerGen.IDocumentFilter
+{
+    public void Apply(Microsoft.OpenApi.Models.OpenApiDocument swaggerDoc, Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext context)
+    {
+        swaggerDoc.Tags = new List<Microsoft.OpenApi.Models.OpenApiTag>
+        {
+            new() { Name = "admin", Description = "Operations related to the admin" },
+            new() { Name = "user", Description = "Operations related to the auth" },
+            new() { Name = "patient", Description = "Operations related to the patient" },
+            new() {Name= "Doctors", Description = "Operations related to the Doctors" },
+            new() {Name= "Hospitals", Description = "Operations related to the hospitals" }
+        };
+    }
+}

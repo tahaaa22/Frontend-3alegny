@@ -26,12 +26,13 @@ namespace _3alegny.Service_layer
                 return (false, "Passwords do not match.");
 
             // Check if username already exists
-            var existingUser = await _context.Users.Find(Builders<User>.Filter.Eq(u => u.UserName, request.UserName)).FirstOrDefaultAsync();
+            var existingUser = await _context.Patients.Find(Builders<Patient>.Filter.Eq(u => u.UserName, request.UserName)).FirstOrDefaultAsync();
 
             if (existingUser != null)
                 return (false, "Username already exists.");
 
             // Create the user
+            // TODO: fix patient obj and change it to user until verification
             var user = new Patient
             {
                 Name = request.Name,
@@ -40,7 +41,7 @@ namespace _3alegny.Service_layer
                 {
                     Phone = request.ContactInfo // Assuming ContactInfo is just a phone number for now
                 },
-                Address = new  Address
+                Address = new Address
                 {
                     Street = request.Address // Assuming Address is a single line for now
                 },
@@ -51,7 +52,7 @@ namespace _3alegny.Service_layer
                 Role = "patient" // Default role
             };
 
-            await _context.Users.InsertOneAsync(user);
+            await _context.Patients.InsertOneAsync(user);
 
             return (true, "Signup successful.");
         }
@@ -60,7 +61,7 @@ namespace _3alegny.Service_layer
 
         {
             // Find user by username
-            var user = await _context.Users.Find(u => u.UserName == request.UserName).FirstOrDefaultAsync();
+            var user = await _context.Patients.Find(u => u.UserName == request.UserName).FirstOrDefaultAsync();
             if (user == null)
                 return (false, "Invalid username or password.");
 
@@ -83,72 +84,11 @@ namespace _3alegny.Service_layer
             var result = hasher.VerifyHashedPassword(null, storedPassword, providedPassword);
             return result == PasswordVerificationResult.Success;
         }
-
-        // Get all users
-        public async Task<Result<List<User>>> GetAllUsers()
-        {
-            try
-            {
-                var users = await _context.Users.Find(_ => true).ToListAsync(); // Get all users
-                if (users == null || !users.Any())
-                {
-                    return new Result<List<User>> { IsSuccess = false, Message = "No users found." };
-                }
-                return new Result<List<User>> { IsSuccess = true, Data = users };
-            }
-            catch (Exception ex)
-            {
-                return new Result<List<User>> { IsSuccess = false, Message = $"Error: {ex.Message}" };
-            }
-        }
-
-        // Get a user by ID
-        public async Task<Result<User>> GetUserById(string id)
-        {
-            try
-            {
-                var objectId = new ObjectId(id); // Convert string ID to MongoDB ObjectId
-                var user = await _context.Users.Find(u => u.Id == objectId).FirstOrDefaultAsync();
-                if (user == null)
-                {
-                    return new Result<User> { IsSuccess = false, Message = "User not found." };
-                }
-                return new Result<User> { IsSuccess = true, Data = user };
-            }
-            catch (Exception ex)
-            {
-                return new Result<User> { IsSuccess = false, Message = $"Error: {ex.Message}" };
-            }
-        }
-
-        // Delete a user by ID
-        public async Task<Result<string>> DeleteUser(string id)
-        {
-            try
-            {
-                var objectId = new ObjectId(id); // Convert string ID to MongoDB ObjectId
-                var deleteResult = await _context.Users.DeleteOneAsync(u => u.Id == objectId);
-                if (deleteResult.DeletedCount == 0)
-                {
-                    return new Result<string> { IsSuccess = false, Message = "User not found." };
-                }
-                return new Result<string> { IsSuccess = true, Message = "User deleted successfully." };
-            }
-            catch (Exception ex)
-            {
-                return new Result<string> { IsSuccess = false, Message = $"Error: {ex.Message}" };
-            }
-        }
     }
 }
 
-// Result wrapper for returning success/failure and data
-public class Result<T>
-{
-    public bool IsSuccess { get; set; }
-    public T? Data { get; set; }
-    public string? Message { get; set; }
-}
+
+
 
 
 
