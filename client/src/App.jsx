@@ -19,6 +19,7 @@ import "./App.css";
 import Appointment from "./pages/Appointment";
 import HospitalCard from "./components/HospitalCard";
 import HospitalPortal from "./pages/HospitalPortal";
+import PHRPage from "./components/PHRPage";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
               <Route path="/MyProfile" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfile  />} />
               <Route path="/hospitalportal" element={<HospitalPortal/>}/>
+              <Route path="/phr" element={<PHRPage/>}/>
             </Routes>
           </main>
           <Footer />
