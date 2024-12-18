@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "@nextui-org/react";
+import {Link, Image} from "@nextui-org/react";
 
 const Footer = () => {
   return (
@@ -30,6 +30,9 @@ const Footer = () => {
         <h4>Get in Touch</h4>
         <p>Hotline: 19191</p>
         <p>Email: support@3alegnyegypt.com</p>
+      </div>
+      <div>
+        <Image width={150} alt="Logo Image" src="./public/3alegny_logo.jpg" />
       </div>
     </footer>
   );

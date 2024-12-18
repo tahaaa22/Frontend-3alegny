@@ -99,6 +99,7 @@ main {
 
 /* Footer Styles */
 .footer {
+  margin-top: 10rem;
   background-color: None;
   color: #fff;
   display: flex;
