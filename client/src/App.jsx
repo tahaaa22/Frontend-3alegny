@@ -9,7 +9,6 @@ import SignUpForm from "./pages/SignUpForm";
 import PatientPortal from "./pages/PatientPortal";
 import ProfilePage from "./pages/ProfilePage";
 import About from "./pages/About";
-import Doctors from "./pages/Doctors";
 
 // importing components
 import Navigation from "./components/Navigation";
@@ -33,7 +32,6 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<About />} />
-              <Route path="/doctors" element={<Doctors />} />
               <Route path="/appointment" element={<Appointment />} />
 
               <Route path="/login" element={<LoginForm />} />
