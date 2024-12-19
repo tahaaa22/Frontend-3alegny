@@ -18,10 +18,6 @@ This document outlines the API endpoints for various user roles in the system.
 Endpoint to return top rated pharmacies.
 
 ### GET
-- **/top-doctors**  
-Endpoint to return top rated doctors.
-
-### GET
 - **/covered-insurances**  
 Endpoint to return covered insurances by our hospitals.
 
