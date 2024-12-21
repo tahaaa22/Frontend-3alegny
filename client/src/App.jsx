@@ -17,8 +17,8 @@ import Footer from "./components/Footer";
 
 import "./App.css";
 import Appointment from "./pages/Appointment";
-import HospitalCard from "./components/HospitalCard";
 import HospitalPortal from "./pages/HospitalPortal";
+import PharmacyPortal from "./pages/PharmacyPortal";
 
 function App() {
   return (
@@ -41,6 +41,7 @@ function App() {
               <Route path="/MyProfile" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfile  />} />
               <Route path="/hospitalportal" element={<HospitalPortal/>}/>
+              <Route path="/pharmacyportal" element={<PharmacyPortal/>}/>
             </Routes>
           </main>
           <Footer />
