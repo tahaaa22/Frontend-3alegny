@@ -47,6 +47,7 @@ builder.Services.AddScoped<UserLogic>();
 builder.Services.AddScoped<AdminLogic>();
 builder.Services.AddScoped<PatientLogic>();
 builder.Services.AddScoped<CommonLogic>();
+builder.Services.AddScoped<HospitalLogic>();    
 
 var app = builder.Build();
 app.UseCors(builder =>
@@ -61,6 +62,7 @@ app.MapUserEndpoints();
 app.MapAdminEndpoints();
 app.MapPatientEndpoints();
 app.MapCommonEndpoints();
+app.MapHospitalEndpoints();
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -81,7 +83,8 @@ public class SwaggerTagDescriptionFilter : Swashbuckle.AspNetCore.SwaggerGen.IDo
             new() {Name= "Doctors", Description = "Operations related to the Doctors" },
             new() {Name= "Hospitals", Description = "Operations related to the Hospitals" },
             new() {Name= "Pharmacies", Description = "Operations related to the Pharmacies" },
-            new() {Name = "Insurance", Description = "Insurance related operations"}
+            new() {Name = "Insurance", Description = "Insurance related operations"},
+            new() {Name= "Departments", Description = "Operations related to the departments"}
         };
     }
 }
