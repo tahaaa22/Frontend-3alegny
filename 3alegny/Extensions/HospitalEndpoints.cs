@@ -34,7 +34,7 @@ public static class HospitalEndpoints
             try
             {
                 var result = await logic.AddDoctor(doctor);
-                return Results.Ok(new { Success = true, Message = result });
+                return Results.Ok(new { Success = true, Message = result, DoctorId = doctor.Id });
             }
             catch (Exception e)
             {
@@ -47,6 +47,50 @@ public static class HospitalEndpoints
             Summary = "Add a new doctor",
             Description = "Adds a new doctor to a hospital.",
             OperationId = "AddDoctor"
+        });
+
+
+        // PUT endpoint to retrieve and update a doctor by ID
+        app.MapPut("/upsert-doctor/{doctorId}", async (HospitalLogic logic, string doctorId, Doctors updatedDoctor) =>
+        {
+            try
+            {
+                var result = await logic.UpdateDoctorById(doctorId, updatedDoctor);
+                return Results.Ok(new { Success = true, Message = result });
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(new { Success = false, Message = e.Message });
+            }
+        })
+        .WithTags("Doctors")
+        .WithOpenApi(operation => new(operation)
+        {
+            Summary = "Get and update doctor by ID",
+            Description = "Fetches a doctor's details based on their ID and allows updating those details.",
+            OperationId = "UpsertDoctorById"
+        });
+
+
+        // DELETE endpoint to remove a doctor by ID
+        app.MapDelete("/delete-doctor/{doctorId}", async (HospitalLogic logic, string doctorId) =>
+        {
+            try
+            {
+                var result = await logic.DeleteDoctorById(doctorId);
+                return Results.Ok(new { Success = true, Message = result });
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(new { Success = false, Message = e.Message });
+            }
+        })
+        .WithTags("Doctors")
+        .WithOpenApi(operation => new(operation)
+        {
+            Summary = "Delete a doctor by ID",
+            Description = "Removes a doctor from the hospital's doctor list by their ID.",
+            OperationId = "DeleteDoctorById"
         });
     }
 }

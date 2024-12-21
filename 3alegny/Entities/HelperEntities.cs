@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace _3alegny.Entities
 {
@@ -57,8 +58,10 @@ namespace _3alegny.Entities
         // Helper Class: Doctors
         public class Doctors
         {
-            public ObjectId Id { get; set; } 
-            public string Name { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; } // MongoDB ObjectId as string
+        public string Name { get; set; }
             public string Specialty { get; set; }
             public string HospitalId { get; set; }
             public string? License { get; set; }
