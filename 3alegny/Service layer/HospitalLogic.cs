@@ -110,5 +110,18 @@ namespace _3alegny.Service_layer
             return "Doctor deleted successfully";
         }
 
+        public async Task<string> CreateEHR(EHR ehr)
+        {
+            // Check if the patient already has an EHR
+            var existingEHR = await _context.EHRs.Find(e => e.PatientId == ehr.PatientId).FirstOrDefaultAsync();
+            if (existingEHR != null)
+                throw new Exception("EHR already exists for the patient");
+
+            // Insert the new EHR
+            await _context.EHRs.InsertOneAsync(ehr);
+            return "EHR created successfully";
+        }
+
+
     }
 }

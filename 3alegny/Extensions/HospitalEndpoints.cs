@@ -92,5 +92,27 @@ public static class HospitalEndpoints
             Description = "Removes a doctor from the hospital's doctor list by their ID.",
             OperationId = "DeleteDoctorById"
         });
+
+        // POST endpoint to create an EHR if the patient doesn't have one
+        app.MapPost("/post-ehr", async (HospitalLogic logic, EHR ehr) =>
+        {
+            try
+            {
+                var result = await logic.CreateEHR(ehr);
+                return Results.Ok(new { Success = true, Message = result, PatientId = ehr.PatientId });
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(new { Success = false, Message = e.Message });
+            }
+        })
+        .WithTags("EHR")
+        .WithOpenApi(operation => new(operation)
+        {
+            Summary = "Create a new EHR for a patient",
+            Description = "Adds a new EHR record for a patient if they don't already have one.",
+            OperationId = "CreateEHR"
+        });
+
     }
 }
