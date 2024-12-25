@@ -1,0 +1,203 @@
+/* Grid Layout */
+.dashboardContainer {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  padding: 40px 20px 20px;
+  background-color: #f0f4f8;
+  min-height: calc(100vh - 80px);
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 50px;
+}
+
+/* Profile Card */
+.profileCard {
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  height: 94%;
+}
+
+.profileImage {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profileInfo {
+  width: 100%;
+}
+
+.profileDetails p {
+  color: #183f73;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.profileDetails strong {
+  font-size: 110%;
+  color: #3a1f9f;
+}
+
+/* Appointments & Orders Cards */
+.appointmentsCard,
+.ordersCard {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+.appointmentsCard {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.ordersCard {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+
+/* Button Styles */
+.btn {
+  padding: 10px 20px;
+  background-color: #5c2dd5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #3a1f9f;
+}
+
+.cancelBtn,
+.reorderBtn {
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cancelBtn:hover,
+.reorderBtn:hover {
+  background-color: #ff2b2b;
+}
+
+.addBtn {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.addBtn:hover {
+  background-color: #0056b3;
+}
+
+/* Tables Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #183f73;
+  font-weight: bold;
+  color: white;
+}
+
+td {
+  color: #183f73;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Progress Notes Container */
+.progressNotesContainer {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Title for Progress Notes */
+.progressNotesContainer h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Progress Note Card */
+.progressNoteCard {
+  position: relative;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Card Hover Effect */
+.progressNoteCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Note Summary (Visible by Default) */
+.noteSummary {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Note Details (Hidden Initially) */
+.noteDetails {
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 10px;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+/* Reveal Note Details on Hover */
+.progressNoteCard:hover .noteDetails {
+  opacity: 1;
+  height: auto;
+}

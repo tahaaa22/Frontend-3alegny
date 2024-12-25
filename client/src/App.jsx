@@ -9,7 +9,6 @@ import SignUpForm from "./pages/SignUpForm";
 import PatientPortal from "./pages/PatientPortal";
 import ProfilePage from "./pages/ProfilePage";
 import About from "./pages/About";
-import Doctors from "./pages/Doctors";
 
 // importing components
 import Navigation from "./components/Navigation";
@@ -18,6 +17,8 @@ import Footer from "./components/Footer";
 
 import "./App.css";
 import Appointment from "./pages/Appointment";
+import HospitalPortal from "./pages/HospitalPortal";
+import PharmacyPortal from "./pages/PharmacyPortal";
 
 function App() {
   return (
@@ -31,7 +32,6 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<About />} />
-              <Route path="/doctors" element={<Doctors />} />
               <Route path="/appointment" element={<Appointment />} />
 
               <Route path="/login" element={<LoginForm />} />
@@ -40,6 +40,9 @@ function App() {
               <Route path="/patient" element={<PatientPortal />} />
               <Route path="/MyProfile" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfile  />} />
+              <Route path="/hospitalportal" element={<HospitalPortal/>}/>
+              <Route path="/pharmacyportal" element={<PharmacyPortal/>}/>
+
             </Routes>
           </main>
           <Footer />

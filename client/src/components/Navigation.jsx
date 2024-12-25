@@ -1,15 +1,19 @@
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
-import {Image} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Image} from "@nextui-org/react";
 
 const Navigation= () => {
     return(
     <>
-    <Navbar
-    className="px-4 py-2 shadow-md fixed top-0 left-0 w-full z-50"
+    <Navbar shouldHideOnScroll isBordered
+    className="px-4 py-2 shadow-md fixed top-0 left-0 w-full z-50 h-30"
     >
     <NavbarBrand className="flex items-center gap-2">
-        <Image width={50} alt="Logo Image" src="/logo.png" />
-        <p className="font-bold text-lg text-gray-800">3alegny</p>
+        <Image width={50} alt="Logo Image" src="./public/3alegny_logo.jpg" />
+        <Link
+            href="/"
+            className="text-gray-800 font-bold"
+        >
+            3alegny
+        </Link>
     </NavbarBrand>
 
     <NavbarContent
@@ -33,13 +37,8 @@ const Navigation= () => {
             About
         </Link>
         </NavbarItem>
-        <NavbarItem>
-        <Link
-            href="/doctors"
-            className="text-gray-800 font-semibold"
-        >
-            Doctors
-        </Link>
+        <NavbarItem className="text-black bold transition-colors">
+            Contact Us: 19090
         </NavbarItem>
     </NavbarContent>
 

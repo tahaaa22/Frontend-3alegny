@@ -1,0 +1,55 @@
+comments:
+
+	1- appointments (workflow nada)
+	2- home page redirects to login
+	3- homepage - Speciality
+	4- display by filers - patient portal
+	5- PHR- more details
+	6- images page leeha
+	7- dicom viewer
+	8- forget password
+	9- dashboards
+dashboards
+1- Admin
+	add business- *hospital name *address *contacts-email,phone *type of business- hospital,pharmacy *username and pass
+2- hospital
+	*add depart *add doctor- name , speciality, license- certificates & years of experience, description, address, appointment, fee,  *doctors list *appointment's list
+3- pharmacy
+	*add drugs- name, price, quantity, expiry_date, desc, manufacturer, catergory, type *orders list * drug list
+
+PHR:
+	-Diagnoses and medication
+	-medical procedures(past medical and surgical procedures
+	-allergies
+	-chronic illness
+	-family history
+	-imaging and lab records
+	-prescription history
+
+EHR:
+	-
+
+----------------------------------------------------------------------------------------------------------------------------------------
+new updates:
+		1- appointments list: accepted, pending, cancelled
+2- patient appointment redirected to EHR
+3- create an EHR 
+		4- add doctor: appt-> calendar, speciality->dropdown, 
+		5- add depart -> shows avaiable departs then can add
+		6- patient statistics in hospital portal
+7- edit nav bar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

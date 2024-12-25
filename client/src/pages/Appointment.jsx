@@ -1,190 +1,118 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Appointment = () => {
+  const location = useLocation();
+  let { hospital, department } = location.state;
+  console.log("🚀 ~ Appointment ~ department:", department)
+  console.log("🚀 ~ Appointment ~ hospital:", hospital)
   // Dummy data
-  const clinicsAndHospitals = [
-    { id: 1, name: "Sunrise Medical Center", departments: ["Cardiology", "Dermatology"], doctors: ["Dr. Smith", "Dr. Johnson"] },
-    { id: 2, name: "HealthPlus Clinic", departments: ["Pediatrics", "Orthopedics"], doctors: ["Dr. Lee", "Dr. Patel"] },
+  const reservedDates = [
+    new Date("2024-12-20"),
+    new Date("2024-12-22"),
+    new Date("2024-12-24"),
   ];
+  const availableDays = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
+  const availableTimes = ["8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:30 AM"];
 
-  const doctorSchedules = {
-    "Dr. Smith": ["2024-12-15", "2024-12-17"],
-    "Dr. Johnson": ["2024-12-16"],
-    "Dr. Lee": ["2024-12-14", "2024-12-18"],
-    "Dr. Patel": ["2024-12-13"],
-  };
-
-  const availableTimes = ["10:00 AM", "11:00 AM", "2:00 PM", "3:00 PM"];
-
-  // State management
-  const [selectedFacility, setSelectedFacility] = useState(null);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
 
   const navigate = useNavigate();
 
-  const handleFacilityChange = (event) => {
-    setSelectedFacility(event.target.value);
-    setSelectedDepartment(null);
-    setSelectedDoctor(null);
-  };
-
-  const handleDepartmentChange = (event) => {
-    setSelectedDepartment(event.target.value);
-    setSelectedDoctor(null);
-  };
-
-  const handleDoctorChange = (event) => {
-    setSelectedDoctor(event.target.value);
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const isDateReserved = (date) => {
-    const formattedDate = date.toISOString().split("T")[0];
-    return selectedDoctor && doctorSchedules[selectedDoctor]?.includes(formattedDate);
-  };
-
   const handleConfirm = () => {
-    alert(
-      `Appointment confirmed:\nFacility: ${selectedFacility}\nDepartment: ${selectedDepartment}\nDoctor: ${selectedDoctor}\nDate: ${selectedDate.toDateString()}\nTime: ${selectedTime}`
-    );
+    alert(`Appointment confirmed for ${selectedDate} at ${selectedTime}`);
     navigate("/MyProfile");
   };
 
+  const isDateReserved = (date) => {
+    // Check if the date is in the reservedDates array
+    return reservedDates.some((reservedDate) => {
+      return (
+        reservedDate.getDate() === date.getDate() &&
+        reservedDate.getMonth() === date.getMonth() &&
+        reservedDate.getFullYear() === date.getFullYear()
+      );
+    });
+  };
+
   return (
-    <div className="p-6 max-w-lg mx-auto bg-white shadow-md rounded-lg mt-16">
-    <h1 className="text-3xl font-bold mb-4 text-center text-blue-700">Book an Appointment</h1>
-    <p className="text-center text-gray-600 mb-6">We hope you get well soon! You're in great hands.</p>
-
-      {/* Facility Selection */}
-      <div className="mb-4">
-        <label htmlFor="facility" className="block text-lg font-medium mb-2">
-          Select Clinic/Hospital:
-        </label>
-        <select
-          id="facility"
-          value={selectedFacility || ""}
-          onChange={handleFacilityChange}
-          className="w-full border rounded p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="" disabled>
-            Choose a facility
-          </option>
-          {clinicsAndHospitals.map((facility) => (
-            <option key={facility.id} value={facility.name}>
-              {facility.name}
-            </option>
-          ))}
-        </select>
+    <div className="p-6 m-20 max-w-5xl mx-auto bg-gray-50">
+      {/* Doctor Profile Section */}
+      <div className="flex items-center gap-8 bg-white p-6 shadow-md rounded-md">
+        <img
+          src="https://via.placeholder.com/150"
+          alt="Dr. Richard James"
+          className="w-40 h-40 rounded-lg object-cover"
+        />
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">Dr. Richard James</h1>
+          <p className="text-gray-600 mb-4">MBBS - General Physician</p>
+          <p className="text-gray-700 mb-2">
+            Dr. Richard James is committed to delivering comprehensive medical care, focusing on preventive medicine,
+            early diagnosis, and effective treatment strategies.
+          </p>
+          <p className="font-semibold text-gray-800">
+            Appointment fee: <span className="text-blue-500">$50</span>
+          </p>
+        </div>
       </div>
 
-      {/* Department Selection */}
-      <div className="mb-4">
-        <label htmlFor="department" className="block text-lg font-medium mb-2">
-          Select Department:
-        </label>
-        <select
-          id="department"
-          value={selectedDepartment || ""}
-          onChange={handleDepartmentChange}
-          className="w-full border rounded p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          disabled={!selectedFacility}
-        >
-          <option value="" disabled>
-            Choose a department
-          </option>
-          {selectedFacility &&
-            clinicsAndHospitals
-              .find((facility) => facility.name === selectedFacility)
-              ?.departments.map((department) => (
-                <option key={department} value={department}>
-                  {department}
-                </option>
-              ))}
-        </select>
-      </div>
-
-      {/* Doctor Selection */}
-      <div className="mb-4">
-        <label htmlFor="doctor" className="block text-lg font-medium mb-2">
-          Select Doctor:
-        </label>
-        <select
-          id="doctor"
-          value={selectedDoctor || ""}
-          onChange={handleDoctorChange}
-          className="w-full border rounded p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          disabled={!selectedDepartment}
-        >
-          <option value="" disabled>
-            Choose a doctor
-          </option>
-          {selectedFacility &&
-            clinicsAndHospitals
-              .find((facility) => facility.name === selectedFacility)
-              ?.doctors.map((doctor) => (
-                <option key={doctor} value={doctor}>
-                  {doctor}
-                </option>
-              ))}
-        </select>
-      </div>
-
-      {/* Date Picker */}
-      <div className="mb-4">
-        <label className="block text-lg font-medium mb-2">Select Date:</label>
+      {/* Calendar Section */}
+      <div className="mt-8 bg-white p-6 shadow-md rounded-md">
+        <h2 className="text-xl font-bold mb-4">Select Appointment Date</h2>
         <DatePicker
           selected={selectedDate}
-          onChange={handleDateChange}
-          className="w-full border rounded p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          filterDate={(date) => !isDateReserved(date)}
-          minDate={new Date()}
-          placeholderText="Select a date"
-          disabled={!selectedDoctor}
+          onChange={(date) => setSelectedDate(date)}
+          inline
+          minDate={new Date()} // Don't allow selecting past dates
+          filterDate={(date) => !isDateReserved(date)} // Disable reserved dates
+          className="border-2 p-4 rounded-lg w-full bg-gray-400 "
+          calendarClassName="text-lg text-center"
+          dayClassName={(date) =>
+            isDateReserved(date) ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "cursor-pointer"
+          }
         />
+        {/* Display selected date */}
+        <div className="w-80 flex items-center justify-center bg-gray-100 p-4 rounded-md text-gray-800 ">
+          <h3 className="text-lg font-semibold">Selected Date:</h3>
+          <p className="text-lg text-blue-600 ml-2">
+            {selectedDate ? selectedDate.toLocaleDateString() : "None"}
+          </p>
+          <button
+          onClick={handleConfirm}
+          disabled={!selectedDate || !selectedTime}
+          className="bg-blue-300 text-black ml-6 mr-3 py-2 px-6 rounded-full text-lg"
+          >Book </button>
+        </div>
       </div>
 
-      {/* Time Selection */}
-      <div className="mb-4">
-        <label htmlFor="time" className="block text-lg font-medium mb-2">
-          Select Time:
-        </label>
-        <select
-          id="time"
-          value={selectedTime || ""}
-          onChange={(e) => setSelectedTime(e.target.value)}
-          className="w-full border rounded p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          disabled={!selectedDate}
-        >
-          <option value="" disabled>
-            Choose a time
-          </option>
-          {availableTimes.map((time) => (
-            <option key={time} value={time}>
-              {time}
-            </option>
-          ))}
-        </select>
+
+
+      {/* Related Doctors */}
+      <div className="mt-10 bg-white p-6 shadow-md rounded-md">
+        <h2 className="text-xl font-bold text-center mb-6">Related Doctors</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {Array(4)
+            .fill()
+            .map((_, index) => (
+              <div key={index} className="text-center">
+                <div className="bg-purple-200 p-4 rounded-lg">
+                  <img
+                    src="https://via.placeholder.com/100"
+                    alt="Doctor"
+                    className="w-24 h-24 mx-auto rounded-full object-cover"
+                  />
+                </div>
+                <p className="mt-2 font-semibold">Dr. Richard James</p>
+                <p className="text-sm text-gray-500">General Physician</p>
+                <p className="text-green-500 font-medium mt-1">Available</p>
+              </div>
+            ))}
+        </div>
       </div>
-
-      {/* Confirm Button */}
-      <button
-        onClick={handleConfirm}
-        className="w-full bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        disabled={!selectedFacility || !selectedDepartment || !selectedDoctor || !selectedDate || !selectedTime}
-      >
-        Confirm Appointment
-      </button>
-
-      <p className="text-center text-gray-500 mt-6">Thank you for trusting us! Wishing you a speedy recovery!</p>
     </div>
   );
 };
