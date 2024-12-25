@@ -1,3 +1,4 @@
+using _3alegny.Extensions;
 using _3alegny.RepoLayer;
 using _3alegny.Service_layer;
 using DotNetEnv;
@@ -47,23 +48,38 @@ builder.Services.AddScoped<UserLogic>();
 builder.Services.AddScoped<AdminLogic>();
 builder.Services.AddScoped<PatientLogic>();
 builder.Services.AddScoped<CommonLogic>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin() // Allows all origins
+              .AllowAnyMethod() // Allows all HTTP methods
+              .AllowAnyHeader(); // Allows all headers
+    });
+});
 
 var app = builder.Build();
-app.UseCors(builder =>
-    builder.WithOrigins("http://localhost:3000") // FIXME: add your local host lel frontend
-           .AllowAnyMethod()
-           .AllowAnyHeader());
+//app.UseCors(builder =>
+//    builder.AddPolicy
+//    builder.WithOrigins("http://localhost:3000") // FIXME: add your local host lel frontend
+//           .AllowAnyMethod()
+//           .AllowAnyHeader());
 
 
-app.UseCors();
+app.UseCors("AllowAll");
 
 app.MapUserEndpoints();
 app.MapAdminEndpoints();
 app.MapPatientEndpoints();
 app.MapCommonEndpoints();
+//app.MapHospitalEndpoints();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options=>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+    options.RoutePrefix = string.Empty;
+});
 app.Run();
 
 record MongoDbSettings(string ConnectionString, string DatabaseName);
