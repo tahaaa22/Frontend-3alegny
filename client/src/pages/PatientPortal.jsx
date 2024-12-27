@@ -131,27 +131,10 @@ const PatientPortal = () => {
   ];
 
   const drugs = [
-    {
-      id: 1,
-      name: "Aspirin",
-      pharmacyId: 1,
-    },
-    {
-      id: 2,
-      name: "Ibuprofen",
-      pharmacyId: 1,
-    },
-    {
-      id: 3,
-      name: "Vitamin C",
-      pharmacyId: 2,
-    },
-    {
-      id: 4,
-      name: "Antibiotics",
-      pharmacyId: 2,
-    },
-  ];
+    { id: 1, name: "Paracetamol", price: 10, pharmacyId: 1, arrivalDate: "2024-12-20" },
+    { id: 2, name: "Ibuprofen", price: 15, pharmacyId: 1, arrivalDate: "2024-12-21" },
+    { id: 3, name: "Aspirin", price: 8, pharmacyId: 2, arrivalDate: "2024-12-25" },
+];
   const dummyLocations = [
     { city: "New York", region: "New York", country: "USA" },
     { city: "London", region: "England", country: "UK" },

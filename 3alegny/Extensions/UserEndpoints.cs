@@ -14,7 +14,7 @@ public static class UserEndpoints
         {
             var result = logic.Signup(request).Result;
             return result.IsSuccess ? Results.Ok(result.Message) : Results.BadRequest(result.Message);
-        })).WithTags("User")
+        })).WithTags("user")
          .WithOpenApi(operation => new(operation)
          {
              Summary = "Sign up a new user",
@@ -26,7 +26,7 @@ public static class UserEndpoints
         {
             var result = logic.Login(request).Result;
             return result.IsSuccess ? Results.Ok(result.Message) : Results.BadRequest(result.Message);
-        })).WithTags("User")
+        })).WithTags("user")
             .WithOpenApi(operation => new(operation)
             {
                 Summary = "Login for all user types (hospital, pharmacy, patient)",

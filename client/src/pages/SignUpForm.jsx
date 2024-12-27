@@ -133,7 +133,7 @@ const SignUpForm = () => {
                 </select>
             </div>
             
-            <label>Allergies</label>
+            {/* <label>Allergies</label>
             <select
               name="allergies"
               value={formData.allergies}
@@ -229,7 +229,7 @@ const SignUpForm = () => {
               onChange={handleInputChange}
               placeholder="Create a password"
               required
-            />
+            /> */}
             <label>Confirm Password</label>
             <input
               name="confirmPassword"

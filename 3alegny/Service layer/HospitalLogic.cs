@@ -1,8 +1,4 @@
-﻿using _3alegny.Entities;
-using _3alegny.RepoLayer;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using System.Threading.Tasks;
+﻿using _3alegny.RepoLayer;
 
 namespace _3alegny.Service_layer
 {
@@ -14,6 +10,7 @@ namespace _3alegny.Service_layer
         {
             _context = context;
         }
+
 
         // Method to add a department to a hospital
         public async Task<string> AddDepartment(string hospitalId, string departmentName)
@@ -129,6 +126,7 @@ namespace _3alegny.Service_layer
 
             return "EHR created successfully";
         }
+
 
 
     }

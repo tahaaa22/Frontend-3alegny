@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using _3alegny.Service_layer;
-using _3alegny.Entities;
-using Microsoft.AspNetCore.Mvc;
-
-public static class HospitalEndpoints
+﻿namespace _3alegny.Extensions
 {
-    public static void MapHospitalEndpoints(this WebApplication app)
+    public class HospitalEndpoints
     {
+
         // POST endpoint to add a new department
         app.MapPost("/post-departments", async ([FromBody]  HospitalLogic logic, string hospitalId, string departmentName) =>
         {
@@ -116,6 +111,6 @@ public static class HospitalEndpoints
 
 
 
+
     }
 }
-

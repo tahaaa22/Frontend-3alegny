@@ -8,11 +8,11 @@ public static class PatientEndpoints
 {
     public static void MapPatientEndpoints(this WebApplication app)
     {
-        app.MapPost("patients/newphr", (Func<phrRequest, PatientLogic, IResult >)((request, logic) =>
+        app.MapPost("patients/newphr", (Func<requestPHR, PatientLogic, IResult >)((request, logic) =>
         {
             var result = logic.PostPHR(request).Result;
             return result.IsSuccess ? Results.Ok(result.Message) : Results.BadRequest(result.Message);
-        })).WithTags("Patient")
+        })).WithTags("patient")
         .WithOpenApi(operation => new(operation)
         {
             Summary = "Post a new PHR",
@@ -21,11 +21,11 @@ public static class PatientEndpoints
         }
         );
 
-        app.MapPost("patients/updatephr/{id}", (Func<string, phrRequest, PatientLogic, IResult>)((id,request, logic) =>
+        app.MapPost("patients/updatephr/{id}", (Func<string, requestPHR, PatientLogic, IResult>)((id,request, logic) =>
         {
             var result = logic.UpdatePHR(id,request).Result;
             return result.IsSuccess ? Results.Ok(result.Message) : Results.BadRequest(result.Message);
-        })).WithTags("Patient")
+        })).WithTags("patient")
         .WithOpenApi(operation => new(operation)
         {
             Summary = "Update PHR",
@@ -38,7 +38,7 @@ public static class PatientEndpoints
         {
             var result = logic.GetPHR(id).Result;
             return Results.Ok(result);
-        })).WithTags("Patient")
+        })).WithTags("patient")
         .WithOpenApi(operation => new(operation)
         {
             Summary = "Get PHR",
@@ -47,7 +47,7 @@ public static class PatientEndpoints
         }
         );
     }
-    public record phrRequest(
+    public record requestPHR(
         string Allergies,
         string ChronicIllness,
         string Diagnosis,

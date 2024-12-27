@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const PharmacyCard = ({ pharmacies, drugs }) => {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-wrap justify-evenly">
       {pharmacies && pharmacies.length > 0 ? (
@@ -34,13 +36,19 @@ const PharmacyCard = ({ pharmacies, drugs }) => {
               <div className="text-gray-600 mb-1">
                 <span className="font-semibold">Drugs Available:</span>
                 <ul className="list-disc pl-5">
-                  {drugs
-                    .filter((drug) => drug.pharmacyId === pharmacy.id)
-                    .map((drug) => (
-                      <li key={drug.id} className="text-sm text-gray-600">
+                {drugs
+                .filter((drug) => drug.pharmacyId === pharmacy.id)
+                .map((drug) => (
+                    <li
+                        key={drug.id}
+                        className="text-sm text-gray-600 cursor-pointer hover:text-blue-500 transition duration-300"
+                        onClick={() =>
+                            navigate('/orders', { state: { pharmacy: pharmacy, drug: drug } })
+                        }
+                    >
                         {drug.name}
-                      </li>
-                    ))}
+                    </li>
+                ))}
                 </ul>
               </div>
             </div>

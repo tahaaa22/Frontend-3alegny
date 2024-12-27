@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useNavigate } from "react-router-dom";
 
 const HospitalPortal = () => {
     const [activeSection, setActiveSection] = useState("appointments");
@@ -26,6 +27,7 @@ const HospitalPortal = () => {
         "Radiologist",
         "General Practitioner",
       ];
+  const navigate = useNavigate();
 
   // Dummy Appointments Data
   const [appointments, setAppointments] = useState([
@@ -221,7 +223,11 @@ const handleNewDoctorSubmit = (e) => {
                                 {appointments
                                     .filter((appt) => appt.status === "accepted")
                                     .map((appointment) => (
-                                        <tr key={appointment.id} className="border-b hover:bg-gray-100">
+                                        <tr key={appointment.id} 
+                                        onClick={() =>
+                                          navigate("/ehrpatient", { state: { patient: appointment } })}
+                                        className="border-b hover:bg-gray-100"
+                                        >
                                             <td className="py-2 px-4">{appointment.id}</td>
                                             <td className="py-2 px-4 flex items-center">
                                                 <img

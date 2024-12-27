@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import styles from '../styles/EHRPage.module.css';
 import { Line, Doughnut, Bar, Radar } from 'react-chartjs-2';
+import { useLocation} from "react-router-dom";
 
 const EHRPage = () => {
   const [activeTab, setActiveTab] = useState('patientDemographics');
-
+  const { state } = useLocation();
+    const patient = state?.patient;
+    console.log("🚀 ~ Appointment ~ patient:", patient)
   // Mock Data
   const patientDemographics = {
     name: 'John Doe',
