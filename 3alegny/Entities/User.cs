@@ -38,9 +38,9 @@ namespace _3alegny.Entities
         public List<Insurance>? Insurance { get; set; }
         public float Height { get; set; }
         public float Weight { get; set; }
-        // Add EHR here
-        [BsonElement("ehr")]
-        public List<EHR> EHRs { get; set; } = new List<EHR>();  
+        
+        public EHR EHR { get; set; }
+
 
 
     }

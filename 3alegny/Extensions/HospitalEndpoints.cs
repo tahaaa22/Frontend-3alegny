@@ -30,7 +30,7 @@ public static class HospitalEndpoints
         });
 
         // POST endpoint to add a new doctor
-        app.MapPost("/post-doctors", async ([FromBody] HospitalLogic logic, [FromServices] Doctors doctor) =>
+        app.MapPost("/post-doctors", async ([FromServices] HospitalLogic logic, [FromBody] Doctors doctor) =>
         {
             try
             {
@@ -52,7 +52,7 @@ public static class HospitalEndpoints
 
 
         // PUT endpoint to retrieve and update a doctor by ID
-        app.MapPut("/upsert-doctor/{doctorId}", async ([FromBody] HospitalLogic logic, string doctorId, [FromServices] Doctors updatedDoctor) =>
+        app.MapPut("/upsert-doctor/{doctorId}", async ([FromServices] HospitalLogic logic, string doctorId, [FromBody] Doctors updatedDoctor) =>
         {
             try
             {
@@ -74,7 +74,7 @@ public static class HospitalEndpoints
 
 
         // DELETE endpoint to remove a doctor by ID
-        app.MapDelete("/delete-doctor/{doctorId}", async ([FromBody] HospitalLogic logic, string doctorId) =>
+        app.MapDelete("/delete-doctor/{doctorId}", async ([FromServices] HospitalLogic logic, string doctorId) =>
         {
             try
             {
