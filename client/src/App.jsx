@@ -20,6 +20,7 @@ import Appointment from "./pages/Appointment";
 
 // import HospitalCard from "./components/HospitalCard";
 import HospitalPortal from "./pages/HospitalPortal";
+import PharmacyPortal from "./pages/PharmacyPortal";
 import PHRPage from "./components/PHRPage";
 import EHRPage from "./components/EHRPage";
 import Order from "./pages/Order";
@@ -46,6 +47,7 @@ function App() {
               <Route path="/MyProfile" element={<ProfilePage />} />
               <Route path="/edit-profile" element={<EditProfile  />} />
               <Route path="/hospitalportal" element={<HospitalPortal/>}/>
+              <Route path="/pharmacyportal" element={<PharmacyPortal/>}/>
               <Route path="/phr" element={<PHRPage/>}/>
               <Route path="/ehrpatient" element={<EHRPage/>}/>
             </Routes>
