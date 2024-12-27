@@ -3,25 +3,6 @@
 This document outlines the API endpoints for various user roles in the system.
 
 ---
-## Common Endpoints
-
-### GET
-- **/top-doctors**  
-  Endpoint to return top rated doctors.
-
-### GET
-- **/top-hospitals**  
-  Endpoint to return top rated hospitals.
-
-### GET
-- **/top-pharmacies**  
-Endpoint to return top rated pharmacies.
-
-### GET
-- **/covered-insurances**  
-Endpoint to return covered insurances by our hospitals.
-
----
 
 ## Authentication Endpoints
 
