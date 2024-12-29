@@ -15,6 +15,7 @@ namespace _3alegny.Service_layer
             _context = context;
         }
 
+
         // Method to add a department to a hospital
         public async Task<string> AddDepartment(string hospitalId, string departmentName)
         {   //Check if the hospital exists
@@ -119,8 +120,17 @@ namespace _3alegny.Service_layer
 
             // Insert the new EHR
             await _context.EHRs.InsertOneAsync(ehr);
+          
+            var updateDefinition = Builders<Patient>.Update
+            .Set(e => e.EHR, ehr);  // Update specific fields
+ 
+
+            await _context.Patients
+                .UpdateOneAsync(e => e.Id == ObjectId.Parse(ehr.PatientId), updateDefinition);
+
             return "EHR created successfully";
         }
+
 
 
     }
