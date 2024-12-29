@@ -5,14 +5,20 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/SignUpForm.module.css"; // Import styles
 
 const SignUpForm = () => {
+  
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    email:"",
     gender: "",
-    contactInfo: "",
-    address: "",
+    contactInfo:"",
+    street: "",
+    city: "",
+    state: "",
+    zipCode: "",
     username: "",
-    dateofbirth: "",
+    dateofbirth:"",
     password: "",
     confirmPassword: "",
   });
@@ -27,41 +33,37 @@ const SignUpForm = () => {
     }));
   };
 
+
   const submit = async (e) => {
     e.preventDefault();
-
-    const {
-      firstName,
-      lastName,
-      username,
-      gender,
-      dateofbirth,
-      confirmPassword,
-      password,
-      contactInfo,
-      address,
-    } = formData;
-
+  
+    const { firstName, lastName,email, username, gender, dateofbirth, confirmPassword, contactInfo, street, city, state, zipCode } = formData;
+  
     try {
-      await axios.post(
-        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/users/signup",
+      const response = await axios.post(
+        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/signup",
         {
           name: `${firstName} ${lastName}`,
-          dateBirth: dateofbirth,
-          contactInfo: contactInfo,
-          address: address,
+          email:email,
+          dateOfBirth: dateofbirth,
+          phone: contactInfo,
           userName: username,
-          createPassword: password,
-          confirmPassword: confirmPassword,
+          street: street,
+          city: city,
+          state: state,
+          zipCode: zipCode,
+          password: confirmPassword,
           gender: gender,
+          
         }
-      );
+      );      
       alert("Welcome! Account created successfully.");
-      navigate("/home");
+      navigate("/patient", { state: { patientdata:response.data  } });
     } catch (error) {
       alert(error.response?.data || "An error occurred during signup.");
     }
   };
+  
 
   return (
     <div className={styles.loginTabsContainer}>
@@ -94,7 +96,7 @@ const SignUpForm = () => {
               type="number"
               value={formData.contactInfo}
               onChange={handleInputChange}
-              placeholder="Enter your phone number"
+              placeholder="Enter your Email Address"
               required
             />
             <label>Username</label>
@@ -105,12 +107,42 @@ const SignUpForm = () => {
               placeholder="Enter your username"
               required
             />
-            <label>Address</label>
+            <label>Contact Info</label>
             <input
-              name="address"
-              value={formData.address}
+              name="contactInfo"
+              value={formData.contactInfo}
               onChange={handleInputChange}
-              placeholder="Enter your Address"
+              placeholder="Enter your phone number"
+              required
+            />
+
+            <label>Street</label>
+            <input
+              name="street"
+              value={formData.street}
+              onChange={handleInputChange}
+              placeholder="Enter your Street Name"
+            />
+            <label>City</label>
+            <input
+              name="city"
+              value={formData.city}
+              onChange={handleInputChange}
+              placeholder="Enter your City"
+            />
+            <label>State</label>
+            <input
+              name="state"
+              value={formData.state}
+              onChange={handleInputChange}
+              placeholder="Enter your State"
+            />
+            <label>ZipCode</label>
+            <input
+              name="zipCode"
+              value={formData.zipCode}
+              onChange={handleInputChange}
+              placeholder="Enter your Zip Code"
             />
             <label>Date of Birth</label>
             <div className={styles.dobInputs}>
@@ -122,6 +154,7 @@ const SignUpForm = () => {
                 placeholder="DD"
                 required
               />
+              
             </div>
             <div className={styles.selectContainer}>
               <label>Gender</label>
@@ -137,7 +170,8 @@ const SignUpForm = () => {
                 <option value="other">Other</option>
               </select>
             </div>
-            <label>Password</label>
+            
+            <label> Password</label>
             <input
               name="password"
               type="password"
