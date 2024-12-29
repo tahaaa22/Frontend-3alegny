@@ -40,7 +40,7 @@ const SignUpForm = () => {
   
     try {
       const response = await axios.post(
-        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/users/signup",
+        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/signup",
         {
           name: `${firstName} ${lastName}`,
           email:email,
