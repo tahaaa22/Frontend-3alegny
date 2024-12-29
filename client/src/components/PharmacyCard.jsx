@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const PharmacyCard = ({ pharmacies, drugs }) => {
+const PharmacyCard = ({ pharmacies, drugs, patient }) => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-wrap justify-evenly">
@@ -43,7 +43,7 @@ const PharmacyCard = ({ pharmacies, drugs }) => {
                         key={drug.id}
                         className="text-sm text-gray-600 cursor-pointer hover:text-blue-500 transition duration-300"
                         onClick={() =>
-                            navigate('/orders', { state: { pharmacy: pharmacy, drug: drug } })
+                            navigate('/orders', { state: { pharmacy: pharmacy, drug: drug, patient:patient } })
                         }
                     >
                         {drug.name}
