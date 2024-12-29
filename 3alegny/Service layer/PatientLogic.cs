@@ -15,7 +15,7 @@ namespace _3alegny.Service_layer
             _context = context;
         }
 
-        public async Task<patientPHR<string>> PostPHR(requestPHR phr)
+        public async Task<patientPHR<string>> PostPHR(phrRequest phr)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace _3alegny.Service_layer
             }
         }
 
-        public async Task<patientPHR<string>> UpdatePHR(string id, requestPHR updatedPhr)
+        public async Task<patientPHR<string>> UpdatePHR(string id, phrRequest updatedPhr)
         {
             try
             {

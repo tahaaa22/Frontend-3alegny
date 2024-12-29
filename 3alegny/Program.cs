@@ -1,3 +1,4 @@
+using _3alegny.Extensions;
 using _3alegny.RepoLayer;
 using _3alegny.Service_layer;
 using DotNetEnv;
@@ -47,23 +48,40 @@ builder.Services.AddScoped<UserLogic>();
 builder.Services.AddScoped<AdminLogic>();
 builder.Services.AddScoped<PatientLogic>();
 builder.Services.AddScoped<CommonLogic>();
+builder.Services.AddScoped<HospitalLogic>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin() // Allows all origins
+              .AllowAnyMethod() // Allows all HTTP methods
+              .AllowAnyHeader(); // Allows all headers
+    });
+});
 
 var app = builder.Build();
-app.UseCors(builder =>
-    builder.WithOrigins("http://localhost:3000") // FIXME: add your local host lel frontend
-           .AllowAnyMethod()
-           .AllowAnyHeader());
+//app.UseCors(builder =>
+//    builder.AddPolicy
+//    builder.WithOrigins("http://localhost:3000") // FIXME: add your local host lel frontend
+//           .AllowAnyMethod()
+//           .AllowAnyHeader());
 
 
-app.UseCors();
+app.UseCors("AllowAll");
 
 app.MapUserEndpoints();
 app.MapAdminEndpoints();
 app.MapPatientEndpoints();
 app.MapCommonEndpoints();
+app.MapHospitalEndpoints();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options=>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+    options.RoutePrefix = string.Empty;
+});
 app.Run();
 
 record MongoDbSettings(string ConnectionString, string DatabaseName);
@@ -75,11 +93,14 @@ public class SwaggerTagDescriptionFilter : Swashbuckle.AspNetCore.SwaggerGen.IDo
     {
         swaggerDoc.Tags = new List<Microsoft.OpenApi.Models.OpenApiTag>
         {
-            new() { Name = "admin", Description = "Operations related to the admin" },
-            new() { Name = "user", Description = "Operations related to the auth" },
-            new() { Name = "patient", Description = "Operations related to the patient" },
+            new() { Name = "Admin", Description = "Operations related to the Admin" },
+            new() { Name = "User", Description = "Operations related to Authentication" },
+            new() { Name = "Patient", Description = "Operations related to the Patient" },
             new() {Name= "Doctors", Description = "Operations related to the Doctors" },
-            new() {Name= "Hospitals", Description = "Operations related to the hospitals" }
+            new() {Name= "Hospitals", Description = "Operations related to the Hospitals" },
+            new() {Name= "Pharmacies", Description = "Operations related to the Pharmacies" },
+            new() {Name = "Insurance", Description = "Insurance related operations"},
+            new() {Name= "Departments", Description = "Operations related to the departments"}
         };
     }
 }
