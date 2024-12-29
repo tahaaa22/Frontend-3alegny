@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+import {useNavigate,useLocation } from "react-router-dom";
 import { Bar, Pie, Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, LineElement } from "chart.js";
 
 const HospitalPortal = () => {
+  const location = useLocation();
+  let { response} = location.state?.admindata;
+
+  const admin =location.state.admindata
+  console.log("🚀 ~ admin ~ data:", admin)
   const [activeTab, setActiveTab] = useState("dashboard");
 // Register chart elements
 ChartJS.register(
@@ -314,6 +320,23 @@ console.log("Businesses object:", businesses);
     });
   };
   
+  if (!admin || admin.role !== "Admin") {
+    return (
+      <div className="w-screen mx-auto p-14 mt-7">
+        <h2 className="text-2xl font-bold text-red-500">
+          Unauthorized Access
+          
+        </h2>
+        <p className="text-lg text-white">
+          You do not have the necessary permissions to access the Admin Portal.
+        </p>
+        <button
+          className="mt-5 text-white bg-blue-500 hover:bg-blue-700 px-5 py-2 rounded-md"
+          onClick={() => navigate("/login")}
+        >Return to Login</button>
+      </div>
+    );
+  }
   
   return (
     <div className="flex w-screen h-screen bg-gray-100">

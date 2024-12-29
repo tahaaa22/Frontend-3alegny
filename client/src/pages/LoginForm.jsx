@@ -21,7 +21,7 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/users/login",
+        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/login",
         { username, password }
       );
       const { role } = response.data; // Assuming the response contains the user role
@@ -29,16 +29,16 @@ const LoginForm = () => {
       // Navigate based on the user's role
       switch (role) {
         case "Patient":
-          navigate("/patient");
+          navigate("/patient", { state: { patientdata:response.data  } });
           break;
         case "Hospital":
-          navigate("/hospitalportal");
+          navigate("/hospitalportal", { state: { hospitaldata:response.data  } });
           break;
         case "Pharmacy":
-          navigate("/pharmacyportal");
+          navigate("/pharmacyportal",{ state: { pharmacydata:response.data  } });
           break;
         case "Admin":
-          navigate("/adminportal");
+          navigate("/adminportal",{ state: { admindata:response.data  } });
           break;
         default:
           alert("Unknown role. Please contact support.");

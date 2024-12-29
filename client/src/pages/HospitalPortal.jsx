@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import {useNavigate } from "react-router-dom";
+import {useNavigate,useLocation } from "react-router-dom";
 import axios from "axios";
 
 const HospitalPortal = () => {
+  const location = useLocation();
+  let { response} = location.state?.hospitaldata;
+
+  const hospital =location.state.hospitaldata
+  console.log("🚀 ~ patient ~ data:", hospital)
     const [activeSection, setActiveSection] = useState("appointments");
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [editMode, setEditMode] = useState(false);
@@ -178,6 +183,24 @@ const handleNewDoctorSubmit = (e) => {
         fee: "",
     });
 };
+
+if (!hospital || hospital.role !== "Hospital") {
+  return (
+    <div className="w-screen mx-auto p-14 mt-7">
+      <h2 className="text-2xl font-bold text-red-500">
+        Unauthorized Access
+        
+      </h2>
+      <p className="text-lg text-white">
+        You do not have the necessary permissions to access the Hospital Portal.
+      </p>
+      <button
+        className="mt-5 text-white bg-blue-500 hover:bg-blue-700 px-5 py-2 rounded-md"
+        onClick={() => navigate("/login")}
+      >Return to Login</button>
+    </div>
+  );
+}
 
   return (
     <div className="flex container bg-gray-100 mt-20">

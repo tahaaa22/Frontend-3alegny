@@ -6,7 +6,7 @@ import PharmacyCard from '../components/PharmacyCard';
 import Filter from '../components/Filter';
 
 const PatientPortal = () => {
-  
+    const navigate = useNavigate();
     const location = useLocation();
     let { response} = location.state?.patientdata;
  
@@ -149,10 +149,27 @@ const PatientPortal = () => {
     { city: "Berlin", region: "Berlin", country: "Germany" },
   ];
 
+  if (!patient || patient.role !== "Patient") {
+    return (
+      <div className="w-screen mx-auto p-14 mt-7">
+        <h2 className="text-2xl font-bold text-red-500">
+          Unauthorized Access
+          
+        </h2>
+        <p className="text-lg text-white">
+          You do not have the necessary permissions to access the Patient Portal.
+        </p>
+        <button
+          className="mt-5 text-white bg-blue-500 hover:bg-blue-700 px-5 py-2 rounded-md"
+          onClick={() => navigate("/login")}
+        >Return to Login</button>
+      </div>
+    );
+  }
+
   const [filterType, setFilterType] = useState(""); // Keeps track of which filter is active
   const [Location, setLocation] = useState(""); // User's Location
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
-  const navigate = useNavigate();
   // Function to toggle the filter dropdown
   const handleFilterClick = (type) => {
     // Toggle the filter visibility for the clicked button
@@ -236,7 +253,7 @@ const PatientPortal = () => {
             placeholder="Enter your location"
             value={Location}
             onChange={(e) => setLocation(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded bg-white"
           />
           <button
             onClick={handleDetectLocation}
@@ -308,6 +325,8 @@ const PatientPortal = () => {
       </div>
       <div className="border-t border-white w-screen mb-4"></div>
     </div>
+    
+    
   );
 };
 
