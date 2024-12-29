@@ -23,8 +23,9 @@ import HospitalPortal from "./pages/HospitalPortal";
 import PharmacyPortal from "./pages/PharmacyPortal";
 import PHRPage from "./components/PHRPage";
 import EHRPage from "./components/EHRPage";
-import Order from "./pages/Order";
-
+// import Order from "./pages/Order";
+import AdminPortal from "./components/AdminPortal"
+import EditPHR from "./components/EditPHR";
 function App() {
   return (
     <NextUIProvider>
@@ -38,18 +39,22 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<About />} />
               <Route path="/appointment" element={<Appointment />} />
-              <Route path="/orders" element={<Order/>}/>
+              {/* <Route path="/orders" element={<Order/>}/> */}
 
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<SignUpForm />} />
 
               <Route path="/patient" element={<PatientPortal />} />
               <Route path="/MyProfile" element={<ProfilePage />} />
-              <Route path="/edit-profile" element={<EditProfile  />} />
+              <Route path="/edit-profile" element={<EditProfile />} />
+              <Route path="/edit-phr" element={<EditPHR />} />
               <Route path="/hospitalportal" element={<HospitalPortal/>}/>
               <Route path="/pharmacyportal" element={<PharmacyPortal/>}/>
               <Route path="/phr" element={<PHRPage/>}/>
               <Route path="/ehrpatient" element={<EHRPage/>}/>
+              <Route path="/adminportal" element={<AdminPortal />} />
+
+
             </Routes>
           </main>
           <Footer />

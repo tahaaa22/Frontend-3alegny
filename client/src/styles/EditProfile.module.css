@@ -1,4 +1,4 @@
-.fancy-card {
+.fancyCard {
   background: linear-gradient(135deg, #ffffff, #ffffff);
   color: #1f1e1e;
   padding: 20px 30px;
@@ -6,10 +6,10 @@
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 900px;
-  margin: 20px auto;
+  margin: 70px auto;
 }
 
-.fancy-card h1 {
+.fancyCard h1 {
   font-size: 28px;
   text-align: center;
   margin-bottom: 20px;
@@ -46,6 +46,7 @@ input {
   border-radius: 5px;
   font-size: 14px;
   outline: none;
+  background-color: #3175bd;
   box-sizing: border-box; /* Ensure padding doesn't affect the width */
 }
 

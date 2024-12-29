@@ -12,10 +12,9 @@ function EditProfile() {
     medicalConditions: "",
     familyHistory: "",
     password: "",
-    image: "https://via.placeholder.com/150", // Default placeholder image
+    image: "https://via.placeholder.com/150",
   });
 
-  // Simulate fetching EHR data (replace with real API call)
   useEffect(() => {
     const fetchEHRData = async () => {
       const savedEHR = {
@@ -28,7 +27,7 @@ function EditProfile() {
         medicalConditions: "Hypertension",
         familyHistory: "Diabetes, Heart Disease",
         password: "********",
-        image: "https://via.placeholder.com/150", // Replace with real URL
+        image: "https://via.placeholder.com/150",
       };
       setUserInfo(savedEHR);
     };
@@ -36,7 +35,6 @@ function EditProfile() {
     fetchEHRData();
   }, []);
 
-  // Handle image upload
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -50,10 +48,8 @@ function EditProfile() {
 
   return (
     <div className={styles.editProfileContainer}>
-      <div className={styles.fancyCard}>
-        <h1 className={styles.title}>Edit Profile</h1>
-
-        {/* Profile Picture Section */}
+      <div className={`${styles.editProfileCard} ${styles.fancyCard}`}>
+        <h1>Edit Profile</h1>
         <div className={styles.profilePictureSection}>
           <img
             src={userInfo.image}
@@ -73,9 +69,7 @@ function EditProfile() {
           />
         </div>
 
-        {/* Form Section */}
         <form className={styles.editProfileForm}>
-          {/* First Row (First Name & Last Name) */}
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
               <label htmlFor="firstName">First Name</label>
@@ -97,7 +91,6 @@ function EditProfile() {
             </div>
           </div>
 
-          {/* Second Row (Email & Phone) */}
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
               <label htmlFor="email">Email</label>
@@ -119,51 +112,6 @@ function EditProfile() {
             </div>
           </div>
 
-          {/* Third Row (Allergies & Drugs) */}
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="allergies">Allergies</label>
-              <input
-                type="text"
-                id="allergies"
-                name="allergies"
-                defaultValue={userInfo.allergies}
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="drugs">Drugs</label>
-              <input
-                type="text"
-                id="drugs"
-                name="drugs"
-                defaultValue={userInfo.drugs}
-              />
-            </div>
-          </div>
-
-          {/* Fourth Row (Medical Conditions & Family History) */}
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="medicalConditions">Medical Conditions</label>
-              <input
-                type="text"
-                id="medicalConditions"
-                name="medicalConditions"
-                defaultValue={userInfo.medicalConditions}
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="familyHistory">Family History</label>
-              <input
-                type="text"
-                id="familyHistory"
-                name="familyHistory"
-                defaultValue={userInfo.familyHistory}
-              />
-            </div>
-          </div>
-
-          {/* Fifth Row (Password & Confirm Password) */}
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
               <label htmlFor="password">Password</label>
@@ -185,7 +133,6 @@ function EditProfile() {
             </div>
           </div>
 
-          {/* Save Button */}
           <button type="submit" className={styles.saveBtn}>
             Save Changes
           </button>
