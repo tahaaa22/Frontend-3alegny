@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import {User, Image, Link, Button} from "@nextui-org/react";
 
@@ -8,6 +9,41 @@ import TopPharmacy from "../components/TopPharmacy";
 import TopHospital from "../components/TopHospital";
 
 const HomePage= () => {
+
+    const [userStats, setUserStats] = useState(null); // State for user statistics
+    const [topHospitals, setTopHospitals] = useState([]); // State for top hospitals
+    const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null); // Error state
+
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            // Use Promise.all to fetch both endpoints concurrently
+            const [userStatsResponse, topHospitalsResponse] = await Promise.all([
+            axios.get(
+                "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/"
+            ),
+            axios.get(
+                "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/top-hospitals"
+            ),
+            ]);
+
+            setUserStats(userStatsResponse.data); // Store user statistics
+            setTopHospitals(topHospitalsResponse.data); // Store top hospitals
+        } catch (err) {
+            console.error("Error fetching data:", err);
+            setError("Failed to fetch data. Please try again later.");
+        } finally {
+            setLoading(false); // Stop loading once requests complete
+        }
+        };
+
+        fetchData();
+    }, []); // Empty dependency array ensures fetch runs once on component mount
+
+    if (loading) return <p>Loading...</p>; // Show loading message
+    if (error) return <p className="text-red-500">{error}</p>; // Show error message
+
     return(
         <>
         <div class="flex items-center flex-col p-6">
@@ -51,8 +87,11 @@ const HomePage= () => {
             </div>
             <div class="flex flex-col items-center gap-6 justify-center">
                     <h1 class="text-4xl font-bold text-white">
-                    Join over 15,000 users
+                    Join users
                     </h1>
+                    <p class="text-4xl font-bold text-white">Total Users: {userStats?.totalUsers}</p>
+                    {/* <p>Active Users: {userStats?.activeUsers}</p>
+                    <p>Inactive Users: {userStats?.inactiveUsers}</p> */}
                     <div class="flex flex-col sm:flex-row items-center gap-6">
                     <Button
                         as={Link}
@@ -148,6 +187,19 @@ const HomePage= () => {
         </div>
         <div class="flex flex-wrap justify-center gap-8">
             <TopHospital />
+            <ul>
+            {topHospitals.map((hospital) => (
+                <li
+                key={hospital.id}
+                className="flex justify-between py-2 border-b last:border-0"
+                >
+                <span>{hospital.name}</span>
+                <span>
+                    {hospital.location} - {hospital.rating}⭐
+                </span>
+                </li>
+            ))}
+            </ul>
         </div>
         <div class="flex flex-wrap justify-center gap-8">
             <h2 class="text-4xl font-bold text-white">

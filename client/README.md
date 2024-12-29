@@ -20,3 +20,6 @@ npm run dev
 
 <!-- To install chart libraries -->
 npm install react-chartjs-2 chart.js
+
+<!-- To install axios (backend integration) -->
+npm install axios

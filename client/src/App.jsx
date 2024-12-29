@@ -21,9 +21,9 @@ import Appointment from "./pages/Appointment";
 // import HospitalCard from "./components/HospitalCard";
 import HospitalPortal from "./pages/HospitalPortal";
 import PharmacyPortal from "./pages/PharmacyPortal";
-import PHRPage from "./components/PHRPage";
-import EHRPage from "./components/EHRPage";
-import Order from "./pages/Order";
+// import PHRPage from "./components/PHRPage";
+// import EHRPage from "./components/EHRPage";
+// import Order from "./pages/Order";
 
 function App() {
   return (
@@ -38,7 +38,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<About />} />
               <Route path="/appointment" element={<Appointment />} />
-              <Route path="/orders" element={<Order/>}/>
+              {/* <Route path="/orders" element={<Order/>}/> */}
 
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<SignUpForm />} />
@@ -48,8 +48,8 @@ function App() {
               <Route path="/edit-profile" element={<EditProfile  />} />
               <Route path="/hospitalportal" element={<HospitalPortal/>}/>
               <Route path="/pharmacyportal" element={<PharmacyPortal/>}/>
-              <Route path="/phr" element={<PHRPage/>}/>
-              <Route path="/ehrpatient" element={<EHRPage/>}/>
+              {/* <Route path="/phr" element={<PHRPage/>}/> */}
+              {/* <Route path="/ehrpatient" element={<EHRPage/>}/> */}
             </Routes>
           </main>
           <Footer />
