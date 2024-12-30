@@ -1,4 +1,4 @@
-.fancy-card {
+.fancyCard {
   background: linear-gradient(135deg, #ffffff, #ffffff);
   color: #1f1e1e;
   padding: 20px 30px;
@@ -6,17 +6,24 @@
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 900px;
-  margin: 20px auto;
+  margin: 90px auto;
 }
 
-.fancy-card h1 {
+.fancyCard h1 {
   font-size: 28px;
   text-align: center;
   margin-bottom: 20px;
 }
 
-.editProfileForm,
-.ehrDetails {
+.editProfileContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.editProfileForm {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -25,8 +32,8 @@
 .formRow {
   display: flex;
   justify-content: space-between;
-  gap: 30px; /* Increase the gap between columns */
-  margin-bottom: 20px; /* Add spacing between rows */
+  gap: 30px;
+  margin-bottom: 20px;
 }
 
 .formGroup {
@@ -36,7 +43,7 @@
 label {
   font-size: 14px;
   margin-bottom: 5px;
-  display: block; /* Ensure label is on a separate line */
+  display: block;
 }
 
 input {
@@ -46,7 +53,8 @@ input {
   border-radius: 5px;
   font-size: 14px;
   outline: none;
-  box-sizing: border-box; /* Ensure padding doesn't affect the width */
+  background-color: #3175bd;
+  box-sizing: border-box;
 }
 
 .saveBtn {

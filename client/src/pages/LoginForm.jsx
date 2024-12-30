@@ -1,22 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navigation from "../components/Navigation";
-// import axios from "axios";
+import axios from "axios";
+import styles from "../styles/LoginForm.module.css";
 
 const LoginForm = () => {
-  const [activeTab, setActiveTab] = useState("patient");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); 
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "email") {
-      setEmail(value);
+    if (name === "username") {
+      setUsername(value);
     } else if (name === "password") {
       setPassword(value);
     }
@@ -24,22 +19,33 @@ const LoginForm = () => {
 
   const submit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axios.post(
+        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/login",
+        { username, password }
+      );
+      const { role } = response.data; // Assuming the response contains the user role
 
-    const loginData = {
-      email: email,
-      password: password,
-    };
-
-    // try {
-    //   if (email === "test@patient.com" && password === "password") {
-    //     alert("Login successful!");
-    //     navigate("/home"); 
-    //   } else {
-    //     alert("Invalid email or password.");
-    //   }
-    // } catch (error) {
-    //   alert("Login failed. Please try again.");
-    // }
+      // Navigate based on the user's role
+      switch (role) {
+        case "Patient":
+          navigate("/patient",{ state: { patientdata:response.data  } });
+          break;
+        case "Hospital":
+          navigate("/hospitalportal");
+          break;
+        case "Pharmacy":
+          navigate("/pharmacyportal");
+          break;
+        case "Admin":
+          navigate("/adminportal");
+          break;
+        default:
+          alert("Unknown role. Please contact support.");
+      }
+    } catch (error) {
+      alert(error.response?.data || "An error occurred during login.");
+    }
   };
 
   const handleSignUpRedirect = () => {
@@ -47,104 +53,42 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="login-tabs-container">
-      <div>
-        <Navigation></Navigation>
-      </div>
-      <div className="tabs">
+    <div className={styles.loginContainer}>
+      <div className={styles.loginForm}>
+        <h2>Welcome to 3alegny!</h2>
+        <p>Please log in to access your account</p>
+        <form onSubmit={submit}>
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            value={username}
+            onChange={handleInputChange}
+            placeholder="Enter your username"
+            required
+          />
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={handleInputChange}
+            placeholder="Enter your password"
+            required
+          />
+          <button className={styles.loginBtn} type="submit">
+            Log In
+          </button>
+        </form>
         <button
-          className={activeTab === "patient" ? "tab active-tab" : "tab"}
-          onClick={() => handleTabChange("patient")}
+          className={styles.createAccountBtn}
+          onClick={handleSignUpRedirect}
         >
-          Patient Login
+          Create an Account
         </button>
-        <button
-          className={activeTab === "business" ? "tab active-tab" : "tab"}
-          onClick={() => handleTabChange("business")}
-        >
-          Business Login
-        </button>
-      </div>
-      <div className="tab-content">
-        {activeTab === "patient" && (
-          <div className="login-form">
-            <h2>
-              Welcome to 3alegny!
-              <br />
-              Please Log in as a Patient
-            </h2>
-            <p>Please sign in to book appointments</p>
-            <form onSubmit={submit}>
-              <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={handleInputChange}
-                placeholder="Enter your email"
-                required
-              />
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={password}
-                onChange={handleInputChange}
-                placeholder="Enter your password"
-                required
-              />
-              <button className="login-btn" type="submit">
-                Log In
-              </button>
-            </form>
-            <button className="create-account-btn" onClick={handleSignUpRedirect}>
-              Create an Account
-            </button>
-            <p className="forgot-password">
-              Forget Password? <a href="#">Click Here</a>
-            </p>
-          </div>
-        )}
-        {activeTab === "business" && (
-          <div className="login-form">
-            <h2>
-              Welcome to 3alegny!
-              <br />
-              Please Log in as a Business
-            </h2>
-            <p>Sign in to manage your business profile</p>
-            <form onSubmit={submit}>
-              <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={handleInputChange}
-                placeholder="Enter your email"
-                required
-              />
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={password}
-                onChange={handleInputChange}
-                placeholder="Enter your password"
-                required
-              />
-              <button className="login-btn" type="submit">
-                Log In
-              </button>
-            </form>
-            <button className="create-account-btn" onClick={handleSignUpRedirect}>
-              Create an Account
-            </button>
-            <p className="forgot-password">
-              Forget Password? <a href="#">Click Here</a>
-            </p>
-            
-          </div>
-        )}
+        <p className={styles.forgotPassword}>
+          Forgot Password? <a href="#">Click Here</a>
+        </p>
       </div>
     </div>
   );

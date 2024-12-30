@@ -18,7 +18,7 @@ const EHRPage = () => {
     email: 'johndoe@example.com',
   };
 
-  const medicalHistory = {
+  const clinicalData = {
     chronicConditions: ['Hypertension', 'Asthma'],
     allergies: ['Penicillin'],
     medications: ['Lisinopril', 'Albuterol'],
@@ -34,7 +34,7 @@ const EHRPage = () => {
     weight: [75, 76, 77, 75, 74],
   };
 
-  const labResults = [
+  const Procedures = [
     { testName: 'Cholesterol', result: '200 mg/dL' },
     { testName: 'Glucose', result: '90 mg/dL' },
     { testName: 'Iron', result: '50 mcg/dL' },
@@ -197,12 +197,11 @@ const EHRPage = () => {
   // Tab navigation
   const tabs = [
     { id: 'patientDemographics', label: 'Patient Demographics' },
-    { id: 'medicalHistory', label: 'Medical History' },
+    { id: 'clinicalData', label: 'Clinical Data' },
+    { id:'medicalImaging', label:'Medical Imaging'},
     { id: 'vitalSigns', label: 'Vitals & Measurements' },
-    { id: 'labResults', label: 'Laboratory Test Results' },
-    { id: 'medications', label: 'Medications' },
-    { id: 'immunizations', label: 'Immunizations' },
-    { id: 'carePlans', label: 'Care Plans' },
+    { id: 'Procedures', label: 'Procedure History' },
+    { id: 'careCoordination', label: 'Care Coordination' },
     { id: 'billing', label: 'Billing & Administration' },
   ];
 
@@ -225,12 +224,32 @@ const EHRPage = () => {
         {activeTab === 'patientDemographics' && (
           <div className={styles.tabSection}>
             <h2>Patient Demographics</h2>
+            <div className={styles.ehrCardsGrid}>
+            <div className={styles.card}>
             <p><strong>Name:</strong> {patientDemographics.name}</p>
+            </div>
+            <div className={styles.card}>
             <p><strong>Date of Birth:</strong> {patientDemographics.dateOfBirth}</p>
+            </div>
+            <div className={styles.card}>
             <p><strong>Gender:</strong> {patientDemographics.gender}</p>
+            </div>
+            <div className={styles.card}>
             <p><strong>Address:</strong> {patientDemographics.address}</p>
+            </div>
+            <div className={styles.card}>
             <p><strong>Phone:</strong> {patientDemographics.phone}</p>
+            </div>
+            <div className={styles.card}>
             <p><strong>Email:</strong> {patientDemographics.email}</p>
+            </div>
+            <div className={styles.card}>
+            <p><strong>Insurance:</strong> {patientDemographics.email}</p>
+            </div>
+            <div className={styles.card}>
+            <p><strong>Medical History:</strong> {patientDemographics.email}</p>
+            </div>
+            </div>
             <div className={styles.chartContainer}>
 
             <Radar data={demographicsChartData} />
@@ -239,18 +258,31 @@ const EHRPage = () => {
         )}
 
         {/* Medical History */}
-        {activeTab === 'medicalHistory' && (
+        {activeTab === 'clinicalData' && (
           <div className={styles.tabSection}>
-            <h2>Medical History</h2>
-            <p><strong>Chronic Conditions:</strong> {medicalHistory.chronicConditions.join(', ')}</p>
-            <p><strong>Allergies:</strong> {medicalHistory.allergies.join(', ')}</p>
-            <p><strong>Medications:</strong> {medicalHistory.medications.join(', ')}</p>
-            <p><strong>Family History:</strong> {medicalHistory.familyHistory}</p>
-            <p><strong>Surgical History:</strong> {medicalHistory.surgeries.join(', ')}</p>
-            <p><strong>Vaccinations:</strong> {medicalHistory.vaccinations.join(', ')}</p>
+            <h2>Clinical Data</h2>
+            <p><strong>Diagnoses:</strong> {clinicalData.chronicConditions.join(', ')}</p>
+            <p><strong>Allergies:</strong> {clinicalData.allergies.join(', ')}</p>
+            <p><strong>Medications:</strong> {clinicalData.medications.join(', ')}</p>
+            <p><strong>Lab Results:</strong> {clinicalData.familyHistory}</p>
+            <p><strong>Immunizations:</strong> {clinicalData.surgeries.join(', ')}</p>
+            <p><strong>Treatment plan:</strong> {clinicalData.vaccinations.join(', ')}</p>
           </div>
         )}
-
+        {/* Radiology Images Tab */}
+        {activeTab === "medicalImaging" && (
+          <div className={styles.tabSection}>
+            <h2>Medical Imaging</h2>
+            <div className={styles.radiologyCardsGrid}>
+              {radiologyImages.map((image) => (
+                <div key={image.id} className={styles.card}>
+                  <img src={image.src} alt={image.description} className={styles.radiologyImage} />
+                  <p>{image.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         {/* Vitals & Measurements */}
         {activeTab === 'vitalSigns' && (
           <div className={styles.tabSection}>
@@ -273,12 +305,12 @@ const EHRPage = () => {
           </div>
         )}
 
-        {/* Laboratory Test Results */}
-        {activeTab === 'labResults' && (
+        {/* Procedure History */}
+        {activeTab === 'Procedures' && (
           <div className={styles.tabSection}>
-            <h2>Laboratory Test Results</h2>
+            <h2>Procedure History</h2>
             <ul>
-              {labResults.map((result, index) => (
+              {Procedures.map((result, index) => (
                 <li key={index}><strong>{result.testName}:</strong> {result.result}</li>
               ))}
             </ul>
@@ -286,44 +318,9 @@ const EHRPage = () => {
         )}
 
         {/* Medications */}
-        {activeTab === 'medications' && (
+        {activeTab === 'careCoordination' && (
           <div className={styles.tabSection}>
-            <h2>Medications</h2>
-            <ul>
-              {medications.map((medication, index) => (
-                <li key={index}>
-                  <strong>{medication.name}</strong> ({medication.dosage}) - Status: {medication.status}
-                </li>
-              ))}
-            </ul>
-            <div className={styles.chartContainer}>
-
-            <Doughnut data={medicationStatusData} />
-            </div>
-          </div>
-        )}
-
-        {/* Immunizations */}
-        {activeTab === 'immunizations' && (
-          <div className={styles.tabSection}>
-            <h2>Immunization History</h2>
-            {Vaccines.map((shot, index) => (
-              <p key={index}>
-                <strong>{shot.vaccine}:</strong> {shot.date}
-              </p>
-            ))}
-            <p><strong>Vaccination Status:</strong> {immunizations[0]}% Vaccinated, {immunizations[1]}% Not Vaccinated</p>
-            <div className={styles.chartContainer}>
-
-            <Doughnut data={immunizationChartData} />
-            </div>
-          </div>
-        )}
-
-        {/* Care Plans */}
-        {activeTab === 'carePlans' && (
-          <div className={styles.tabSection}>
-            <h2>Care Plans</h2>
+            <h2>Care Coordination info</h2>
             <ul>
               {carePlans.map((plan, index) => (
                 <li key={index}><strong>{plan.title}:</strong> {plan.description}</li>
@@ -335,6 +332,7 @@ const EHRPage = () => {
             </div>
           </div>
         )}
+
 
         {/* Billing & Administration */}
         {activeTab === 'billing' && (

@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useLocation} from 'react-router-dom';
 import HospitalCard from '../components/HospitalCard';
 import ClinicCard from '../components/ClinicCard';
 import PharmacyCard from '../components/PharmacyCard';
 import Filter from '../components/Filter';
 
 const PatientPortal = () => {
+    const navigate = useNavigate();
+    const loc = useLocation();
+    let { response} = loc.state?.patientdata;
+ 
+    const patient =loc.state.patientdata
+    console.log("🚀 ~ patient ~ data:", patient)
+    const handleMyProfileNavigation = () => {
+      navigate("/MyProfile", { state: { patientdata: patient } });
+    };
+
   
   const hospitals = [
     {
@@ -146,7 +156,6 @@ const PatientPortal = () => {
   const [filterType, setFilterType] = useState(""); // Keeps track of which filter is active
   const [location, setLocation] = useState(""); // User's location
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
-  const navigate = useNavigate();
   // Function to toggle the filter dropdown
   const handleFilterClick = (type) => {
     // Toggle the filter visibility for the clicked button
@@ -212,6 +221,14 @@ const PatientPortal = () => {
               This portal provides you with information about various hospitals, clinics, and pharmacies. 
               You can explore hospitals and clinics near you for health services, and pharmacies for your medicinal needs.
             </p>
+            <div className="mb-6 flex justify-end">
+            <button
+              onClick={handleMyProfileNavigation}
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            >
+              My Profile
+            </button>
+          </div>
           </div>
           <div className="w-1/2">
             <img
@@ -220,6 +237,8 @@ const PatientPortal = () => {
               className="w-full h-44 object-cover rounded-lg"
             />
           </div>
+          
+          
         </div>
       </div>
       <div className="mb-8 bg-white p-6 rounded-lg shadow-md text-black">

@@ -1,21 +1,24 @@
+"use client";
 import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import styles from "../styles/SignUpForm.module.css"; // Import styles
 
 const SignUpForm = () => {
+  
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    email: "",
-    day: "",
-    month: "",
-    year: "",
+    email:"",
     gender: "",
-    allergies: "",
-    drugs: "",
-    medicalConditions: "",
-    familyHistory: "",
-    radiologyImages: null,
-    labResults: null,
+    contactInfo:"",
+    street: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    username: "",
+    dateofbirth:"",
     password: "",
     confirmPassword: "",
   });
@@ -30,36 +33,42 @@ const SignUpForm = () => {
     }));
   };
 
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: files[0],
-    }));
-  };
 
   const submit = async (e) => {
     e.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
+  
+    const { firstName, lastName,email, username, gender, dateofbirth, confirmPassword, contactInfo, street, city, state, zipCode } = formData;
+  
+    try {
+      const response = await axios.post(
+        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/signup",
+        {
+          name: `${firstName} ${lastName}`,
+          email:email,
+          dateOfBirth: dateofbirth,
+          phone: contactInfo,
+          userName: username,
+          street: street,
+          city: city,
+          state: state,
+          zipCode: zipCode,
+          password: confirmPassword,
+          gender: gender,
+          
+        }
+      );      
+      alert("Welcome! Account created successfully.");
+      navigate("/patient", { state: { patientdata:response.data  } });
+    } catch (error) {
+      alert(error.response?.data || "An error occurred during signup.");
     }
-
-    // try {
-    //   // Replace this with an actual API call
-    //   console.log("Submitted data:", data);
-    //   alert(`${activeTab} account created successfully!`);
-    //   navigate("/home");
-    // } catch (error) {
-    //   alert("Error occurred while signing up.");
-    // }
   };
+  
 
   return (
-    <div className="login-tabs-container ">
-      <div className="tab-content">
-        <div className="login-form">
+    <div className={styles.loginTabsContainer}>
+      <div className={styles.tabContent}>
+        <div className={styles.loginForm}>
           <h2>
             Welcome to 3alegny!
             <br />
@@ -81,155 +90,96 @@ const SignUpForm = () => {
               placeholder="Enter your last name"
               required
             />
-            <label>Email</label>
+            <label>Contact Info</label>
             <input
-              name="email"
-              type="email"
-              value={formData.email}
+              name="contactInfo"
+              type="number"
+              value={formData.contactInfo}
               onChange={handleInputChange}
-              placeholder="Enter your email"
+              placeholder="Enter your Email Address"
               required
             />
+            <label>Username</label>
+            <input
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              placeholder="Enter your username"
+              required
+            />
+            <label>Contact Info</label>
+            <input
+              name="contactInfo"
+              value={formData.contactInfo}
+              onChange={handleInputChange}
+              placeholder="Enter your phone number"
+              required
+            />
+
+            <label>Street</label>
+            <input
+              name="street"
+              value={formData.street}
+              onChange={handleInputChange}
+              placeholder="Enter your Street Name"
+            />
+            <label>City</label>
+            <input
+              name="city"
+              value={formData.city}
+              onChange={handleInputChange}
+              placeholder="Enter your City"
+            />
+            <label>State</label>
+            <input
+              name="state"
+              value={formData.state}
+              onChange={handleInputChange}
+              placeholder="Enter your State"
+            />
+            <label>ZipCode</label>
+            <input
+              name="zipCode"
+              value={formData.zipCode}
+              onChange={handleInputChange}
+              placeholder="Enter your Zip Code"
+            />
             <label>Date of Birth</label>
-            <div className="dob-inputs">
+            <div className={styles.dobInputs}>
               <input
-                name="day"
-                type="number"
-                value={formData.day}
+                name="dateofbirth"
+                type="date"
+                value={formData.dateofbirth}
                 onChange={handleInputChange}
                 placeholder="DD"
                 required
               />
-              <input
-                name="month"
-                type="number"
-                value={formData.month}
-                onChange={handleInputChange}
-                placeholder="MM"
-                required
-              />
-              <input
-                name="year"
-                type="number"
-                value={formData.year}
-                onChange={handleInputChange}
-                placeholder="YYYY"
-                required
-              />
+              
             </div>
-            <div classname="select-container">
-            <label>Gender</label>
-                <select 
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleInputChange}
-                  required
-                  classname="custom-select"
-                >
-                  <option value="">Select your gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
+            <div className={styles.selectContainer}>
+              <label>Gender</label>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select your gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
             </div>
             
-            {/* <label>Allergies</label>
-            <select
-              name="allergies"
-              value={formData.allergies}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Allergy</option>
-              {[
-                "Pollen",
-                "Dust mites",
-                "Mold",
-                "Pet dander",
-                "Almonds",
-                "Walnuts",
-                "Shellfish",
-                "Eggs",
-                "Soy",
-                "Wheat",
-                "Latex",
-                "Insect stings",
-                "Sesame",
-                "Corn",
-                "Fish",
-                "Citrus fruits",
-                "Beef",
-                "Tomatoes",
-                "Celery",
-                "Mustard",
-              ].map((allergy) => (
-                <option key={allergy} value={allergy}>
-                  {allergy}
-                </option>
-              ))}
-            </select>
-            <label>Drugs</label>
-            <select
-              name="drugs"
-              value={formData.drugs}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Drug</option>
-              {[
-                "Aspirin",
-                "Ibuprofen",
-                "Metoprolol",
-                "Lisinopril",
-                "Clopidogrel",
-                "Losartan",
-                "Atorvastatin",
-                "Levodopa",
-                "Phenytoin",
-                "Carbamazepine",
-                "Gabapentin",
-                "Donepezil",
-                "Formaldehyde",
-                "Ethanol",
-                "Xylene",
-                "Paraffin",
-                "Hematoxylin",
-                "Panadol",
-              ].map((drug) => (
-                <option key={drug} value={drug}>
-                  {drug}
-                </option>
-              ))}
-            </select>
-            <label>Medical Conditions</label>
-            <input
-              name="medicalConditions"
-              value={formData.medicalConditions}
-              onChange={handleInputChange}
-              placeholder="Enter medical conditions"
-            />
-            <label>Family History</label>
-            <input
-              name="familyHistory"
-              value={formData.familyHistory}
-              onChange={handleInputChange}
-              placeholder="Enter family history"
-            />
-            <label>Radiology Images</label>
-            <input
-              type="file"
-              name="radiologyImages"
-              onChange={handleFileChange}
-            />
-            <label>Lab Results</label>
-            <input type="file" name="labResults" onChange={handleFileChange} />
-            <label>Create Password</label>
+            <label> Password</label>
             <input
               name="password"
               type="password"
               value={formData.password}
               onChange={handleInputChange}
-              placeholder="Create a password"
+              placeholder="Enter your password"
               required
-            /> */}
+            />
             <label>Confirm Password</label>
             <input
               name="confirmPassword"
@@ -239,14 +189,14 @@ const SignUpForm = () => {
               placeholder="Confirm your password"
               required
             />
-            <button className="login-btn" type="submit">
+            <button className={styles.loginBtn} type="submit">
               Sign Up
             </button>
           </form>
-          <p className="forgot-password">
+          <p className={styles.forgotPassword}>
             Already have an account?{" "}
             <button
-              className="create-account-btn"
+              className={styles.createAccountBtn}
               onClick={() => navigate("/login")}
             >
               Log In

@@ -43,24 +43,24 @@ const Navigation= () => {
     </NavbarContent>
 
     <NavbarContent justify="end" className="flex gap-4">
-        <NavbarItem className="hidden lg:flex">
+        {/* <NavbarItem className="hidden lg:flex">
         <Link
-            href="/login"
+            href="/MyProfile"
             className="text-gray-600 hover:text-gray-800 transition-colors"
         >
-            Login
+            Profile
         </Link>
-        </NavbarItem>
+        </NavbarItem> */}
 
         <NavbarItem>
         <Button
             as={Link}
-            href="/signup"
+            href="/patient"
             color="primary"
             variant="flat"
             className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
         >
-            Sign Up
+            Book Appointment
         </Button>
         </NavbarItem>
     </NavbarContent>
