@@ -1,31 +1,42 @@
 import React from "react";
-import {NextUIProvider} from "@nextui-org/react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { NextUIProvider } from "@nextui-org/react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 
-// importing pages
+// Importing pages
 import HomePage from "./pages/HomePage";
 import LoginForm from "./pages/LoginForm";
 import SignUpForm from "./pages/SignUpForm";
 import PatientPortal from "./pages/PatientPortal";
 import ProfilePage from "./pages/ProfilePage";
 import About from "./pages/About";
-
-// importing components
-import Navigation from "./components/Navigation";
-import EditProfile from "./components/EditProfile";
-import Footer from "./components/Footer";
-
-import "./App.css";
 import Appointment from "./pages/Appointment";
-
-// import HospitalCard from "./components/HospitalCard";
 import HospitalPortal from "./pages/HospitalPortal";
 import PharmacyPortal from "./pages/PharmacyPortal";
-// import PHRPage from "./components/PHRPage";
-// import EHRPage from "./components/EHRPage";
-// import Order from "./pages/Order";
+import PHRPage from "./components/PHRPage";
+import EHRPage from "./components/EHRPage";
+import Order from "./pages/Order";
 
 function App() {
+  const location = useLocation();
+
+  // Determine visibility of navigation and footer based on the route
+  const showNavAndFooter =
+    ["/", "/about", "/login", "/signup"].includes(location.pathname);
+  const showNav2AndFooter =
+    [
+      "/patient",
+      "/appointment",
+      "/MyProfile",
+      "/edit-profile",
+      "/phr",
+    ].includes(location.pathname);
+  const hideAll = [
+    "/adminportal",
+    "/hospitalportal",
+    "/ehrpatient",
+    "/pharmacyportal",
+  ].includes(location.pathname);
+
   return (
     <NextUIProvider>
       <Router>
@@ -38,7 +49,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<About />} />
               <Route path="/appointment" element={<Appointment />} />
-              {/* <Route path="/orders" element={<Order/>}/> */}
+              <Route path="/orders" element={<Order/>}/>
 
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<SignUpForm />} />
@@ -48,8 +59,8 @@ function App() {
               <Route path="/edit-profile" element={<EditProfile  />} />
               <Route path="/hospitalportal" element={<HospitalPortal/>}/>
               <Route path="/pharmacyportal" element={<PharmacyPortal/>}/>
-              {/* <Route path="/phr" element={<PHRPage/>}/> */}
-              {/* <Route path="/ehrpatient" element={<EHRPage/>}/> */}
+              <Route path="/phr" element={<PHRPage/>}/>
+              <Route path="/ehrpatient" element={<EHRPage/>}/>
             </Routes>
           </main>
           <Footer />
@@ -59,4 +70,4 @@ function App() {
   );
 }
 
-export default App;
+export default Root;

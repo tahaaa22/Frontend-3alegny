@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
 const PharmacyPortal = () => {
+  const location = useLocation();
+  let { response} = location.state?.pharmacydata;
+
+  const pharmacy =location.state.pharmacydata
+  console.log("🚀 ~ pharmacy ~ data:", pharmacy)
   const [activeSection, setActiveSection] = useState("inventory");
   const [selectedDrug, setSelectedDrug] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -113,6 +117,24 @@ const PharmacyPortal = () => {
       alert("Failed to add the drug. Please try again.");
     }
   };
+
+  if (!pharmacy || pharmacy.role !== "Pharmacy") {
+    return (
+      <div className="w-screen mx-auto p-14 mt-7">
+        <h2 className="text-2xl font-bold text-red-500">
+          Unauthorized Access
+          
+        </h2>
+        <p className="text-lg text-white">
+          You do not have the necessary permissions to access the Pharmacy Portal.
+        </p>
+        <button
+          className="mt-5 text-white bg-blue-500 hover:bg-blue-700 px-5 py-2 rounded-md"
+          onClick={() => navigate("/login")}
+        >Return to Login</button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex container bg-gray-100 mt-20">

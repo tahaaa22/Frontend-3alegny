@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import HospitalCard from '../components/HospitalCard';
 import ClinicCard from '../components/ClinicCard';
 import PharmacyCard from '../components/PharmacyCard';
 import Filter from '../components/Filter';
 
 const PatientPortal = () => {
-  
-  const hospitals = [
+    const navigate = useNavigate();
+    const location = useLocation();
+    let { response} = location.state?.patientdata;
+ 
+    const patient =location.state.patientdata
+    console.log("🚀 ~ patient ~ data:", patient)
+
+   const hospitals = [
     {
       id: 1,
       name: "Sunrise Medical Center",
-      location: "123 Main Street, New York",
+      Location: "123 Main Street, New York",
       departments: [
         { name: "Cardiology" },
         { name: "Neurology" },
@@ -25,7 +31,7 @@ const PatientPortal = () => {
     {
       id: 2,
       name: "Green Valley Hospital",
-      location: "456 Elm Avenue, Los Angeles",
+      Location: "456 Elm Avenue, Los Angeles",
       departments: [
         { name: "Cardiology" },
         { name: "Neurology" },
@@ -39,7 +45,7 @@ const PatientPortal = () => {
     {
       id: 3,
       name: "Bluewater Health",
-      location: "789 Maple Drive, Chicago",
+      Location: "789 Maple Drive, Chicago",
       departments: [
         { name: "Cardiology" },
         { name: "Neurology" },
@@ -53,7 +59,7 @@ const PatientPortal = () => {
     {
       id: 4,
       name: "Wellness Care Hospital",
-      location: "321 Oak Street, Houston",
+      Location: "321 Oak Street, Houston",
       departments: [
         { name: "Cardiology" },
         { name: "Neurology" },
@@ -67,7 +73,7 @@ const PatientPortal = () => {
     {
       id: 5,
       name: "Harmony Health Institute",
-      location: "654 Pine Road, San Francisco",
+      Location: "654 Pine Road, San Francisco",
       departments: [
         { name: "Cardiology" },
         { name: "Neurology" },
@@ -81,7 +87,7 @@ const PatientPortal = () => {
     {
       id: 6,
       name: "Harmony Health Institute",
-      location: "654 Pine Road, San Francisco",
+      Location: "654 Pine Road, San Francisco",
       departments: [
         { name: "Cardiology" },
         { name: "Neurology" },
@@ -98,7 +104,7 @@ const PatientPortal = () => {
     {
       id: 1,
       name: "Wellness Clinic",
-      location: "New York, NY",
+      Location: "New York, NY",
       department: "Cardiology",
       rating: "4.5/5",
       doctors: "Dr. Smith, Dr. Johnson",
@@ -107,7 +113,7 @@ const PatientPortal = () => {
     {
       id: 2,
       name: "HealthPlus Clinic",
-      location: "Los Angeles, CA",
+      Location: "Los Angeles, CA",
       department: "Dermatology",
       rating: "4.7/5",
       doctors: "Dr. Lee, Dr. Patel",
@@ -119,13 +125,13 @@ const PatientPortal = () => {
     {
       id: 1,
       name: "City Pharmacy",
-      location: "New York, NY",
+      Location: "New York, NY",
       rating: "4.7/5",
     },
     {
       id: 2,
       name: "Greenleaf Pharmacy",
-      location: "Los Angeles, CA",
+      Location: "Los Angeles, CA",
       rating: "4.9/5",
     },
   ];
@@ -143,10 +149,27 @@ const PatientPortal = () => {
     { city: "Berlin", region: "Berlin", country: "Germany" },
   ];
 
+  if (!patient || patient.role !== "Patient") {
+    return (
+      <div className="w-screen mx-auto p-14 mt-7">
+        <h2 className="text-2xl font-bold text-red-500">
+          Unauthorized Access
+          
+        </h2>
+        <p className="text-lg text-white">
+          You do not have the necessary permissions to access the Patient Portal.
+        </p>
+        <button
+          className="mt-5 text-white bg-blue-500 hover:bg-blue-700 px-5 py-2 rounded-md"
+          onClick={() => navigate("/login")}
+        >Return to Login</button>
+      </div>
+    );
+  }
+
   const [filterType, setFilterType] = useState(""); // Keeps track of which filter is active
-  const [location, setLocation] = useState(""); // User's location
+  const [Location, setLocation] = useState(""); // User's Location
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
-  const navigate = useNavigate();
   // Function to toggle the filter dropdown
   const handleFilterClick = (type) => {
     // Toggle the filter visibility for the clicked button
@@ -208,7 +231,7 @@ const PatientPortal = () => {
         <div className="flex w-full bg-blue-900 p-8 text-white rounded-lg">
           <div className="w-1/2 pr-8">
             <div className="text-3xl font-bold mb-4">Welcome to the Patient Portal</div>
-            <p className="text-lg">
+            <p className="text-lg text-white">
               This portal provides you with information about various hospitals, clinics, and pharmacies. 
               You can explore hospitals and clinics near you for health services, and pharmacies for your medicinal needs.
             </p>
@@ -228,9 +251,9 @@ const PatientPortal = () => {
           <input
             type="text"
             placeholder="Enter your location"
-            value={location}
+            value={Location}
             onChange={(e) => setLocation(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded bg-white"
           />
           <button
             onClick={handleDetectLocation}
@@ -246,7 +269,7 @@ const PatientPortal = () => {
         <div className="mt-4">
           <select
             onChange={handleLocationSelect}
-            value={location}
+            value={Location}
             className="w-full p-2 border rounded bg-white text-black"
           >
             <option value="">Select a location</option>
@@ -260,9 +283,9 @@ const PatientPortal = () => {
             })}
           </select>
         </div>
-        {location && (
+        {Location && (
           <p className="mt-3 text-gray-700">
-            Current Location: <strong>{location}</strong>
+            Current Location: <strong>{Location}</strong>
           </p>
         )}
       </div>
@@ -298,10 +321,12 @@ const PatientPortal = () => {
         >
           Filter</button>
           {filterType === "pharmacy" && <Filter type={filterType} />}
-        <PharmacyCard pharmacies={pharmacies} drugs={drugs} />
+        <PharmacyCard pharmacies={pharmacies} drugs={drugs} patient={patient}/>
       </div>
       <div className="border-t border-white w-screen mb-4"></div>
     </div>
+    
+    
   );
 };
 

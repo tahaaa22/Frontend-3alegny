@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const HospitalCard = ({ hospitals,onHospitalClick }) => {
+const HospitalCard = ({ hospitals }) => {
   const navigate = useNavigate();
 
   return (

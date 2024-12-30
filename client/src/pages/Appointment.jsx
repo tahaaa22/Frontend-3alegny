@@ -14,9 +14,6 @@ const Appointment = () => {
     new Date("2024-12-22"),
     new Date("2024-12-24"),
   ];
-  const availableDays = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
-  const availableTimes = ["8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:30 AM"];
-
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
 

@@ -7,7 +7,19 @@ import styles from "../styles/PHRPage.module.css";
 function PHRPage() {
   const [activeTab, setActiveTab] = useState("phr");
   const [modalData, setModalData] = useState(null);
+  const [phrData, setPhrData] = useState(null);
 
+  // useEffect(() => {
+  //   // Fetch PHR data
+  //   axios
+  //     .get("https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/patient/getphr")
+  //     .then((response) => {
+  //       setPhrData(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching PHR data:", error);
+  //     });
+  // }, []);
   // Mock Data
   const patientData = {
     image: "https://via.placeholder.com/150", 

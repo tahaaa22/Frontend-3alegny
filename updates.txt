@@ -19,7 +19,7 @@ dashboards
 
 PHR:
 	-Diagnoses and medication
-	-medical procedures(past medical and surgical procedures
+	-medical procedures(past medical and surgical procedures)
 	-allergies
 	-chronic illness
 	-family history
