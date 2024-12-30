@@ -1,0 +1,182 @@
+/* Container for the EHR Page */
+.EHRContainer {
+  font-family: Arial, sans-serif;
+  margin: 0 auto;
+  margin-top: 50px;
+  padding: 20px;
+  max-width: 1200px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+/* Tabs Navigation */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.tabButton {
+  background: none;
+  border: none;
+  font-size: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.3s, border-bottom 0.3s;
+}
+
+.tabButton:hover {
+  color: #007bff;
+}
+
+.activeTab {
+  border-bottom: 3px solid #007bff;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Section for each tab content */
+.tabSection {
+  padding: 10px 20px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  align-items: center; /* Center-align charts horizontally */
+}
+
+.tabSection h2 {
+  color: #333;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* Radiology Grid */
+.radiologyGrid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.card p {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Chart Container */
+.chartContainer {
+  margin-top: 20px;
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  padding: 15px;
+  text-align: center;
+  height: 350px;
+  display: flex;
+  justify-content: center; /* Center-align charts inside the container */
+  align-items: center;
+  margin: 10px; /* Minimal spacing between charts */
+  overflow: hidden; /* Remove any overflow issues */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tabButton {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .radiologyGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chartContainer h3 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.chartContainer {
+  background: #fefefe;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chartContainer canvas {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .chartContainer {
+    padding: 10px;
+  }
+}
+p {
+  color: #142850;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  color: #142850;
+}
+
+li strong {
+  font-weight: bold;
+}
