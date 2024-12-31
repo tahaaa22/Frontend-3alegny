@@ -1,13 +1,7 @@
 import React, { useState } from "react";
-import {useNavigate,useLocation } from "react-router-dom";
-import axios from "axios";
+import {useNavigate } from "react-router-dom";
 
 const HospitalPortal = () => {
-  const location = useLocation();
-  let { response} = location.state?.hospitaldata;
-
-  const hospital =location.state.hospitaldata
-  console.log("🚀 ~ patient ~ data:", hospital)
     const [activeSection, setActiveSection] = useState("appointments");
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [editMode, setEditMode] = useState(false);
@@ -119,32 +113,10 @@ const updateAppointmentStatus = (id, newStatus) => {
   };
 
   // Handle department name input
-  const handleDepartmentSave = async () => {
-    if (!departmentName.trim()) {
-        alert("Please enter a valid department name.");
-        return;
-    }
-
-    const newDepartment = { name: departmentName };
-
-    try {
-        const response = await axios.post(
-            "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/post-departments",
-            newDepartment
-        );
-
-        if (response.status === 201) {
-            alert(`Department "${departmentName}" has been added!`);
-            // Update the local departments list
-            setDepartmentName(""); // Clear input field
-        } else {
-            alert("Failed to save the department. Please try again.");
-        }
-    } catch (error) {
-        console.error("Error saving department:", error);
-        alert("An error occurred while saving the department. Please try again.");
-    }
-};
+  const handleDepartmentSave = () => {
+    alert(`Department "${departmentName}" has been saved!`);
+    setDepartmentName(""); // Clear input after saving
+  };
    // Handle new doctor form input change
    const handleNewDoctorChange = (e, index = null) => {
     const { name, value } = e.target;
@@ -184,24 +156,6 @@ const handleNewDoctorSubmit = (e) => {
         fee: "",
     });
 };
-
-if (!hospital || hospital.role !== "Hospital") {
-  return (
-    <div className="w-screen mx-auto p-14 mt-7">
-      <h2 className="text-2xl font-bold text-red-500">
-        Unauthorized Access
-        
-      </h2>
-      <p className="text-lg text-white">
-        You do not have the necessary permissions to access the Hospital Portal.
-      </p>
-      <button
-        className="mt-5 text-white bg-blue-500 hover:bg-blue-700 px-5 py-2 rounded-md"
-        onClick={() => navigate("/login")}
-      >Return to Login</button>
-    </div>
-  );
-}
 
   return (
     <div className="flex container bg-gray-100 mt-5 w-screen ">

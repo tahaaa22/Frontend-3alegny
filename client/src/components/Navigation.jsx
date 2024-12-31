@@ -30,7 +30,7 @@ const Navigation= () => {
         </NavbarItem>
         <NavbarItem isActive>
         <Link
-            href="/About"
+            href="/about"
             className="text-gray-800 font-semibold"
             aria-current="page"
         >

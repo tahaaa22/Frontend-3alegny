@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Line } from "react-chartjs-2";
+import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation
 import { Bar, Pie } from "react-chartjs-2";
 import "chart.js/auto";
 import styles from "../styles/PHRPage.module.css";
@@ -8,18 +9,40 @@ function PHRPage() {
   const [activeTab, setActiveTab] = useState("phr");
   const [modalData, setModalData] = useState(null);
   const [phrData, setPhrData] = useState(null);
+  const location = useLocation(); // Get the location object
 
-  // useEffect(() => {
-  //   // Fetch PHR data
-  //   axios
-  //     .get("https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/patient/getphr")
-  //     .then((response) => {
-  //       setPhrData(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching PHR data:", error);
-  //     });
-  // }, []);
+  const patientId = location.state.patientId ; 
+  console.log("Patient ID:", patientId);
+
+  useEffect(() => {
+    // if (!patientId) {
+    //   console.error("Patient ID not found");
+    //   return;
+    // }
+  
+    const fetchPHRData = async () => {
+      try {
+        console.log("About to call the API");
+
+        const response = await axios.get(
+          `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/patient/getphr/${patientId}`
+        );
+        console.log("API Response Data:", response.data);
+        setPhrData(response.data);
+      } catch (error) {
+        console.error("Failed to fetch patient data:", error.response || error.message);
+      }
+    };
+  
+    fetchPHRData();
+  }, [patientId]);
+  
+  useEffect(() => {
+    console.log("Updated phrData:", phrData);
+  }, [phrData]);
+  
+  console.log("Patient data:", phrData);
+
   // Mock Data
   const patientData = {
     image: "https://via.placeholder.com/150", 
@@ -100,7 +123,7 @@ function PHRPage() {
     datasets: [
       {
         label: "Weight (kg)",
-        data: patientData.weightHistory,
+        data: phrData.weight,
         backgroundColor: "rgba(75, 192, 192, 0.6)",
         borderColor: "rgba(75, 192, 192, 1)",
         fill: false,
@@ -112,7 +135,7 @@ function PHRPage() {
     datasets: [
       {
         label: "BMI",
-        data: [22.1, 22.3, 22.5, 22.7, 22.9, 23.0], // Mock BMI data
+        data: phrData.bmi, // Mock BMI data
         backgroundColor: "rgba(255, 99, 132, 0.6)",
         borderColor: "rgba(255, 99, 132, 1)",
         fill: false,
@@ -142,7 +165,7 @@ function PHRPage() {
   
   
   const navigateToEditPage = () => {
-    window.location.href = "/edit-profile"; // Replace with the actual route for the edit page
+    window.location.href = "/edit-phr"; // Replace with the actual route for the edit page
   };
   
   return (
@@ -186,37 +209,38 @@ function PHRPage() {
         {/* PHR Tab */}
         {activeTab === "phr" && (
           <div className={styles.tabSection}>
-            <h2>Personal Health Record</h2>
+            <h2 style={{ textAlign: "center"}} >Personal Health Record</h2>
             <button className={styles.settingsButton} onClick={() => navigateToEditPage()}>
               ⚙ 
             </button>
+            <br></br>
+            <br></br>
             <div className={styles.phrCardsGrid}>
               <div className={styles.card}>
-                <p><strong>Name:</strong> {patientData.name}</p>
+                <p><strong>Allergies:</strong> {phrData.allergies}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Email:</strong> {patientData.email}</p>
+                <p><strong>Chronic Illness:</strong> {phrData.chronicIllness}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Phone:</strong> {patientData.phone}</p>
+                <p><strong>Diagnosis:</strong> {phrData.diagnosis}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Birthdate:</strong> {patientData.birthdate}</p>
+                <p><strong>Medication:</strong> {phrData.medication}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Allergies:</strong> {patientData.allergies}</p>
+                <p><strong>Medical Procedures:</strong> {phrData.medicalProcedures}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Drugs:</strong> {patientData.drugs}</p>
+                <p><strong>Family History:</strong> {phrData.familyHistory}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Medical Conditions:</strong> {patientData.medicalConditions}</p>
+                <p><strong>Prescription History:</strong> {phrData.prescriptionHistory}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Family History:</strong> {patientData.familyHistory}</p>
+                <p><strong>Height:</strong> {phrData.height}</p>
               </div>
             </div>
-
             {/* Trend Graphs */}
             <div className={styles.trendGraphs}>
               <div className={styles.chartContainer}>
@@ -235,7 +259,7 @@ function PHRPage() {
             {/* Past Appointments */}
             {activeTab === "appointments" && (
               <div className={styles.tabSection}>
-                <h2>Past Appointments</h2>
+                <h2 style={{ textAlign: "center"}}>Past Appointments</h2>
                 <table className={styles.table}>
                   <thead>
                     <tr>
@@ -283,7 +307,7 @@ function PHRPage() {
             {/* Past Orders */}
             {activeTab === "orders" && (
               <div className={styles.tabSection}>
-                <h2>Past Orders</h2>
+                <h2 style={{ textAlign: "center"}}>Past Orders</h2>
                 <table className={styles.table}>
                 <thead>
                   <tr>
@@ -353,7 +377,7 @@ function PHRPage() {
         {/* Lab Reports Tab */}
         {activeTab === "labReports" && (
           <div className={styles.tabSection}>
-            <h2>Lab Reports</h2>
+            <h2 style={{ textAlign: "center"}}>Lab Reports</h2>
             <div className={styles.reportsCardsGrid}>
               {labReports.map((report, index) => (
                 <div key={index} className={styles.card}>
@@ -368,7 +392,7 @@ function PHRPage() {
         {/* Radiology Images Tab */}
         {activeTab === "radiology" && (
           <div className={styles.tabSection}>
-            <h2>Radiology Images</h2>
+            <h2 style={{ textAlign: "center"}}>Radiology Images</h2>
             <div className={styles.radiologyCardsGrid}>
               {radiologyImages.map((image) => (
                 <div key={image.id} className={styles.card}>

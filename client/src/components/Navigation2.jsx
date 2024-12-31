@@ -30,7 +30,7 @@ const Navigation= () => {
         </NavbarItem>
         <NavbarItem isActive>
         <Link
-            href="/About"
+            href="/about"
             className="text-gray-800 font-semibold"
             aria-current="page"
         >
@@ -43,14 +43,14 @@ const Navigation= () => {
     </NavbarContent>
 
     <NavbarContent justify="end" className="flex gap-4">
-        <NavbarItem className="hidden lg:flex">
+        {/* <NavbarItem className="hidden lg:flex">
         <Link
             href="/MyProfile"
             className="text-gray-600 hover:text-gray-800 transition-colors"
         >
             Profile
         </Link>
-        </NavbarItem>
+        </NavbarItem> */}
 
         <NavbarItem>
         <Button

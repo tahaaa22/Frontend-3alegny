@@ -1,22 +1,78 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate,useLocation } from "react-router-dom";
 import styles from "../styles/ProfilePage.module.css";
+import axios from "axios";
 
 function ProfilePage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [patientData, setPatientData] = useState(null);
+  const patient =location.state.patientdata
+  // Extract patient ID from state
+  const patientId = patient.id;
+  console.log("id", patientId)
 
-  // Mock Patient Data
-  const patientData = {
-    image: "https://via.placeholder.com/150",
-    name: "Edward Vincent",
-    email: "edward.vincent@example.com",
-    phone: "+1 123 456 7890",
-    birthdate: "July 15, 1980",
-    allergies: "None",
-    drugs: "Paracetamol",
-    medicalConditions: "Hypertension",
-    familyHistory: "Heart Disease",
-  };
+
+  useEffect(() => {
+    if (!patientId) {
+      console.error("Patient ID not found");
+      return;
+    }
+
+    // Fetch patient data using GET method
+    const fetchPatientData = async () => {
+      try {
+        const response = await axios.get(
+          `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/patient/${patientId}`
+        );
+        console.log("API Response:", response.data);
+
+        // if (!response.ok) {
+        //   throw new Error(`Error: ${response.statusText}`);
+        // }
+
+        // const data = await response.json();
+
+        // Extract relevant details
+        setPatientData({
+          name: response.data.name,
+          email: response.data.contactInfo.email,
+          phone: response.data.contactInfo.phone,
+          birthdate: response.data.dateOfBirth,
+        });
+        console.log("data:",patientData);
+
+      } catch (error) {
+        console.error("Failed to fetch patient data:", error);
+      } //finally {
+      //   setLoading(false);
+      // }
+    };
+
+    fetchPatientData();
+  }, [patientId]);
+
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  if (!patientData) {
+    return <div>Patient data not available</div>;
+  }
+
+
+  // // Mock Patient Data
+  // const patientData = {
+  //   image: "https://via.placeholder.com/150",
+  //   name: "Edward Vincent",
+  //   email: "edward.vincent@example.com",
+  //   phone: "+1 123 456 7890",
+  //   birthdate: "July 15, 1980",
+  //   allergies: "None",
+  //   drugs: "Paracetamol",
+  //   medicalConditions: "Hypertension",
+  //   familyHistory: "Heart Disease",
+  // };
 
   const appointments = [
     { doctor: "Dr. Abigail Jones", specialty: "Cardiologist", date: "12/12/2024" },
@@ -41,11 +97,14 @@ function ProfilePage() {
           <p><strong>Phone:</strong> {patientData.phone}</p>
           <p><strong>Birthdate:</strong> {patientData.birthdate}</p>
 
-          <button className={styles.btn} onClick={() => navigate("/edit-profile")}>
+          <button className={styles.btn} onClick={() => navigate("/edit-profile",{ state: { patientId} })}>
             Edit Profile
           </button>
           <hr />
-          <button className={`${styles.btn} ${styles.myPhrBtn}`} onClick={() => navigate("/phr")}>
+          <button className={`${styles.btn} ${styles.myPhrBtn}`}   onClick={() => {
+    console.log(patientId); // Log patientId before navigation
+    navigate("/phr", { state: { patientId } });
+  }}>
             My PHR
           </button>
         </div>

@@ -14,7 +14,7 @@ import HospitalPortal from "./pages/HospitalPortal";
 import PharmacyPortal from "./pages/PharmacyPortal";
 import PHRPage from "./components/PHRPage";
 import EHRPage from "./components/EHRPage";
-import AdminPortal from "./components/AdminPortal";
+import AdminPortal from "./pages/AdminPortal";
 import EditPHR from "./components/EditPHR";
 import EditProfile from "./components/EditProfile";
 import Order from "./pages/Order";

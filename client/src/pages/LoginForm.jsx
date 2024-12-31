@@ -29,16 +29,16 @@ const LoginForm = () => {
       // Navigate based on the user's role
       switch (role) {
         case "Patient":
-          navigate("/patient", { state: { patientdata:response.data  } });
+          navigate("/patient",{ state: { patientdata:response.data  } });
           break;
         case "Hospital":
-          navigate("/hospitalportal", { state: { hospitaldata:response.data  } });
+          navigate("/hospitalportal");
           break;
         case "Pharmacy":
-          navigate("/pharmacyportal",{ state: { pharmacydata:response.data  } });
+          navigate("/pharmacyportal");
           break;
         case "Admin":
-          navigate("/adminportal",{ state: { admindata:response.data  } });
+          navigate("/adminportal");
           break;
         default:
           alert("Unknown role. Please contact support.");

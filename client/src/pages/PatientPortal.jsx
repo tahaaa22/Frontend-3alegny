@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
+=======
+import React, { useState } from 'react';
+import { useNavigate ,useLocation} from 'react-router-dom';
+>>>>>>> 591a2f012cf90685da22b379bf3279fc9e095ef3
 import HospitalCard from '../components/HospitalCard';
 // import ClinicCard from '../components/ClinicCard';
 import PharmacyCard from '../components/PharmacyCard';
