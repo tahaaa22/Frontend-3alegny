@@ -54,35 +54,38 @@ const Order = () => {
     const handleSubmitOrder = async () => {
 
         try {
-            console.log("order details:", orderDetails.drugPrices)
+            console.log("order details:", orderDetails.drugs)
             const response = await axios.post(
               `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/order/create/${patient.id}/${pharmacy.pharmacyId}?pid=${patient.id}&phid=${pharmacy.pharmacyId}`,
               {
-                // patientId: patient.id,
-                // pharmacyId: pharmacy.pharmacyId,
-                // created: new Date().toISOString(),
-                // drugs: orderDetails.drugs,
-                // drugCategories: orderDetails.drugCategories,
-                // drugQuantities: orderDetails.drugQuantities,
-                // street: patient.address.street, 
-                // city: patient.address.city,
-                // zipcode: patient.address.zipcode, // Replace with actual zipcode if needed
-                // state: patient.address.state // Replace with actual state if needed
-                
-                patientId: patient.id,
+                 patientId: patient.id,
                 pharmacyId: pharmacy.pharmacyId,
                 created: new Date().toISOString(),
-                drugs:orderDetails.drugs,
+                //drugs: orderDetails.drugs,
+                // drugCategories: orderDetails.drugCategories,
+                // drugQuantities: orderDetails.drugQuantities,
+                street: patient.address.street, 
+                city: patient.address.city,
+                zipcode: patient.address.zipcode, // Replace with actual zipcode if needed
+                state: patient.address.state, // Replace with actual state if needed
+                
+               // patientId: "677335401f15256f6bd0ccfc",
+                // pharmacyId: "677328940e4824b2469b1d93",
+                // created: "2024-12-31T04:06:11.755Z",
+                drugs: [
+                    "Cough Syrup"
+                ],
                 drugCategories: [
                     "string"
                 ],
                 drugQuantities: [
-                    0
+                    10
                 ],
-                street: "string",
-                city: "string",
-                zipcode: "string",
-                state: "string"
+                // street: "Maadi",
+                // city: "Maadi",
+                // zipcode: "122334",
+                // state: "Cairo"
+
 
               }
               

@@ -19,6 +19,9 @@ const PatientPortal = () => {
   const [filteredHospitals, setFilteredHospitals] = useState([]);
   const [loadingHospitals, setLoadingHospitals] = useState(true);
 
+  const handleMyProfileNavigation=()=>{
+
+  }
 
   const dummyDrugs = [
     "Paracetamol",
@@ -110,6 +113,7 @@ const PatientPortal = () => {
   
   
   console.log('Filtered Hospitals:', filteredHospitals);
+  
 
  useEffect(() => {
   const fetchPharmacies = async () => {
@@ -147,7 +151,7 @@ const PatientPortal = () => {
 }, [patient]);
   
 
-  
+  console.log("pharm",pharmacies)
   const handleDetectLocation = () => {
     if (!navigator.geolocation) {
       alert("Geolocation is not supported by your browser.");
@@ -233,7 +237,7 @@ const PatientPortal = () => {
           <input
             type="text"
             placeholder="Enter your location"
-            value={location}
+            value={Location}
             onChange={(e) => setLocation(e.target.value)}
             className="w-full p-2 border rounded"
           />
@@ -251,7 +255,7 @@ const PatientPortal = () => {
         <div className="mt-4">
           <select
             onChange={handleLocationSelect}
-            value={location}
+            value={Location}
             className="w-full p-2 border rounded bg-white text-black"
           >
             <option value="">Select a location</option>
@@ -265,9 +269,9 @@ const PatientPortal = () => {
             })}
           </select>
         </div>
-        {location && (
+        {Location && (
           <p className="mt-3 text-gray-700">
-            Current Location: <strong>{location}</strong>
+            Current Location: <strong>{Location}</strong>
           </p>
         )}
       </div>
@@ -277,7 +281,7 @@ const PatientPortal = () => {
         {loadingHospitals ? (
           <p className="text-white">Loading hospitals...</p>
         ) : filteredHospitals.length > 0 ? (
-          <HospitalCard hospitals={filteredHospitals} patient={patient} />
+          <HospitalCard hospitals={filteredHospitals} doctors={filteredHospitals.doctors} patient={patient} />
         ) : (
           <p className="text-white">help</p>
         )}
