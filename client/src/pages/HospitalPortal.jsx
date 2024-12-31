@@ -15,7 +15,7 @@ const HospitalPortal = () => {
         yearsOfExperience: "",
         description: "",
         address: "",
-        appointment: [""],
+        appointment: [{ date: "", time: "" }],
         fee: "",
       });
       const specialties = [
@@ -130,6 +130,7 @@ const updateAppointmentStatus = (id, newStatus) => {
       // Update other fields
       setNewDoctor({ ...newDoctor, [name]: value });
     }
+    
   };
   const addAppointmentDate = () => {
     setNewDoctor({
@@ -157,7 +158,7 @@ const handleNewDoctorSubmit = (e) => {
 };
 
   return (
-    <div className="flex container bg-gray-100 mt-20">
+    <div className="flex container bg-gray-100 mt-5 w-screen ">
       {/* Sidebar */}
       <div className="w-1/5 bg-white shadow-md">
         <ul className="mt-6 text-gray-700">
@@ -437,7 +438,7 @@ const handleNewDoctorSubmit = (e) => {
                 placeholder="Enter department name"
                 value={departmentName}
                 onChange={(e) => setDepartmentName(e.target.value)}
-                className="w-full p-2 border rounded mb-4"
+                className="w-full p-2 border rounded mb-4 bg-slate-200"
               />
               <button
                 onClick={handleDepartmentSave}
@@ -448,89 +449,94 @@ const handleNewDoctorSubmit = (e) => {
             </div>
           </>
         )}
-        {activeSection === "addDoctor" && (
-        <>
-          <h2 className="text-xl font-semibold mb-4">Add New Doctor</h2>
-          <form
-            onSubmit={handleNewDoctorSubmit}
-            className="bg-white p-4 rounded-lg shadow-md"
-          >
-            {Object.keys(newDoctor).map((key) => (
-              <div key={key} className="mb-4">
-                {/* Specialty Dropdown */}
-                {key === "specialty" ? (
-                  <>
-                    <label className="block mb-2 text-gray-700 capitalize">
-                      Specialty:
-                    </label>
-                    <select
-                      name="specialty"
-                      value={newDoctor.specialty}
-                      onChange={handleNewDoctorChange}
-                      className="w-full p-2 border rounded"
-                    >
-                      <option value="" disabled>
-                        Select Specialty
-                      </option>
-                      {specialties.map((specialty) => (
-                        <option key={specialty} value={specialty}>
-                          {specialty}
-                        </option>
-                      ))}
-                    </select>
-                  </>
-                ) : key === "appointment" ? (
-                  // Dynamic Appointment Date Inputs
-                  <>
-                    <label className="block mb-2 text-gray-700 capitalize">
-                      Appointment Dates:
-                    </label>
-                    {newDoctor.appointment.map((date, index) => (
-                      <div key={index} className="flex items-center mb-2">
-                        <input
-                          type="date"
-                          name="appointment"
-                          value={date}
-                          onChange={(e) => handleNewDoctorChange(e, index)}
-                          className="w-full p-2 border rounded"
-                        />
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={addAppointmentDate}
-                      className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600 mt-2"
-                    >
-                      + Add Another Date
-                    </button>
-                  </>
-                ) : (
-                  // Default Text Inputs
-                  <>
-                    <label className="block mb-2 text-gray-700 capitalize">
-                      {key.replace(/([A-Z])/g, " $1")}:
-                    </label>
-                    <input
-                      type="text"
-                      name={key}
-                      value={newDoctor[key]}
-                      onChange={handleNewDoctorChange}
-                      className="w-full p-2 border rounded"
-                      placeholder={`Enter ${key}`}
-                    />
-                  </>
-                )}
-              </div>
-            ))}
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-            >
-              Add Doctor
-            </button>
-          </form>
-        </>
-      )}
+       {activeSection === "addDoctor" && (
+  <>
+    <h2 className="text-xl font-semibold mb-4">Add New Doctor</h2>
+    <form
+      onSubmit={handleNewDoctorSubmit}
+      className="bg-white p-4 rounded-lg shadow-md"
+    >
+      {Object.keys(newDoctor).map((key) => (
+        <div key={key} className="mb-4">
+          {/* Specialty Dropdown */}
+          {key === "specialty" ? (
+            <>
+              <label className="block mb-2 text-gray-700 capitalize">
+                Specialty:
+              </label>
+              <select
+                name="specialty"
+                value={newDoctor.specialty}
+                onChange={handleNewDoctorChange}
+                className="w-full p-2 border rounded"
+              >
+                <option value="" disabled>
+                  Select Specialty
+                </option>
+                {specialties.map((specialty) => (
+                  <option key={specialty} value={specialty}>
+                    {specialty}
+                  </option>
+                ))}
+              </select>
+            </>
+          ) : key === "appointment" ? (
+            <>
+              <label className="block mb-2 text-gray-700 capitalize">
+                Appointment Dates & Times:
+              </label>
+              {newDoctor.appointment.map((datetime, index) => (
+                <div key={index} className="flex items-center mb-2 gap-4">
+                  <input
+                    type="date"
+                    value={datetime.date}
+                    onChange={(e) => handleNewDoctorChange(e, index, "date")}
+                    className="w-1/2 p-2 border rounded bg-slate-200"
+                  />
+                  <input
+                    type="time"
+                    step="3600"
+                    value={datetime.time}
+                    onChange={(e) => handleNewDoctorChange(e, index, "time")}
+                    className="w-1/2 p-2 rounded bg-slate-200 border-black border-4"
+                  />
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addAppointmentDate}
+                className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600 mt-2"
+              >
+                + Add Another Date & Time
+              </button>
+            </>
+          ) : (
+            // Default Text Inputs
+            <>
+              <label className="block mb-2 text-gray-700 capitalize">
+                {key.replace(/([A-Z])/g, " $1")}:
+              </label>
+              <input
+                type="text"
+                name={key}
+                value={newDoctor[key]}
+                onChange={handleNewDoctorChange}
+                className="w-full p-2 border-black border-4 rounded bg-slate-200"
+                placeholder={`Enter ${key}`}
+              />
+            </>
+          )}
+        </div>
+      ))}
+      <button
+        type="submit"
+        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+      >
+        Add Doctor
+      </button>
+    </form>
+  </>
+)}
         {activeSection === "patientStats" && (
           <>
             <h2 className="text-xl font-semibold mb-4">Patient Statistics</h2>

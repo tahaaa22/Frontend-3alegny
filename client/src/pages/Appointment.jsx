@@ -1,26 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Appointment = () => {
   const location = useLocation();
-  let { hospital, department } = location.state;
-  console.log("🚀 ~ Appointment ~ department:", department)
-  console.log("🚀 ~ Appointment ~ hospital:", hospital)
-  // Dummy data
-  const reservedDates = [
-    new Date("2024-12-20"),
-    new Date("2024-12-22"),
-    new Date("2024-12-24"),
-  ];
-  const availableDays = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
-  const availableTimes = ["8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:30 AM"];
-
+  let { hospital, department, patient } = location.state;
+  const [topDoctor, setTopDoctor] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
 
+  console.log("department: ", department)  
+
   const navigate = useNavigate();
+  
+  // Fetch top doctor based on department
+  useEffect(() => {
+    const fetchTopDoctor = async () => {
+      try {
+        console.log("Department object:", department);  
+        const DepartmentId = department.departmentId; 
+        const response = await get(
+          `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/patient/department/${department.departmentId}/TopDoctor`
+        );
+        
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        
+        // const data = await response.json();
+         console.log("Top doctor data:", response.data);  // Log the fetched data
+        //setTopDoctor(response.data);
+      } catch (error) {
+        console.error("Error fetching top doctor:", error);
+      }
+    };
+
+    if (department && department.departmentId) {
+      fetchTopDoctor();
+    } else {
+      console.error("Invalid department ID");
+    }
+  }, [department]);
+
 
   const handleConfirm = () => {
     alert(`Appointment confirmed for ${selectedDate} at ${selectedTime}`);
@@ -29,39 +51,34 @@ const Appointment = () => {
 
   const isDateReserved = (date) => {
     // Check if the date is in the reservedDates array
-    return reservedDates.some((reservedDate) => {
-      return (
-        reservedDate.getDate() === date.getDate() &&
-        reservedDate.getMonth() === date.getMonth() &&
-        reservedDate.getFullYear() === date.getFullYear()
-      );
-    });
+    return false; // Placeholder logic
   };
 
   return (
     <div className="p-6 m-20 max-w-5xl mx-auto bg-gray-50">
       {/* Doctor Profile Section */}
-      <div className="flex items-center gap-8 bg-white p-6 shadow-md rounded-md">
-        <img
-          src="https://via.placeholder.com/150"
-          alt="Dr. Richard James"
-          className="w-40 h-40 rounded-lg object-cover"
-        />
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Dr. Richard James</h1>
-          <p className="text-gray-600 mb-4">MBBS - General Physician</p>
-          <p className="text-gray-700 mb-2">
-            Dr. Richard James is committed to delivering comprehensive medical care, focusing on preventive medicine,
-            early diagnosis, and effective treatment strategies.
-          </p>
-          <p className="font-semibold text-gray-800">
-            Appointment fee: <span className="text-blue-500">$50</span>
-          </p>
+      {/* {topDoctor ? (
+        <div className="flex items-center gap-8 bg-white p-6 shadow-md rounded-md">
+          <img
+            src={topDoctor.profilePicture || "https://via.placeholder.com/150"}
+            alt={topDoctor.name || "Dr. Richard James"}
+            className="w-40 h-40 rounded-lg object-cover"
+          />
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800">{topDoctor.userName || "Dr. Richard James"}</h1>
+            <p className="text-gray-600 mb-4">{topDoctor.specialization || "General Physician"}</p>
+            <p className="text-gray-700 mb-2">{topDoctor.bio || "Dr. Richard James is committed to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies."}</p>
+            <p className="font-semibold text-gray-800">
+              Appointment fee: <span className="text-blue-500">{topDoctor.appointmentFee || "$50"}</span>
+            </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div>Loading top doctor...</div>
+      )} */}
 
       {/* Calendar Section */}
-      <div className="mt-8 bg-white p-6 shadow-md rounded-md">
+      {/* <div className="mt-8 bg-white p-6 shadow-md rounded-md">
         <h2 className="text-xl font-bold mb-4">Select Appointment Date</h2>
         <DatePicker
           selected={selectedDate}
@@ -74,25 +91,25 @@ const Appointment = () => {
           dayClassName={(date) =>
             isDateReserved(date) ? "bg-gray-400 text-gray-700 cursor-not-allowed" : "cursor-pointer"
           }
-        />
+        /> */}
         {/* Display selected date */}
-        <div className="w-80 flex items-center justify-center bg-gray-100 p-4 rounded-md text-gray-800 ">
+        {/* <div className="w-80 flex items-center justify-center bg-gray-100 p-4 rounded-md text-gray-800 ">
           <h3 className="text-lg font-semibold">Selected Date:</h3>
           <p className="text-lg text-blue-600 ml-2">
             {selectedDate ? selectedDate.toLocaleDateString() : "None"}
           </p>
           <button
-          onClick={handleConfirm}
-          disabled={!selectedDate || !selectedTime}
-          className="bg-blue-300 text-black ml-6 mr-3 py-2 px-6 rounded-full text-lg"
-          >Book </button>
+            onClick={handleConfirm}
+            disabled={!selectedDate || !selectedTime}
+            className="bg-blue-300 text-black ml-6 mr-3 py-2 px-6 rounded-full text-lg"
+          >
+            Book
+          </button>
         </div>
-      </div>
-
-
+      </div> */}
 
       {/* Related Doctors */}
-      <div className="mt-10 bg-white p-6 shadow-md rounded-md">
+      {/* <div className="mt-10 bg-white p-6 shadow-md rounded-md">
         <h2 className="text-xl font-bold text-center mb-6">Related Doctors</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {Array(4)
@@ -112,7 +129,7 @@ const Appointment = () => {
               </div>
             ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

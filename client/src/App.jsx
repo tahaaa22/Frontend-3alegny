@@ -17,10 +17,12 @@ import EHRPage from "./components/EHRPage";
 import AdminPortal from "./pages/AdminPortal";
 import EditPHR from "./components/EditPHR";
 import EditProfile from "./components/EditProfile";
+import Order from "./pages/Order";
 // Importing components
 import Navigation from "./components/Navigation";
 import Navigation2 from "./components/Navigation2";
 import Footer from "./components/Footer";
+
 
 import "./App.css";
 
@@ -65,6 +67,7 @@ function App() {
           <Route path="/phr" element={<PHRPage />} />
           <Route path="/ehrpatient" element={<EHRPage />} />
           <Route path="/adminportal" element={<AdminPortal />} />
+          <Route path="/orders" element={<Order/>} />
         </Routes>
       </main>
       {showNavAndFooter && <Footer />}

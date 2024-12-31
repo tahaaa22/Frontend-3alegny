@@ -1,166 +1,152 @@
-import React, { useState } from 'react';
-import { useNavigate ,useLocation} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation,useNavigate } from 'react-router-dom';
 import HospitalCard from '../components/HospitalCard';
-import ClinicCard from '../components/ClinicCard';
+// import ClinicCard from '../components/ClinicCard';
 import PharmacyCard from '../components/PharmacyCard';
-import Filter from '../components/Filter';
+// import Filter from '../components/Filter';
+import axios from "axios";
 
 const PatientPortal = () => {
-    const navigate = useNavigate();
-    const loc = useLocation();
-    let { response} = loc.state?.patientdata;
- 
-    const patient =loc.state.patientdata
-    console.log("🚀 ~ patient ~ data:", patient)
-    const handleMyProfileNavigation = () => {
-      navigate("/MyProfile", { state: { patientdata: patient } });
-    };
+  const navigate = useNavigate();
+  const location = useLocation();
+  const patient = location.state?.patientdata;
+  const [pharmacies, setPharmacies] = useState([]);
+  const [filteredPharmacies, setFilteredPharmacies] = useState([]);
+  const [Location, setLocation] = useState("");
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [hospitals, setHospitals] = useState([]);
+  const [filteredHospitals, setFilteredHospitals] = useState([]);
+  const [loadingHospitals, setLoadingHospitals] = useState(true);
+
+
+  const dummyDrugs = [
+    "Paracetamol",
+    "Ibuprofen",
+    "Aspirin",
+    "Cough Syrup",
+    "Antibiotic A",
+    "Pain Reliever B",
+    "Vitamin C",
+  ];
 
   
-  const hospitals = [
-    {
-      id: 1,
-      name: "Sunrise Medical Center",
-      location: "123 Main Street, New York",
-      departments: [
-        { name: "Cardiology" },
-        { name: "Neurology" },
-        { name: "Orthopedics" },
-        { name: "Pediatrics" },
-      ],
-      rating: "4.8/5",
-      doctors: "150",
-      commission: "12%",
-    },
-    {
-      id: 2,
-      name: "Green Valley Hospital",
-      location: "456 Elm Avenue, Los Angeles",
-      departments: [
-        { name: "Cardiology" },
-        { name: "Neurology" },
-        { name: "Orthopedics" },
-        { name: "Pediatrics" },
-      ],
-      rating: "4.5/5",
-      doctors: "95",
-      commission: "10%",
-    },
-    {
-      id: 3,
-      name: "Bluewater Health",
-      location: "789 Maple Drive, Chicago",
-      departments: [
-        { name: "Cardiology" },
-        { name: "Neurology" },
-        { name: "Orthopedics" },
-        { name: "Pediatrics" },
-      ],
-      rating: "4.6/5",
-      doctors: "120",
-      commission: "9%",
-    },
-    {
-      id: 4,
-      name: "Wellness Care Hospital",
-      location: "321 Oak Street, Houston",
-      departments: [
-        { name: "Cardiology" },
-        { name: "Neurology" },
-        { name: "Orthopedics" },
-        { name: "Pediatrics" },
-      ],
-      rating: "4.3/5",
-      doctors: "110",
-      commission: "11%",
-    },
-    {
-      id: 5,
-      name: "Harmony Health Institute",
-      location: "654 Pine Road, San Francisco",
-      departments: [
-        { name: "Cardiology" },
-        { name: "Neurology" },
-        { name: "Orthopedics" },
-        { name: "Pediatrics" },
-      ],
-      rating: "4.7/5",
-      doctors: "140",
-      commission: "8%",
-    },
-    {
-      id: 6,
-      name: "Harmony Health Institute",
-      location: "654 Pine Road, San Francisco",
-      departments: [
-        { name: "Cardiology" },
-        { name: "Neurology" },
-        { name: "Orthopedics" },
-        { name: "Pediatrics" },
-      ],
-      rating: "4.7/5",
-      doctors: "140",
-      commission: "8%",
-    },
-  ];
-
-  const clinics = [
-    {
-      id: 1,
-      name: "Wellness Clinic",
-      location: "New York, NY",
-      department: "Cardiology",
-      rating: "4.5/5",
-      doctors: "Dr. Smith, Dr. Johnson",
-      commission: "10%",
-    },
-    {
-      id: 2,
-      name: "HealthPlus Clinic",
-      location: "Los Angeles, CA",
-      department: "Dermatology",
-      rating: "4.7/5",
-      doctors: "Dr. Lee, Dr. Patel",
-      commission: "8%",
-    },
-  ];
-
-  const pharmacies = [
-    {
-      id: 1,
-      name: "City Pharmacy",
-      location: "New York, NY",
-      rating: "4.7/5",
-    },
-    {
-      id: 2,
-      name: "Greenleaf Pharmacy",
-      location: "Los Angeles, CA",
-      rating: "4.9/5",
-    },
-  ];
-
-  const drugs = [
-    { id: 1, name: "Paracetamol", price: 10, pharmacyId: 1, arrivalDate: "2024-12-20" },
-    { id: 2, name: "Ibuprofen", price: 15, pharmacyId: 1, arrivalDate: "2024-12-21" },
-    { id: 3, name: "Aspirin", price: 8, pharmacyId: 2, arrivalDate: "2024-12-25" },
-];
+  if (!patient || patient.role !== "Patient") {
+    return (
+      <div className="w-screen mx-auto p-14 mt-7">
+        <h2 className="text-2xl font-bold text-red-500">
+          Unauthorized Access
+          
+        </h2>
+        <p className="text-lg text-white">
+          You do not have the necessary permissions to access the Patient Portal.
+        </p>
+        <button
+          className="mt-5 text-white bg-blue-500 hover:bg-blue-700 px-5 py-2 rounded-md"
+          onClick={() => navigate("/login")}
+        >Return to Login</button>
+      </div>
+    );
+  }
+  
   const dummyLocations = [
-    { city: "New York", region: "New York", country: "USA" },
-    { city: "London", region: "England", country: "UK" },
-    { city: "Tokyo", region: "Tokyo", country: "Japan" },
-    { city: "Paris", region: "Île-de-France", country: "France" },
-    { city: "Berlin", region: "Berlin", country: "Germany" },
+    {
+      street: "Tahrir Street",
+      city: "Dokki",
+      state: "Giza"
+    },
+    {
+      street: "Road 9",
+      city: "Maadi",
+      state: "Cairo"
+    },
+    {
+      street: "King Faisal Street",
+      city: "Faisal",
+      state: "Giza"
+    },
+    {
+      street: "90th Street",
+      city: "New Cairo",
+      state: "Cairo"
+    }
   ];
+  
+  useEffect(() => {
+    const fetHospitals = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/patient/Hospitals"
+        );
+  
+        if (response.data && Array.isArray(response.data.data)) {
+          // Filter pharmacies based on patient's city
+          const filteredHospitals = response.data.data.filter((hospital) => {
+            return hospital.address.city === patient.address.city;
+          });
+          console.log(response.data)
+  
+          // Update the states with the filtered pharmacies
+          setHospitals(filteredHospitals);
+          setFilteredHospitals(filteredHospitals);
+          // console.log("filtered:", filteredPharmacies)
+        } else {
+          console.error("Unexpected response structure:", response.data);
+          setHospitals([]);
+        }
+      } catch (error) {
+        console.error("Error fetching pharmacies:", error);
+        setHospitals([]);
+      } finally {
+        setLoadingHospitals(false);
+      }
+    };
+  
+    if (patient) {
+      fetHospitals();
+    }
+  }, [patient]);
+  
+  
+  console.log('Filtered Hospitals:', filteredHospitals);
 
-  const [filterType, setFilterType] = useState(""); // Keeps track of which filter is active
-  const [location, setLocation] = useState(""); // User's location
-  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
-  // Function to toggle the filter dropdown
-  const handleFilterClick = (type) => {
-    // Toggle the filter visibility for the clicked button
-    setFilterType((prevType) => (prevType === type ? "" : type));
+ useEffect(() => {
+  const fetchPharmacies = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/patient/pharmacies"
+      );
+
+      if (response.data && Array.isArray(response.data.data)) {
+        // Filter pharmacies based on patient's city
+        const filteredPharmacies = response.data.data.filter((pharmacy) => {
+          return pharmacy.address.city === patient.address.city;
+        });
+
+        // Update the states with the filtered pharmacies
+        setPharmacies(filteredPharmacies);
+        setFilteredPharmacies(filteredPharmacies);
+        // console.log("filtered:", filteredPharmacies)
+      } else {
+        console.error("Unexpected response structure:", response.data);
+        setPharmacies([]);
+      }
+    } catch (error) {
+      console.error("Error fetching pharmacies:", error);
+      setPharmacies([]);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (patient) {
+    fetchPharmacies();
+  }
+}, [patient]);
+  
+
   
   const handleDetectLocation = () => {
     if (!navigator.geolocation) {
@@ -186,11 +172,11 @@ const PatientPortal = () => {
             const address = data.data[0];
 
             // Extract region, city, and country
+            const street = address.street || "N/A";
             const city = address.city || "N/A";
-            const region = address.region || "N/A";
-            const country = address.country || "N/A";
+            const state = address.state || "N/A";
 
-            setLocation(`${city}, ${region}, ${country}`);
+            setLocation(`${street}, ${city}, ${state}`);
           } else {
             alert("Unable to fetch location details.");
           }
@@ -270,7 +256,7 @@ const PatientPortal = () => {
           >
             <option value="">Select a location</option>
             {dummyLocations.map((loc, index) => {
-              const locationString = `${loc.city}, ${loc.region}, ${loc.country}`;
+              const locationString = `${loc.street}, ${loc.city}, ${loc.state}`;
               return (
                 <option key={index} value={locationString}>
                   {locationString}
@@ -288,36 +274,26 @@ const PatientPortal = () => {
       
       <div className="mb-5">
         <h2 className="text-white text-2xl font-semibold mb-2">Hospitals </h2>
-        <button 
-        className='bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 mb-1 border border-white hover:border-transparent rounded'
-        onClick={() => handleFilterClick("hospital")}
-        >
-          Filter</button>
-          {filterType === "hospital" && <Filter type={filterType} />}
- 
-        <HospitalCard hospitals={hospitals} />
-      </div>
-      <div className="border-t border-white w-screen mb-4"></div>
-
-      <div className="mb-5">
-        <h2 className="text-white text-2xl font-semibold mb-2">Clinics</h2>
-        <button className='bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 mb-1 border border-white hover:border-transparent rounded'
-         onClick={() => handleFilterClick("clinic")}
-        >Filter</button>
-        {filterType === "clinic" && <Filter type={filterType} />}
-        <ClinicCard clinics={clinics} />
+        {loadingHospitals ? (
+          <p className="text-white">Loading hospitals...</p>
+        ) : filteredHospitals.length > 0 ? (
+          <HospitalCard hospitals={filteredHospitals} patient={patient} />
+        ) : (
+          <p className="text-white">help</p>
+        )}
       </div>
       <div className="border-t border-white w-screen mb-4"></div>
 
       <div>
         <h2 className="text-white text-2xl font-semibold mb-2">Pharmacies</h2>
-        <button 
-        className='bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 mb-1 border border-white hover:border-transparent rounded'
-        onClick={() => handleFilterClick("pharmacy")}
-        >
-          Filter</button>
-          {filterType === "pharmacy" && <Filter type={filterType} />}
-        <PharmacyCard pharmacies={pharmacies} drugs={drugs} />
+        
+        {loading ? (
+          <p className="text-white">Loading pharmacies...</p>
+        ) : filteredPharmacies.length > 0 ? (
+          <PharmacyCard pharmacies={filteredPharmacies} patient={patient}/>
+        ) : (
+          <p className="text-white">No pharmacies available</p>
+        )}
       </div>
       <div className="border-t border-white w-screen mb-4"></div>
     </div>
