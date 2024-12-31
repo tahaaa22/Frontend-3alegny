@@ -7,7 +7,7 @@ import { use } from "react";
 const Appointment = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  let { hospital, department, patient, doctors } = location.state;
+  let { hospital, department, patient } = location.state;
   console.log('hospital:', hospital)
   console.log('department:', department)
   console.log('patient:', patient)
@@ -19,7 +19,7 @@ const Appointment = () => {
 
 
   useEffect(() => {
-    if (hospital && department) {
+    
       const filteredHospital = hospital.doctors.filter(
         (doc) => {
           console.log("doc speciality",doc.specialty)
@@ -31,7 +31,7 @@ const Appointment = () => {
       setFilteredHospitals(filteredHospital);
       console.log("im in the first useeffct")
       console.log("filterhos",filteredHospitals)
-    }
+
     
   }, [hospital,department]);
 

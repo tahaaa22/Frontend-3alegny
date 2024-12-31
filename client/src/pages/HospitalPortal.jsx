@@ -1,49 +1,79 @@
-import React, { useState } from "react";
-import {useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import {useNavigate,useLocation } from "react-router-dom";
+import axios from "axios";
 
 const HospitalPortal = () => {
+  const location = useLocation();
+  const hospital =location.state.hospitaldata
+  console.log("🚀 ~ patient ~ data:", hospital)
+
     const [activeSection, setActiveSection] = useState("appointments");
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [doctorDetails, setDoctorDetails] = useState(null);
+    const [appointmentFee, setAppointmentFee] = useState("");
     const [departmentName, setDepartmentName] = useState(""); // State for department name
     const [newDoctor, setNewDoctor] = useState({
-        name: "",
-        specialty: "",
-        license: "",
-        certificates: "",
-        yearsOfExperience: "",
-        description: "",
-        address: "",
-        appointment: [{ date: "", time: "" }],
-        fee: "",
-      });
+    
+      name: "",
+      specialty: "",
+      license: "",
+      description: "",
+      city: "",
+      state: "",
+      zipcode: "",
+      street: "",
+      appointmentFee: "",
+      availableSlots: [""],
+    });
       const specialties = [
-        "Cardiologist",
-        "Neurologist",
-        "Dermatologist",
-        "Orthopedic",
-        "Pediatrician",
-        "Radiologist",
-        "General Practitioner",
+        "Cardiology",
+        "Neurology",
+        "Pediatrics",
+        "Radiology"
       ];
   const navigate = useNavigate();
 
-  // Dummy Appointments Data
-  const [appointments, setAppointments] = useState([
-    { id: 1, patientName: "Richard James", age: 28, dateTime: "24th July, 2024, 10:AM", status: "pending", imageUrl: "https://i.pravatar.cc/40?img=1" },
-    { id: 2, patientName: "Emma Stone", age: 32, dateTime: "25th July, 2024, 11:AM", status: "accepted", imageUrl: "https://i.pravatar.cc/40?img=2" },
-    { id: 3, patientName: "John Doe", age: 40, dateTime: "26th July, 2024, 1:PM", status: "rejected", imageUrl: "https://i.pravatar.cc/40?img=3" },
-]);
+//   // Dummy Appointments Data
+//   const [appointments, setAppointments] = useState([
+//     { id: 1, patientName: "Richard James", age: 28, dateTime: "24th July, 2024, 10:AM", status: "pending", imageUrl: "https://i.pravatar.cc/40?img=1" },
+//     { id: 2, patientName: "Emma Stone", age: 32, dateTime: "25th July, 2024, 11:AM", status: "accepted", imageUrl: "https://i.pravatar.cc/40?img=2" },
+//     { id: 3, patientName: "John Doe", age: 40, dateTime: "26th July, 2024, 1:PM", status: "rejected", imageUrl: "https://i.pravatar.cc/40?img=3" },
+// ]);
+
+const [appointments, setAppointments] = useState([]);
+useEffect(() => {
+  // Fetch appointments from the API
+  const fetchAppointments = async () => {
+    try {
+      const response = await axios.get(
+        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/appointment/all"
+      );
+      const filteredAppointments = response.data
+        .filter((appointment) => appointment.hospitalId === hospital.id)
+        .map((appointment) => ({
+          ...appointment,
+          status: appointment.status === "Scheduled" ? "accepted" : appointment.status,
+        }));
+      setAppointments(filteredAppointments);
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+      alert("An error occurred while fetching appointments.");
+    }
+  };
+
+  fetchAppointments();
+}, [hospital.id]);
 
 // Handle accept and reject buttons
 const updateAppointmentStatus = (id, newStatus) => {
-    setAppointments((prevAppointments) =>
-        prevAppointments.map((appointment) =>
-            appointment.id === id ? { ...appointment, status: newStatus } : appointment
-        )
-    );
+  setAppointments((prevAppointments) =>
+    prevAppointments.map((appointment) =>
+      appointment.id === id ? { ...appointment, status: newStatus } : appointment
+    )
+  );
 };
+
   // Dummy Doctors Data
   const doctors = [
     {
@@ -77,19 +107,15 @@ const updateAppointmentStatus = (id, newStatus) => {
     "Cardiology",
     "Neurology",
     "Pediatrics",
-    "Oncology",
-    "Orthopedics",
     "Radiology",
-    "Gynecology",
-    "Dermatology",
-    "Psychiatry",
-    "General Surgery",
-    "Emergency Medicine",
-    "Endocrinology",
-    "Urology",
-    "Gastroenterology",
-    "Ophthalmology",
   ];
+
+  const Locations=[
+    "Maadi",
+    "Dokki",
+    "Feisal",
+    "New Cairo"
+  ]
 
   const patientStats = {
     totalPatients: 350,
@@ -113,49 +139,78 @@ const updateAppointmentStatus = (id, newStatus) => {
   };
 
   // Handle department name input
-  const handleDepartmentSave = () => {
-    alert(`Department "${departmentName}" has been saved!`);
-    setDepartmentName(""); // Clear input after saving
-  };
-   // Handle new doctor form input change
-   const handleNewDoctorChange = (e, index = null) => {
-    const { name, value } = e.target;
+  const handleDepartmentSave = async () => {
+
+    
+    if (!departmentName.trim()) {
+      alert("Please enter a department name!");
+      return;
+    }
   
-    if (name === "appointment" && index !== null) {
-      // Update a specific appointment date
-      const updatedAppointments = [...newDoctor.appointment];
-      updatedAppointments[index] = value;
-      setNewDoctor({ ...newDoctor, appointment: updatedAppointments });
+    try {
+      const url = `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/Hospital/add-department?hospitalId=${hospital.id}&departmentName=${departmentName}&AppointmentFee=${appointmentFee}`;
+  
+      const response = await axios.post(url);
+  
+      if (response.status === 200) {
+        alert(`Department "${departmentName}" has been successfully added!`);
+        setDepartmentName(""); // Clear input after saving
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error adding department:", error);
+      alert("An error occurred while adding the department. Please try again.");
+    }
+  };
+  // Handle new doctor form input change
+  const handleNewDoctorChange = (e, index = null) => {
+    const { name, value } = e.target;
+
+    if (name === "availableSlots" && index !== null) {
+      const updatedSlots = [...newDoctor.availableSlots];
+      updatedSlots[index] = value;
+      setNewDoctor({ ...newDoctor, availableSlots: updatedSlots });
     } else {
-      // Update other fields
       setNewDoctor({ ...newDoctor, [name]: value });
     }
-    
   };
-  const addAppointmentDate = () => {
+
+  const addAvailableSlot = () => {
     setNewDoctor({
       ...newDoctor,
-      appointment: [...newDoctor.appointment, ""],
+      availableSlots: [...newDoctor.availableSlots, ""],
     });
   };
 
-// Handle new doctor form submission
-const handleNewDoctorSubmit = (e) => {
+  // Handle new doctor form submission
+  const handleNewDoctorSubmit = async (e) => {
     e.preventDefault();
-    // You can handle the form data, e.g., send it to a server or update the state
-    alert("New Doctor has been added!");
-    setNewDoctor({
-        name: "",
-        specialty: "",
-        license: "",
-        certificates: "",
-        yearsOfExperience: "",
-        description: "",
-        address: "",
-        appointment: "",
-        fee: "",
-    });
-};
+    const { name, specialty,license, description, city, state, zipcode, street, appointmentFee, availableSlots } = newDoctor;
+  
+    try {
+      
+      const response = await axios.post(
+        "https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/Hospital/add-doctor",
+        {
+          id: "",
+          name: name ||"",
+          specialty: "",
+          hospitalId: hospital.id,
+          license: "",
+          description: "",
+          city: "",
+          state: "",
+          zipcode: "",
+          street: "",
+          appointmentFee: "",
+          imageUrl: "",
+          availableSlots: [""],})
+    } catch (error) {
+      console.error("Error adding doctor:", error);
+      alert("An error occurred while adding the doctor. Please try again.");
+    }
+  };
 
   return (
     <div className="flex container bg-gray-100 mt-5 w-screen ">
@@ -210,119 +265,123 @@ const handleNewDoctorSubmit = (e) => {
                         <h2 className="text-xl font-semibold mb-4">Appointments List</h2>
 
                         {/* Accepted Appointments */}
-                        <h3 className="text-lg font-semibold mt-4">✅ Accepted</h3>
-                        <table className="w-full bg-white rounded-lg shadow-md mt-2">
-                            <thead>
-                                <tr className="border-b">
-                                    <th className="py-2 px-4 text-left">#</th>
-                                    <th className="py-2 px-4 text-left">Patient</th>
-                                    <th className="py-2 px-4 text-left">Age</th>
-                                    <th className="py-2 px-4 text-left">Date & Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {appointments
-                                    .filter((appt) => appt.status === "accepted")
-                                    .map((appointment) => (
-                                        <tr key={appointment.id} 
-                                        onClick={() =>
-                                          navigate("/ehrpatient", { state: { patient: appointment } })}
-                                        className="border-b hover:bg-gray-100"
-                                        >
-                                            <td className="py-2 px-4">{appointment.id}</td>
-                                            <td className="py-2 px-4 flex items-center">
-                                                <img
-                                                    src={appointment.imageUrl}
-                                                    alt={appointment.patientName}
-                                                    className="w-8 h-8 rounded-full mr-2"
-                                                />
-                                                {appointment.patientName}
-                                            </td>
-                                            <td className="py-2 px-4">{appointment.age}</td>
-                                            <td className="py-2 px-4">{appointment.dateTime}</td>
-                                        </tr>
-                                    ))}
-                            </tbody>
-                        </table>
+        <h3 className="text-lg font-semibold mt-4">✅ Accepted</h3>
+        <table className="w-full bg-white rounded-lg shadow-md mt-2">
+          <thead>
+            <tr className="border-b">
+              <th className="py-2 px-4 text-left">#</th>
+              <th className="py-2 px-4 text-left">Patient</th>
+              <th className="py-2 px-4 text-left">Age</th>
+              <th className="py-2 px-4 text-left">Date & Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointments
+              .filter((appt) => appt.status === "accepted")
+              .map((appointment) => (
+                <tr
+                  key={appointment.id.timestamp}
+                  onClick={() =>
+                    navigate("/ehrpatient", { state: { patient: appointment } })
+                  }
+                  className="border-b hover:bg-gray-100"
+                >
+                  <td className="py-2 px-4">{appointment.id.timestamp}</td>
+                  <td className="py-2 px-4 flex items-center">
+                    <img
+                      src={appointment.imageUrl || "https://i.pravatar.cc/40"}
+                      alt={appointment.patientName}
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
+                    {appointment.patientName || "Unknown Patient"}
+                  </td>
+                  <td className="py-2 px-4">{appointment.age || "N/A"}</td>
+                  <td className="py-2 px-4">
+                    {appointment.appointmentDate}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
 
                         {/* Pending Appointments */}
-                        <h3 className="text-lg font-semibold mt-4">⏳ Pending</h3>
-                        <table className="w-full bg-white rounded-lg shadow-md mt-2">
-                            <thead>
-                                <tr className="border-b">
-                                    <th className="py-2 px-4 text-left">#</th>
-                                    <th className="py-2 px-4 text-left">Patient</th>
-                                    <th className="py-2 px-4 text-left">Age</th>
-                                    <th className="py-2 px-4 text-left">Date & Time</th>
-                                    <th className="py-2 px-4 text-left">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {appointments
-                                    .filter((appt) => appt.status === "pending")
-                                    .map((appointment) => (
-                                        <tr key={appointment.id} className="border-b hover:bg-gray-100">
-                                            <td className="py-2 px-4">{appointment.id}</td>
-                                            <td className="py-2 px-4 flex items-center">
-                                                <img
-                                                    src={appointment.imageUrl}
-                                                    alt={appointment.patientName}
-                                                    className="w-8 h-8 rounded-full mr-2"
-                                                />
-                                                {appointment.patientName}
-                                            </td>
-                                            <td className="py-2 px-4">{appointment.age}</td>
-                                            <td className="py-2 px-4">{appointment.dateTime}</td>
-                                            <td className="py-2 px-4">
-                                                <button
-                                                    onClick={() => updateAppointmentStatus(appointment.id, "accepted")}
-                                                    className="bg-green-500 text-white py-1 px-2 rounded mr-2"
-                                                >
-                                                    Accept
-                                                </button>
-                                                <button
-                                                    onClick={() => updateAppointmentStatus(appointment.id, "rejected")}
-                                                    className="bg-red-500 text-white py-1 px-2 rounded"
-                                                >
-                                                    Reject
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                            </tbody>
-                        </table>
+        <h3 className="text-lg font-semibold mt-4">⏳ Pending</h3>
+        <table className="w-full bg-white rounded-lg shadow-md mt-2">
+          <thead>
+            <tr className="border-b">
+              <th className="py-2 px-4 text-left">#</th>
+              <th className="py-2 px-4 text-left">Patient</th>
+              <th className="py-2 px-4 text-left">Age</th>
+              <th className="py-2 px-4 text-left">Date & Time</th>
+              <th className="py-2 px-4 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointments
+              .filter((appt) => appt.status === "Scheduled")
+              .map((appointment) => (
+                <tr key={appointment.id.timestamp} className="border-b hover:bg-gray-100">
+                  <td className="py-2 px-4">{appointment.id.timestamp}</td>
+                  <td className="py-2 px-4 flex items-center">
+                    <img
+                      src={appointment.imageUrl || "https://i.pravatar.cc/40"}
+                      alt={appointment.patientName}
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
+                    {appointment.patientName || "Unknown Patient"}
+                  </td>
+                  <td className="py-2 px-4">{appointment.age || "N/A"}</td>
+                  <td className="py-2 px-4">{appointment.appointmentDate}</td>
+                  <td className="py-2 px-4">
+                    <button
+                      onClick={() => updateAppointmentStatus(appointment.id.timestamp, "accepted")}
+                      className="bg-green-500 text-white py-1 px-2 rounded mr-2"
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => updateAppointmentStatus(appointment.id.timestamp, "rejected")}
+                      className="bg-red-500 text-white py-1 px-2 rounded"
+                    >
+                      Reject
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
 
                         {/* Rejected Appointments */}
-                        <h3 className="text-lg font-semibold mt-4">❌ Rejected</h3>
-                        <table className="w-full bg-white rounded-lg shadow-md mt-2">
-                            <thead>
-                                <tr className="border-b">
-                                    <th className="py-2 px-4 text-left">#</th>
-                                    <th className="py-2 px-4 text-left">Patient</th>
-                                    <th className="py-2 px-4 text-left">Age</th>
-                                    <th className="py-2 px-4 text-left">Date & Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {appointments
-                                    .filter((appt) => appt.status === "rejected")
-                                    .map((appointment) => (
-                                        <tr key={appointment.id} className="border-b hover:bg-gray-100">
-                                            <td className="py-2 px-4">{appointment.id}</td>
-                                            <td className="py-2 px-4 flex items-center">
-                                                <img
-                                                    src={appointment.imageUrl}
-                                                    alt={appointment.patientName}
-                                                    className="w-8 h-8 rounded-full mr-2"
-                                                />
-                                                {appointment.patientName}
-                                            </td>
-                                            <td className="py-2 px-4">{appointment.age}</td>
-                                            <td className="py-2 px-4">{appointment.dateTime}</td>
-                                        </tr>
-                                    ))}
-                            </tbody>
-                        </table>
+        <h3 className="text-lg font-semibold mt-4">❌ Rejected</h3>
+        <table className="w-full bg-white rounded-lg shadow-md mt-2">
+          <thead>
+            <tr className="border-b">
+              <th className="py-2 px-4 text-left">#</th>
+              <th className="py-2 px-4 text-left">Patient</th>
+              <th className="py-2 px-4 text-left">Age</th>
+              <th className="py-2 px-4 text-left">Date & Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointments
+              .filter((appt) => appt.status === "rejected")
+              .map((appointment) => (
+                <tr key={appointment.id.timestamp} className="border-b hover:bg-gray-100">
+                  <td className="py-2 px-4">{appointment.id.timestamp}</td>
+                  <td className="py-2 px-4 flex items-center">
+                    <img
+                      src={appointment.imageUrl || "https://i.pravatar.cc/40"}
+                      alt={appointment.patientName}
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
+                    {appointment.patientName || "Unknown Patient"}
+                  </td>
+                  <td className="py-2 px-4">{appointment.age || "N/A"}</td>
+                  <td className="py-2 px-4">{appointment.appointmentDate}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
                     </>
                 )}
 
@@ -440,6 +499,14 @@ const handleNewDoctorSubmit = (e) => {
                 onChange={(e) => setDepartmentName(e.target.value)}
                 className="w-full p-2 border rounded mb-4 bg-slate-200"
               />
+              <label className="block mb-2 text-gray-700">Appointment Fee:</label>
+                <input
+                  type="number"
+                  placeholder="Enter appointment fee"
+                  value={appointmentFee}
+                  onChange={(e) => setAppointmentFee(e.target.value)}
+                  className="w-full p-2 border rounded mb-4 bg-slate-200"
+                />
               <button
                 onClick={handleDepartmentSave}
                 className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
@@ -450,93 +517,84 @@ const handleNewDoctorSubmit = (e) => {
           </>
         )}
        {activeSection === "addDoctor" && (
-  <>
-    <h2 className="text-xl font-semibold mb-4">Add New Doctor</h2>
-    <form
-      onSubmit={handleNewDoctorSubmit}
-      className="bg-white p-4 rounded-lg shadow-md"
-    >
-      {Object.keys(newDoctor).map((key) => (
-        <div key={key} className="mb-4">
-          {/* Specialty Dropdown */}
-          {key === "specialty" ? (
-            <>
-              <label className="block mb-2 text-gray-700 capitalize">
-                Specialty:
-              </label>
-              <select
-                name="specialty"
-                value={newDoctor.specialty}
-                onChange={handleNewDoctorChange}
-                className="w-full p-2 border rounded"
-              >
-                <option value="" disabled>
-                  Select Specialty
-                </option>
-                {specialties.map((specialty) => (
-                  <option key={specialty} value={specialty}>
-                    {specialty}
-                  </option>
-                ))}
-              </select>
-            </>
-          ) : key === "appointment" ? (
-            <>
-              <label className="block mb-2 text-gray-700 capitalize">
-                Appointment Dates & Times:
-              </label>
-              {newDoctor.appointment.map((datetime, index) => (
-                <div key={index} className="flex items-center mb-2 gap-4">
-                  <input
-                    type="date"
-                    value={datetime.date}
-                    onChange={(e) => handleNewDoctorChange(e, index, "date")}
-                    className="w-1/2 p-2 border rounded bg-slate-200"
-                  />
-                  <input
-                    type="time"
-                    step="3600"
-                    value={datetime.time}
-                    onChange={(e) => handleNewDoctorChange(e, index, "time")}
-                    className="w-1/2 p-2 rounded bg-slate-200 border-black border-4"
-                  />
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={addAppointmentDate}
-                className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600 mt-2"
-              >
-                + Add Another Date & Time
-              </button>
-            </>
-          ) : (
-            // Default Text Inputs
-            <>
-              <label className="block mb-2 text-gray-700 capitalize">
-                {key.replace(/([A-Z])/g, " $1")}:
-              </label>
-              <input
-                type="text"
-                name={key}
-                value={newDoctor[key]}
-                onChange={handleNewDoctorChange}
-                className="w-full p-2 border-black border-4 rounded bg-slate-200"
-                placeholder={`Enter ${key}`}
-              />
-            </>
-          )}
-        </div>
-      ))}
-      <button
-        type="submit"
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-      >
-        Add Doctor
-      </button>
-    </form>
-  </>
-)}
+        <>
+          <h2 className="text-xl font-semibold mb-4">Add New Doctor</h2>
+          <form
+            onSubmit={handleNewDoctorSubmit}
+            className="bg-white p-4 rounded-lg shadow-md"
+          >
+            {Object.keys(newDoctor).map((key) => (
+              <div key={key} className="mb-4">
+                {key === "specialty" ? (
+                  <>
+                    <label className="block mb-2 text-gray-700 capitalize">
+                      Specialty:
+                    </label>
+                    <select
+                      name="specialty"
+                      value={newDoctor.specialty}
+                      onChange={handleNewDoctorChange}
+                      className="w-full p-2 border rounded"
+                    >
+                      <option value="" disabled>
+                        Select Specialty
+                      </option>
+                      {specialties.map((specialty) => (
+                        <option key={specialty} value={specialty}>
+                          {specialty}
+                        </option>
+                      ))}
+                    </select>
+                  </>
+                ) : key === "availableSlots" ? (
+                  <>
+                    <label className="block mb-2 text-gray-700 capitalize">
+                      Available Slots:
+                    </label>
+                    {newDoctor.availableSlots.map((slot, index) => (
+                      <div key={index} className="flex items-center mb-2 gap-4">
+                        <input
+                          type="datetime-local"
+                          value={slot}
+                          onChange={(e) => handleNewDoctorChange(e, index)}
+                          className="w-full p-2 border rounded bg-slate-200"
+                        />
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={addAvailableSlot}
+                      className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600 mt-2"
+                    >
+                      + Add Another Slot
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <label className="block mb-2 text-gray-700 capitalize">
+                      {key.replace(/([A-Z])/g, " $1")}:
+                    </label>
+                    <input
+                      type={key === "appointmentFee" ? "number" : "text"}
+                      name={key}
+                      value={newDoctor[key]}
+                      onChange={handleNewDoctorChange}
+                      className="w-full p-2 border rounded bg-slate-200"
+                      placeholder={`Enter ${key}`}
+                    />
+                  </>
+                )}
+              </div>
+            ))}
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            >
+              Add Doctor
+            </button>
+          </form>
+        </>
+      )}
         {activeSection === "patientStats" && (
           <>
             <h2 className="text-xl font-semibold mb-4">Patient Statistics</h2>

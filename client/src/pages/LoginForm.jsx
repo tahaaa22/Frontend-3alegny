@@ -32,13 +32,13 @@ const LoginForm = () => {
           navigate("/patient",{ state: { patientdata:response.data  } });
           break;
         case "Hospital":
-          navigate("/hospitalportal");
+          navigate("/hospitalportal",{ state: { hospitaldata:response.data  } });
           break;
         case "Pharmacy":
-          navigate("/pharmacyportal");
+          navigate("/pharmacyportal",{ state: { pharmacydata:response.data  } });
           break;
         case "Admin":
-          navigate("/adminportal");
+          navigate("/adminportal",{ state: { admindata:response.data  } });
           break;
         default:
           alert("Unknown role. Please contact support.");
