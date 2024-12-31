@@ -3,43 +3,108 @@ import { Line } from "react-chartjs-2";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation
 import { Bar, Pie } from "react-chartjs-2";
 import "chart.js/auto";
+import axios from "axios";
 import styles from "../styles/PHRPage.module.css";
 
 function PHRPage() {
+    const navigate = useNavigate();
+  
   const [activeTab, setActiveTab] = useState("phr");
   const [modalData, setModalData] = useState(null);
   const [phrData, setPhrData] = useState(null);
+  const [appointment, setappointment] = useState(null); // State for appointment data
+  const [order, setorder] = useState(null); // State for appointment data
+
   const location = useLocation(); // Get the location object
 
   const patientId = location.state.patientId ; 
   console.log("Patient ID:", patientId);
+  const [weight, setweight] = useState([]);
+  const [bmi, setbmi] = useState([]);
+  const [labReports, setlabReports] = useState([]);
+  const [radiologyImages, setradiologyImages] = useState([]);
+
 
   useEffect(() => {
-    // if (!patientId) {
-    //   console.error("Patient ID not found");
-    //   return;
-    // }
-  
+
     const fetchPHRData = async () => {
+      
       try {
         console.log("About to call the API");
-
+  
         const response = await axios.get(
           `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/patient/getphr/${patientId}`
         );
+  
         console.log("API Response Data:", response.data);
-        setPhrData(response.data);
+        console.log("weight Data:", response.data.data.weight);
+
+        // Assuming the response.data contains the needed PHR data directly
+        setPhrData(response.data.data); 
+        setweight(response.data.data.weight);
+        setbmi(response.data.data.bmi)
+        setlabReports(response.data.data.labResultsURL)
+        setradiologyImages(response.data.data.imagingResults)
+
+      // Fetch appointment data after successfully fetching PHR data
+      const appointmentResponse = await axios.get(
+        `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/appointment/get/${patientId}`
+      );
+
+      console.log("Appointment API Response Data:", appointmentResponse.data);
+
+      // Update state with appointment data
+    // Extract required fields from each appointment
+    const formattedAppointments = appointmentResponse.data.map(appointment => ({
+      appointmentDate: appointment.appointmentDate,
+      department: appointment.department,
+      doctorName: appointment.doctorName,
+      hospitalName: appointment.hospitalName,
+    }));
+
+    console.log("Formatted Appointments:", formattedAppointments);
+
+    // Store the formatted appointments in the state
+    setappointment(formattedAppointments);
+      // Fetch appointment data after successfully fetching PHR data
+    //   const orderResponse = await axios.get(
+    //     `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/appointment/get/${patientId}`
+    //   );
+
+    //   console.log("order API Response Data:", orderResponse.data);
+
+    //   // Update state with appointment data
+    // // Extract required fields from each appointment
+    // const formattedorders = appointmentResponse.data.map(order => ({
+    //   pharm: order.appointmentDate,
+    //   category: order.drugs.category,
+    //   medicine: order.drugs.name,
+    //   quantity: order.drugs.quantity,
+    // }));
+
+    // console.log("Formatted Appointments:", formattedAppointments);
+
+    // // Store the formatted appointments in the state
+    // setappointment(formattedAppointments);
+      // Fetch Order Data
+      const orderResponse = await axios.get(
+        `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/order/get/${patientId}`
+      );
+      console.log("Order Data:", orderResponse.data);
+      setorder(orderResponse.data);  // Set order data
+
       } catch (error) {
         console.error("Failed to fetch patient data:", error.response || error.message);
       }
     };
   
-    fetchPHRData();
-  }, [patientId]);
+    if (patientId) {
+      fetchPHRData();
+    } else {
+      console.error("Patient ID is not available");
+    }
+  }, []);
   
-  useEffect(() => {
-    console.log("Updated phrData:", phrData);
-  }, [phrData]);
   
   console.log("Patient data:", phrData);
 
@@ -58,13 +123,13 @@ function PHRPage() {
   };
 
   // Mock Data for Appointments
-  const appointments = [
-    { doctor: "Dr. Abigail Jones", specialty: "Cardiology", hospital: "City Hospital", date: "10/12/2024", comments: "Routine check-up", orders: "Blood test", notes: "Patient stable", prescription: "Beta blockers" },
-    { doctor: "Dr. Michael Smith", specialty: "Dermatology", hospital: "General Medical Center", date: "05/11/2024", comments: "Skin allergy treatment", orders: "Allergy test", notes: "Monitor symptoms", prescription: "Antihistamines" },
-    { doctor: "Dr. Susan Carter", specialty: "Orthopedics", hospital: "OrthoCare Clinic", date: "28/10/2024", comments: "Back pain assessment", orders: "X-ray", notes: "Physical therapy recommended", prescription: "Pain relievers" },
-    { doctor: "Dr. Emily Green", specialty: "Neurology", hospital: "Neurology Institute", date: "15/09/2024", comments: "Migraine consultation", orders: "MRI", notes: "Follow-up in 1 month", prescription: "Migraine medication" },
-    { doctor: "Dr. David Brown", specialty: "ENT", hospital: "Ear & Nose Clinic", date: "01/08/2024", comments: "Sinus infection treatment", orders: "CT scan", notes: "Antibiotics prescribed", prescription: "Amoxicillin" },
-  ];
+  // const appointments = [
+  //   { doctor: "Dr. Abigail Jones", specialty: "Cardiology", hospital: "City Hospital", date: "10/12/2024", comments: "Routine check-up", orders: "Blood test", notes: "Patient stable", prescription: "Beta blockers" },
+  //   { doctor: "Dr. Michael Smith", specialty: "Dermatology", hospital: "General Medical Center", date: "05/11/2024", comments: "Skin allergy treatment", orders: "Allergy test", notes: "Monitor symptoms", prescription: "Antihistamines" },
+  //   { doctor: "Dr. Susan Carter", specialty: "Orthopedics", hospital: "OrthoCare Clinic", date: "28/10/2024", comments: "Back pain assessment", orders: "X-ray", notes: "Physical therapy recommended", prescription: "Pain relievers" },
+  //   { doctor: "Dr. Emily Green", specialty: "Neurology", hospital: "Neurology Institute", date: "15/09/2024", comments: "Migraine consultation", orders: "MRI", notes: "Follow-up in 1 month", prescription: "Migraine medication" },
+  //   { doctor: "Dr. David Brown", specialty: "ENT", hospital: "Ear & Nose Clinic", date: "01/08/2024", comments: "Sinus infection treatment", orders: "CT scan", notes: "Antibiotics prescribed", prescription: "Amoxicillin" },
+  // ];
   
 
   // Mock Data for Orders
@@ -77,17 +142,77 @@ function PHRPage() {
   ];
   
 
+  // const appointmentChartData = {
+  //   labels: [
+  //     ...new Set(appointment.map(appt => appt.department)) // Extract unique departments from the appointment array
+  //   ],
+  //   datasets: [
+  //     {
+  //       label: "Appointments by Department",
+  //       data: [
+  //         ...new Set(appointment.map(appt => appt.department)) // Same unique departments as labels
+  //       ].map(department => {
+  //         // Count the number of appointments for each department
+  //         return appointment.filter(appt => appt.department === department).length;
+  //       }),
+  //       backgroundColor: [
+  //         "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"
+  //       ], // Colors for each department
+  //     },
+  //   ],
+  // };
+  
+  // Counting the number of appointments per department
+  const departmentCounts = Array.isArray(appointment) && appointment.length > 0 
+    ? appointment.reduce((acc, { department }) => {
+        acc[department] = (acc[department] || 0) + 1;
+        return acc;
+      }, {})
+    : {};
+
+  // Extract department names and counts for the chart
+  const departmentNames = Object.keys(departmentCounts);
+  const departmentVisits = Object.values(departmentCounts);
+
+  // Bar chart data
   const appointmentChartData = {
-    labels: ["Cardiology", "Dermatology", "Orthopedics", "Neurology", "ENT"],
+    labels: departmentNames,
     datasets: [
       {
-        label: "Appointments by Department",
-        data: [1, 1, 1, 1, 1], // Based on mock data
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"],
+        label: "Number of Visits",
+        data: departmentVisits,
+        backgroundColor: [
+          "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"
+        ], // Colors for each department        borderColor: "#36A2EB",
+        borderWidth: 1,
       },
     ],
   };
+  const hospitalCounts = Array.isArray(appointment) && appointment.length > 0 
+    ? appointment.reduce((acc, { hospitalName }) => {
+        acc[hospitalName] = (acc[hospitalName] || 0) + 1;
+        return acc;
+      }, {})
+    : {};
 
+  // Extract department names and counts for the chart
+  const hospitalNames = Object.keys(hospitalCounts);
+  const hospitalVisits = Object.values(hospitalCounts);
+
+  // Bar chart data
+  const hospitalChartData = {
+    labels: hospitalNames,
+    datasets: [
+      {
+        label: "Number of Visits",
+        data: hospitalVisits,
+        backgroundColor: [
+          "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"
+        ], // Colors for each department        borderColor: "#36A2EB",
+        borderWidth: 1,
+      },
+    ],
+  };
   const orderChartData = {
     labels: ["Antipyretics", "Antibiotics", "Dental Care", "Pain Relief", "Supplements"],
     datasets: [
@@ -105,17 +230,17 @@ function PHRPage() {
   const closeModal = () => {
     setModalData(null);
   };
-  const labReports = [
-    { testName: "Blood Sugar", file: "blood-sugar-report.pdf" },
-    { testName: "Cholesterol", file: "cholesterol-report.pdf" },
-    { testName: "Hemoglobin", file: "hemoglobin-report.pdf" },
-  ];
+  // const labReports = [
+  //   { testName: "Blood Sugar", file: "blood-sugar-report.pdf" },
+  //   { testName: "Cholesterol", file: "cholesterol-report.pdf" },
+  //   { testName: "Hemoglobin", file: "hemoglobin-report.pdf" },
+  // ];
 
-  const radiologyImages = [
-    { id: 1, src: "https://via.placeholder.com/200?text=Chest+X-Ray", description: "Chest X-Ray" },
-    { id: 2, src: "https://via.placeholder.com/200?text=MRI+Brain", description: "MRI Brain" },
-    { id: 3, src: "https://via.placeholder.com/200?text=CT+Abdomen", description: "CT Abdomen" },
-  ];
+  // const radiologyImages = [
+  //   { id: 1, src: "https://via.placeholder.com/200?text=Chest+X-Ray", description: "Chest X-Ray" },
+  //   { id: 2, src: "https://via.placeholder.com/200?text=MRI+Brain", description: "MRI Brain" },
+  //   { id: 3, src: "https://via.placeholder.com/200?text=CT+Abdomen", description: "CT Abdomen" },
+  // ];
 
   // Chart Data for Weight History
   const weightChartData = {
@@ -123,7 +248,7 @@ function PHRPage() {
     datasets: [
       {
         label: "Weight (kg)",
-        data: phrData.weight,
+        data: weight,
         backgroundColor: "rgba(75, 192, 192, 0.6)",
         borderColor: "rgba(75, 192, 192, 1)",
         fill: false,
@@ -135,23 +260,33 @@ function PHRPage() {
     datasets: [
       {
         label: "BMI",
-        data: phrData.bmi, // Mock BMI data
+        data:bmi, // Mock BMI data
         backgroundColor: "rgba(255, 99, 132, 0.6)",
         borderColor: "rgba(255, 99, 132, 1)",
         fill: false,
       },
     ],
   };
-  const hospitalChartData = {
-    labels: ["City Hospital", "General Medical Center", "OrthoCare Clinic", "Neurology Institute", "Ear & Nose Clinic"],
-    datasets: [
-      {
-        label: "Appointments by Hospital",
-        data: [1, 1, 1, 1, 1], // Count of appointments for each hospital
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"],
-      },
-    ],
-  };
+  // const hospitalChartData = {
+  //   labels: [
+  //     ...new Set(appointment.map(appt => appt.hospitalName)) // Extract unique hospitals from the appointment array
+  //   ],
+  //   datasets: [
+  //     {
+  //       label: "Appointments by Hospital",
+  //       data: [
+  //         ...new Set(appointment.map(appt => appt.hospitalName)) // Same unique hospitals as labels
+  //       ].map(hospital => {
+  //         // Count the number of appointments for each hospital
+  //         return appointment.filter(appt => appt.hospitalName === hospital).length;
+  //       }),
+  //       backgroundColor: [
+  //         "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF5733", "#C70039", "#900C3F"
+  //       ], // Colors for each hospital, add more colors if you have more hospitals
+  //     },
+  //   ],
+  // };
+  
   const pharmacyChartData = {
     labels: ["Central Pharmacy", "Neighborhood Pharmacy", "Dental Supplies", "City Pharmacy", "Health Store"],
     datasets: [
@@ -210,35 +345,40 @@ function PHRPage() {
         {activeTab === "phr" && (
           <div className={styles.tabSection}>
             <h2 style={{ textAlign: "center"}} >Personal Health Record</h2>
-            <button className={styles.settingsButton} onClick={() => navigateToEditPage()}>
+            <button className={styles.settingsButton} onClick={() => navigate("/edit-phr",{ state: { patientId} })}>
               ⚙ 
             </button>
             <br></br>
             <br></br>
             <div className={styles.phrCardsGrid}>
               <div className={styles.card}>
-                <p><strong>Allergies:</strong> {phrData.allergies}</p>
+                <p><strong>Allergies:</strong> {phrData?.allergies}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Chronic Illness:</strong> {phrData.chronicIllness}</p>
+                <p><strong>Chronic Illness:</strong> {phrData?.chronicIllness}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Diagnosis:</strong> {phrData.diagnosis}</p>
+                <p><strong>Diagnosis:</strong> {phrData?.diagnosis}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Medication:</strong> {phrData.medication}</p>
+                <p><strong>Medication:</strong> {phrData?.medication}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Medical Procedures:</strong> {phrData.medicalProcedures}</p>
+                <p><strong>Medical Procedures:</strong> {phrData?.medicalProcedures}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Family History:</strong> {phrData.familyHistory}</p>
+                <p><strong>Family History:</strong> {phrData?.familyHistory}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Prescription History:</strong> {phrData.prescriptionHistory}</p>
+                <p><strong>Prescription History:</strong> {phrData?.prescriptionHistory}</p>
               </div>
               <div className={styles.card}>
-                <p><strong>Height:</strong> {phrData.height}</p>
+                <p><strong>Height:</strong></p>
+                <p>
+                {phrData?.height ? `[${phrData.height.join(", ")}]` : "No data available"}
+
+                </p>
+
               </div>
             </div>
             {/* Trend Graphs */}
@@ -264,19 +404,19 @@ function PHRPage() {
                   <thead>
                     <tr>
                       <th>Doctor</th>
-                      <th>Specialty</th>
+                      <th>Department</th>
                       <th>Hospital</th>
                       <th>Date</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {appointments.map((appointment, index) => (
+                    {appointment.map((appointment, index) => (
                       <tr key={index}>
-                        <td>{appointment.doctor}</td>
-                        <td>{appointment.specialty}</td>
-                        <td>{appointment.hospital}</td>
-                        <td>{appointment.date}</td>
+                        <td>{appointment.doctorName}</td>
+                        <td>{appointment.department}</td>
+                        <td>{appointment.hospitalName}</td>
+                        <td>{appointment.appointmentDate}</td>
                         <td>
                           <button
                             className={`${styles.btn} ${styles.viewDetailsBtn}`}
@@ -381,8 +521,8 @@ function PHRPage() {
             <div className={styles.reportsCardsGrid}>
               {labReports.map((report, index) => (
                 <div key={index} className={styles.card}>
-                  <p><strong>{report.testName}</strong></p>
-                  <a href={`/${report.file}`} download>Download Report</a>
+                  {/* <p><strong>{report.testName}</strong></p> */}
+                  <a href={`/${report}`} download>Download Report</a>
                 </div>
               ))}
             </div>
@@ -394,12 +534,12 @@ function PHRPage() {
           <div className={styles.tabSection}>
             <h2 style={{ textAlign: "center"}}>Radiology Images</h2>
             <div className={styles.radiologyCardsGrid}>
-              {radiologyImages.map((image) => (
-                <div key={image.id} className={styles.card}>
-                  <img src={image.src} alt={image.description} className={styles.radiologyImage} />
-                  <p>{image.description}</p>
-                </div>
-              ))}
+            {radiologyImages.map((image, index) => (
+              <div key={index} className={styles.radiologyItem}>
+                <img src={image} alt={`Radiology Image ${index + 1}`} />
+                <p>Image {index + 1}</p>
+              </div>
+            ))}
             </div>
           </div>
         )}

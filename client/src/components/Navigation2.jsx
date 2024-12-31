@@ -55,12 +55,12 @@ const Navigation= () => {
         <NavbarItem>
         <Button
             as={Link}
-            href="/patient"
+            href="/login"
             color="primary"
             variant="flat"
             className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
         >
-            Book Appointment
+            signOut
         </Button>
         </NavbarItem>
     </NavbarContent>

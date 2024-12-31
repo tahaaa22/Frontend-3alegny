@@ -7,6 +7,8 @@ function ProfilePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [patientData, setPatientData] = useState(null);
+    const [appointment, setappointment] = useState(null); // State for appointment data
+  
   const patient =location.state.patientdata
   // Extract patient ID from state
   const patientId = patient.id;
@@ -35,12 +37,39 @@ function ProfilePage() {
 
         // Extract relevant details
         setPatientData({
-          name: response.data.name,
+          name: response.data.userName,
           email: response.data.contactInfo.email,
           phone: response.data.contactInfo.phone,
           birthdate: response.data.dateOfBirth,
+          image:response.data.imageUrl,
         });
         console.log("data:",patientData);
+      // Fetch appointment data after successfully fetching PHR data
+      const appointmentResponse = await axios.get(
+        `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/appointment/get/${patientId}`
+      );
+
+      console.log("Appointment API Response Data:", appointmentResponse.data);
+
+      // Update state with appointment data
+    // Extract required fields from each appointment
+    const formattedAppointments = appointmentResponse.data.map(appointment => ({
+      appointmentDate: appointment.appointmentDate,
+      department: appointment.department,
+      doctorName: appointment.doctorName,
+      hospitalName: appointment.hospitalName,
+    }));
+
+    console.log("Formatted Appointments:", formattedAppointments);
+
+    // Store the formatted appointments in the state
+    setappointment(formattedAppointments);
+
+      // const orderResponse = await axios.get(
+      //   `https://backend-3alegny-hpgag2fkg4hrb9c0.canadacentral-01.azurewebsites.net/order/get/${patientId}`
+      // );
+      // console.log("order API Response Data:", orderResponse.data);
+
 
       } catch (error) {
         console.error("Failed to fetch patient data:", error);
@@ -97,7 +126,7 @@ function ProfilePage() {
           <p><strong>Phone:</strong> {patientData.phone}</p>
           <p><strong>Birthdate:</strong> {patientData.birthdate}</p>
 
-          <button className={styles.btn} onClick={() => navigate("/edit-profile",{ state: { patientId} })}>
+          <button className={styles.btn} onClick={() =>{console.log(patientId);  navigate("/edit-profile",{ state: { patientId} });}}>
             Edit Profile
           </button>
           <hr />
@@ -184,11 +213,11 @@ function ProfilePage() {
           </tr>
         </thead>
         <tbody>
-          {appointments.map((appointment, index) => (
+        {Array.isArray(appointment) && appointment.map((appointment, index) => (
             <tr key={index}>
-              <td>{appointment.doctor}</td>
-              <td>{appointment.specialty}</td>
-              <td>{appointment.date}</td>
+              <td>{appointment.doctorName}</td>
+              <td>{appointment.department}</td>
+              <td>{appointment.appointmentDate}</td>
               <td>
                 <button className={styles.cancelBtn}>Cancel Appointment</button>
               </td>

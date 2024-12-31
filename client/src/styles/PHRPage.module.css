@@ -8,7 +8,11 @@
   background-color: #f4f4f9;
   margin-top: 60px;
 }
-
+.PHRContainer h2{
+  color: #162e70;
+  font-size: 150%;
+  font-weight: bold;
+}
 /* Tabs styles */
 .tabs {
   display: flex;
@@ -215,7 +219,7 @@ strong {
 }
 
 .settingsButton {
-  position: absolute;
+  position:static;
   top: 125px; /* Adjust as needed */
   right: 60px; /* Adjust as needed */
   background-color: #4caf50; /* Green color */
@@ -235,4 +239,8 @@ strong {
 .PHRContainer {
   position: relative; /* Make sure the container has `relative` positioning for the button to align correctly */
   padding: 20px; /* Optional padding for the container */
+}
+
+.card li{
+  color: #ddd;
 }
